@@ -16,6 +16,9 @@ import { ICakeRepositoryUseCaseImp } from './infrastructurelLayer/implimentation
 import { OrderModule } from '../orders/orders.module';
 import { GETORDERANALYSE } from './tokens/GetOrdersToAnalyse.token';
 import { IGetOrdersToAnalyseImp } from './infrastructurelLayer/implimentations/IGetOrdersToAnalyse.implimentation';
+/**
+ * this is the begining of the module
+ */
 @Module({
   imports: [ConfigModule, CakeModule, OrderModule],
   providers: [
