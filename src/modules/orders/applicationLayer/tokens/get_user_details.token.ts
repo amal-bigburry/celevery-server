@@ -1,0 +1,1 @@
+export const GET_USER_DETAILS = Symbol('GET_USER_DETAILS');

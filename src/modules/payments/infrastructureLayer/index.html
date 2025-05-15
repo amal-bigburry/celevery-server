@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Cashfree Payment</title>
+  <script src="https://sdk.cashfree.com/js/v3/cashfree.js"></script>
+</head>
+<body>
+  <h2>Pay with Cashfree</h2>
+  <button id="payBtn">Pay Now</button>
+
+  <script>
+    // Replace this with the actual session ID from your backend response
+    const paymentSessionId = "session_m-m1xa-Ppr8oRpFU-W-XdVX57bk-S9NNBJF6bW4b8pHhvzQOi4oDpKd71vBTRj9R_kGFoNVRby2Tnh9bgnWB_ACAHecrU0pCxYqktRfCt7HEYkP_MjyN0flVkZuOswpaymentpayment"
+
+    const cashfree = Cashfree({
+      mode: "sandbox", // Change to "production" in live
+    });
+
+    document.getElementById("payBtn").addEventListener("click", function () {
+      cashfree.checkout({
+        paymentSessionId: paymentSessionId,
+        redirectTarget: "_self", // Optional: _self or _blank
+      });
+    });
+  </script>
+</body>
+</html>
