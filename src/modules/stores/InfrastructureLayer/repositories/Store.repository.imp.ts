@@ -18,8 +18,8 @@ export class StoreRepositoryImplimentation implements StoreRepository {
   private readonly s3: S3Client;
   constructor(
     private readonly configService: ConfigService,
-    @InjectModel('Stores') private readonly storemodal: Model<StoreDto>,
-    @InjectModel('Cakes') private readonly cakemodal: Model<CakeDto>,
+    @InjectModel('Stores') private readonly storeModel: Model<StoreDto>,
+    @InjectModel('Cakes') private readonly cakeModel: Model<CakeDto>,
   ) {
     this.s3 = new S3Client({
       region: this.configService.get<string>('AWS_REGION'),
@@ -35,7 +35,7 @@ export class StoreRepositoryImplimentation implements StoreRepository {
    * funtion to get all cakes in a store
    */
   async getAllStoreCakes(store_id: string): Promise<Array<CakeDto>> {
-    let stores = await this.cakemodal.find({ store_id });
+    let stores = await this.cakeModel.find({ store_id });
     return stores;
   }
   /**
@@ -45,7 +45,7 @@ export class StoreRepositoryImplimentation implements StoreRepository {
     throw new Error('Method not implemented.');
   }
   async getStore(store_id: string): Promise<StoreDto> {
-    let stores = await this.storemodal.findById(store_id);
+    let stores = await this.storeModel.findById(store_id);
     if (stores) {
       return stores;
     } else {
@@ -60,7 +60,7 @@ export class StoreRepositoryImplimentation implements StoreRepository {
     field: string,
     value: string,
   ): Promise<string> {
-    let store = this.storemodal.findById(store_id);
+    let store = this.storeModel.findById(store_id);
     store[field] = value;
     return 'updated';
   }
@@ -113,7 +113,7 @@ export class StoreRepositoryImplimentation implements StoreRepository {
         lat: storeDto.lat,
         log: storeDto.log,
       };
-      await this.storemodal.create(dataToStore);
+      await this.storeModel.create(dataToStore);
       return 'ok';
     } catch (error) {
       console.error('Error creating store:', error);
@@ -124,6 +124,6 @@ export class StoreRepositoryImplimentation implements StoreRepository {
    * function to get all the store in the platform
    */
   async getAllStores(store_owner_id: string): Promise<Array<StoreDto>> {
-    return await this.storemodal.find({ store_owner_id: store_owner_id });
+    return await this.storeModel.find({ store_owner_id: store_owner_id });
   }
 }

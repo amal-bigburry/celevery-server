@@ -17,6 +17,7 @@ import { StoreModule } from './modules/stores/store.module';
 import { TwilioModule } from './modules/OTP/otp.module';
 import { DocumentModule } from './modules/documents/documents.module';
 import { AnalyticsModule } from './modules/analytics/analytics.module';
+import { SellerSupportModule } from './modules/support/support.module';
 
 // Initialize Firebase Admin SDK
 admin.initializeApp({
@@ -70,6 +71,10 @@ admin.initializeApp({
      * Handle analytics related queries 
      */
     AnalyticsModule,
+    /**
+     * Handles all seller support related queries
+     */
+    SellerSupportModule,
     /**
      * Enable Environmentable varialble in the application
      */

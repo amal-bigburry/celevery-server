@@ -5,7 +5,7 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CakeCategoryController } from './infrastructureLayer/controllers/cakecategory.controller';
 import { CakeCategoryRepositoryImp } from './infrastructureLayer/repositories/cakecategory.repository.imp';
-import { CakeCategoryModal } from './applicationLayer/models/cakecategory.model';
+import { CakeCategoryModel } from './applicationLayer/models/cakecategory.model';
 import { FindCakeCategoryUseCase } from './applicationLayer/use-cases/getallcakecategory.usecase';
 import { CreateCakeCategoryUseCase } from './applicationLayer/use-cases/createcakecategory.usecase';
 import { CAKE_CATEGORY_REPOSITORY } from './applicationLayer/tokens/cakeCategoryRepository.token';
@@ -16,7 +16,7 @@ import { FindCakeCategoryByIDUseCase } from './applicationLayer/use-cases/findca
 @Module({
   imports: [
     MongooseModule.forFeature([
-      { name: 'CakeCategories', schema: CakeCategoryModal },
+      { name: 'CakeCategories', schema: CakeCategoryModel },
     ]),
   ],
   controllers: [CakeCategoryController],

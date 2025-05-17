@@ -42,4 +42,4 @@ export class Store extends Document {
   @Prop() lat: number;
   @Prop() log: number;
 }
-export const StoreModal = SchemaFactory.createForClass(Store);
+export const StoreModel = SchemaFactory.createForClass(Store);

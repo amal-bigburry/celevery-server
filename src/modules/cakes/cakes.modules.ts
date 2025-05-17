@@ -8,12 +8,12 @@ import { CakeRepositoryImp } from './infrastructureLayer/repositories/cake.repos
 import { CakeController } from './infrastructureLayer/controllers/cake.controller';
 import { CreateCakeUseCase } from './applicationLayer/use-cases/createcake.usecase';
 import { FindCakeUseCase } from './applicationLayer/use-cases/findcake.usecase';
-import { CakeCategoryModal } from '../cakecategories/applicationLayer/models/cakecategory.model';
+import { CakeCategoryModel } from '../cakecategories/applicationLayer/models/cakecategory.model';
 import { SearchForCakesUseCase } from './applicationLayer/use-cases/searchcakes.usecase';
 import { MulterModule } from '@nestjs/platform-express';
 import { GetCakeDetailsUseCase } from './applicationLayer/use-cases/GetCakeDetailsUseCase';
 import { GetSimilarCakesUseCase } from './applicationLayer/use-cases/GetSimilarCakes.usecase';
-import { StoreModal } from '../stores/applicationLayer/repositories/store.schema';
+import { StoreModel } from '../stores/applicationLayer/repositories/store.schema';
 import { CAKE_REPOSITORY } from './applicationLayer/tokens/cakeRepository.token';
 import { CAKE_CATEGORY_REPOSITORY } from './applicationLayer/tokens/cakeCategoryRepository.token';
 import { CakecategoryRepositoryImp } from './infrastructureLayer/ExternalImplimentations/CakecategoryRepositoty.implimentations';
@@ -31,8 +31,8 @@ import { UpdateKnownFor } from './applicationLayer/use-cases/UpdateKnownFor.usec
   imports: [
     MongooseModule.forFeature([
       { name: 'Cakes', schema: CakeSchema },
-      { name: 'CakeCategories', schema: CakeCategoryModal },
-      { name: 'Stores', schema: StoreModal },
+      { name: 'CakeCategories', schema: CakeCategoryModel },
+      { name: 'Stores', schema: StoreModel },
     ]),
     MulterModule.register({
       dest: './uploads',

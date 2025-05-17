@@ -1,6 +1,6 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { StoreModal } from './applicationLayer/repositories/store.schema';
+import { StoreModel } from './applicationLayer/repositories/store.schema';
 import { StoreController } from './InfrastructureLayer/controllers/store.controller';
 import { StoreRepositoryImplimentation } from './InfrastructureLayer/repositories/Store.repository.imp';
 import { CreateStoreUsecase } from './applicationLayer/usercases/createStore.usecase';
@@ -14,7 +14,7 @@ import { GetAllStoreUseCase } from './applicationLayer/usercases/getAllStores.us
 @Module({
   imports: [
     MongooseModule.forFeature([
-      { name: 'Stores', schema: StoreModal },
+      { name: 'Stores', schema: StoreModel },
       { name: 'Cakes', schema: CakeSchema },
     ]),
 

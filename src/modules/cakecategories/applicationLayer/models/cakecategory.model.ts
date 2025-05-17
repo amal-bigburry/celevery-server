@@ -20,7 +20,7 @@ export class CakeCategoryDocument extends Document {
   category_name: string;
 }
 /**
- * Exports the cake category modal or schema for other packages
+ * Exports the cake category Model or schema for other packages
  */
-export const CakeCategoryModal =
+export const CakeCategoryModel =
   SchemaFactory.createForClass(CakeCategoryDocument);

@@ -1,0 +1,1 @@
+export const CREATE_BUYER_TOKEN = Symbol('Createbuyersupport');
