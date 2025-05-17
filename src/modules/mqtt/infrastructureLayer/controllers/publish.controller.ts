@@ -1,4 +1,9 @@
 /**
+ * © Bigburry Hypersystems LLP. All rights reserved.
+ * This source code is confidential and intended only for internal use.
+ * Unauthorized copying, modification, distribution, or disclosure is prohibited.
+ */
+/**
  * importing the required packages
  */
 import { Controller, Post, Body } from '@nestjs/common';
@@ -11,7 +16,7 @@ import { PopDto } from '../../dtos/pop.dto';
 export class MqttPublisherController {
   constructor(private readonly mqttService: MqttService) {}
   /**
-   * post request
+   * post request to send message
    */
   @Post('send')
   async sendMessage(@Body() popDto: PopDto) {

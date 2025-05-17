@@ -1,4 +1,8 @@
+/*
+ * Company License: Bigburry Hypersystems LLP
+ * All rights reserved © Bigburry Hypersystems LLP
+ */
 /**
- * token for getting the store detail interface
+ * Token for dependency injection of the store detail retrieval interface
  */
 export const GETSTORE = Symbol('GETSTORE');

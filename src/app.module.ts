@@ -1,6 +1,13 @@
 /**
- * Importing all the required packages
+ * ******************************************************************************************************
+ * AppModule.ts
+ * 
+ * Main application module for Bigburry Hypersystems LLP platform. It integrates all feature modules such as
+ * Users, Orders, Cakes, Notifications, Payments, Stores, OTP, Analytics, and Seller Support.
+ * It also sets up MongoDB connection asynchronously using environment variables and initializes Firebase Admin SDK.
+ * ******************************************************************************************************
  */
+
 import { Module } from '@nestjs/common';
 import { UserModule } from './modules/users/users.module';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -9,7 +16,7 @@ import { CakeModule } from './modules/cakes/cakes.modules';
 import { CakeCategoryModule } from './modules/cakecategories/cakecategories.module';
 import { NotificationModule } from './modules/Notifications/notification.module';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import serviceAccount from './firebaseCredentials.json'; // correct relative path
+import serviceAccount from './firebaseCredentials.json'; // Firebase admin credentials
 import * as admin from 'firebase-admin';
 import { MqttModule } from './modules/mqtt/mqtt.module';
 import { PaymentModule } from './modules/payments/payments.module';
@@ -24,77 +31,57 @@ admin.initializeApp({
   credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
 });
 
-// AppModule
 @Module({
   imports: [
-    /**
-     * User Module Handles all the user related queries
-     */
+    // User management
     UserModule,
-    /**
-     * Order Module Handles all order related things like creating order, canceling and so on.
-     */
+
+    // Order management (create, cancel, track orders)
     OrderModule,
-    /**
-     * Cake Module handles cake related quarires like , get cake info, add cake and others.
-     */
+
+    // Cake info management (add, update, retrieve cakes)
     CakeModule,
-    /**
-     * Mqtt Module that helps to communicate data using mqtt protocol
-     */
+
+    // MQTT protocol communication
     MqttModule,
-    /**
-     * Cake Category Module that helps to manage category in the application
-     */
+
+    // Cake categories management
     CakeCategoryModule,
-    /**
-     * Helps to Notify the users, Makes it easy to manage notifications like push notification
-     */
+
+    // User notifications (push notifications etc.)
     NotificationModule,
-    /**
-     * Handles all the payment related things. And Manage all payment related queries
-     */
+
+    // Payment processing and management
     PaymentModule,
-    /**
-     * MAnages all Store related things
-     */
+
+    // Store management features
     StoreModule,
-    /**
-     * Handles OTP related Functinalities for authentication of users into our application
-     */
+
+    // OTP and authentication via Twilio
     TwilioModule,
-    /**
-     * Handles terms and conditioon , privacy policay and other documents
-     */
+
+    // Terms, privacy, and other documents
     DocumentModule,
-    /**
-     * Handle analytics related queries 
-     */
+
+    // Analytics and reporting
     AnalyticsModule,
-    /**
-     * Handles all seller support related queries
-     */
+
+    // Seller support and assistance features
     SellerSupportModule,
-    /**
-     * Enable Environmentable varialble in the application
-     */
-    ConfigModule.forRoot({
-      isGlobal: true,
-    }),
-    /**
-     * Connected MongoDB Database to the application
-     */
+
+    // Load environment variables globally
+    ConfigModule.forRoot({ isGlobal: true }),
+
+    // MongoDB connection (async with env variables)
     MongooseModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
-        uri: configService.get<string>('MONGODB_URI'), // ✅ read from .env
+        uri: configService.get<string>('MONGODB_URI'),
       }),
     }),
   ],
   controllers: [],
   providers: [],
 })
-
-// Export AppModule
 export class AppModule {}

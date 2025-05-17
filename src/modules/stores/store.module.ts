@@ -1,3 +1,12 @@
+/**
+ * Bigburry Hypersystems LLP - NestJS Store Module
+ *
+ * This module defines the Store feature module in the application. It registers Mongoose schemas,
+ * declares controllers, providers (use cases and repository implementations), and handles module
+ * imports and exports. The module is responsible for all store-related business logic including
+ * creation, updates, and fetching of stores and their related cakes.
+ */
+
 import { forwardRef, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { StoreModel } from './applicationLayer/repositories/store.schema';
@@ -11,16 +20,39 @@ import { CakeSchema } from '../cakes/applicationLayer/repositories/cake.schema';
 import { GetAllStoreCakesUsecase } from './applicationLayer/usercases/GetAllStoreCakes.Usecase';
 import { STORE_REPOSITORY } from './applicationLayer/tokens/storeRepository.token';
 import { GetAllStoreUseCase } from './applicationLayer/usercases/getAllStores.usecase';
+
+/**
+ * Bigburry Hypersystems LLP - StoreModule Definition
+ * 
+ * This class defines the StoreModule using the @Module decorator. It imports related modules,
+ * binds controllers and providers, and makes select use cases available for injection into
+ * other modules.
+ */
 @Module({
+  /**
+   * Imports required by this module.
+   * - Registers MongoDB models for Stores and Cakes.
+   * - Imports CakeModule with forward reference to avoid circular dependency.
+   */
   imports: [
     MongooseModule.forFeature([
       { name: 'Stores', schema: StoreModel },
       { name: 'Cakes', schema: CakeSchema },
     ]),
-
     forwardRef(() => CakeModule),
   ],
+
+  /**
+   * Controllers that handle incoming HTTP requests.
+   * - StoreController maps and processes store-related API endpoints.
+   */
   controllers: [StoreController],
+
+  /**
+   * Providers available within this module.
+   * - Use cases implementing the business logic for various store operations.
+   * - Binds the STORE_REPOSITORY interface to StoreRepositoryImplimentation class.
+   */
   providers: [
     CreateStoreUsecase,
     updateStoreUsecase,
@@ -28,10 +60,15 @@ import { GetAllStoreUseCase } from './applicationLayer/usercases/getAllStores.us
     GetAllStoreUseCase,
     getStoreUsecase,
     {
-      provide: STORE_REPOSITORY, // string token for interface
+      provide: STORE_REPOSITORY,
       useClass: StoreRepositoryImplimentation,
     },
   ],
+
+  /**
+   * Exported providers to be used by other modules.
+   * - getStoreUsecase is made available to other modules that import StoreModule.
+   */
   exports: [getStoreUsecase],
 })
 export class StoreModule {}

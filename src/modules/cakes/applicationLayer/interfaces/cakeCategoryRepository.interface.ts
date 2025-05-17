@@ -1,10 +1,19 @@
+/*
+ * Company License: Bigburry Hypersystems LLP
+ * All rights reserved © Bigburry Hypersystems LLP
+ */
 /**
  * Importing required packages
  */
 import { CakeCategoryDto } from 'src/modules/cakecategories/dtos/cakecategory.dto';
 /**
- * Interface of cakerepository
+ * Interface defining the Cake Category Repository contract
  */
 export interface CakeCategoryRepository {
-  findCategoryById(cakeCategoryId:string): Promise<CakeCategoryDto>;
+  /**
+   * Finds a cake category by its unique identifier
+   * @param cakeCategoryId - The ID of the cake category to find
+   * @returns A Promise resolving to the CakeCategoryDto of the found category
+   */
+  findCategoryById(cakeCategoryId: string): Promise<CakeCategoryDto>;
 }

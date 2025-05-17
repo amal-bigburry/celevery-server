@@ -1,17 +1,22 @@
+/*
+ * Company License: Bigburry Hypersystems LLP
+ * All rights reserved © Bigburry Hypersystems LLP
+ */
 /**
- * Importing the necceasy files
+ * Importing the necessary files for validation
  */
 import { IsNotEmpty, IsString } from 'class-validator';
 /**
- * class
+ * Data Transfer Object class for Cake Category
  */
 export class CakeCategoryDto {
   /**
-   * image url of the category
+   * Image URL of the cake category
    */
   category_image_url: string;
   /**
-   * Name of the category
+   * Name of the cake category
+   * Must be a non-empty string
    */
   @IsString()
   @IsNotEmpty()

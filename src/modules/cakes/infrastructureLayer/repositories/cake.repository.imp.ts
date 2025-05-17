@@ -1,4 +1,9 @@
 /**
+ * © Bigburry Hypersystems LLP. All rights reserved.
+ * This source code is confidential and intended only for internal use.
+ * Unauthorized copying, modification, distribution, or disclosure is prohibited.
+ */
+/**
  * importing required packages
  */
 import { InjectModel } from '@nestjs/mongoose';
@@ -16,9 +21,12 @@ import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { IGetStoreUseCase } from '../../applicationLayer/interfaces/getStoreUsecase.interface';
 import { GETSTORE } from '../../applicationLayer/tokens/getstoreusecase.token';
 /**
- * implimentation of cake repository
+ * implementation of cake repository
  */
 export class CakeRepositoryImp implements CakeRepository {
+  /**
+   * constructor injecting required dependencies
+   */
   constructor(
     @InjectModel('Cakes') private cakeModel: Model<CakeEntity>,
     private readonly configService: ConfigService,
@@ -26,8 +34,9 @@ export class CakeRepositoryImp implements CakeRepository {
     private readonly getstoreusecase: IGetStoreUseCase,
   ) {}
   /**
-   * Updates the 'known_for' field of a cake by its ID.
-   * Returns the updated known_for array or null if not found.
+   * Updates the 'known_for' field of a cake by its ID
+   * Throws exception if cake not found
+   * Returns confirmation string after update
    */
   async updateKnownfor(cake_id: string, known_for: string): Promise<string> {
     const cake = await this.cakeModel.findById(cake_id).exec();
@@ -37,7 +46,9 @@ export class CakeRepositoryImp implements CakeRepository {
     return'updated';
   }
   /**
-   * finall method
+   * Retrieves all cakes and calculates distance from user location
+   * Applies pagination logic on the results
+   * Returns paginated cake data with store info and distance
    */
   async findAll(
     page: number,
@@ -80,7 +91,9 @@ export class CakeRepositoryImp implements CakeRepository {
     };
   }
   /**
-   * function to find the cake by id
+   * Finds a cake by its unique ID
+   * Throws exception if cake not found
+   * Returns the found cake entity
    */
   async findById(cake_id: string): Promise<CakeEntity> {
     const cake = await this.cakeModel.findById(cake_id).exec();
@@ -88,13 +101,16 @@ export class CakeRepositoryImp implements CakeRepository {
     return cake;
   }
   /**
-   * function to create a cake in the platform
+   * Creates a new cake entry using cakeDto
+   * Returns the created cake object
    */
   async createcake(cakeDto: CakeDto): Promise<Object> {
     return await this.cakeModel.create(cakeDto);
   }
   /**
-   * functioin to find the cake in the jplatform
+   * Searches for cakes based on keyword or category
+   * Constructs query filter conditionally
+   * Returns list of cakes that match the criteria
    */
   async find(keyword: string, category_id: string): Promise<CakeEntity[]> {
     let filter: any = {};
@@ -107,7 +123,9 @@ export class CakeRepositoryImp implements CakeRepository {
     return cakes;
   }
   /**
-   * function to upload image of cake to cloud
+   * Uploads images to AWS S3 and returns list of URLs
+   * Uses config service to fetch AWS credentials and region
+   * Throws exception if AWS connection fails
    */
   async uploadImage(
     files: Express.Multer.File[],
@@ -115,12 +133,12 @@ export class CakeRepositoryImp implements CakeRepository {
     let s3Urls: string[] = [];
     try {
       const s3 = new S3Client({
-        region: this.configService.get<string>('AWS_REGION'), // ap-south-1
-        forcePathStyle: false, // ✅ correct URL style
+        region: this.configService.get<string>('AWS_REGION'),
+        forcePathStyle: false,
         endpoint: `https://s3.${this.configService.get<string>('AWS_REGION')}.amazonaws.com`,
         credentials: {
-          accessKeyId: `${this.configService.get<string>('AWS_ACCESS_KEY')}`, // e.g., 'AKIAIOSFODNN7EXAMPLE'
-          secretAccessKey: `${this.configService.get<string>('AWS_SECRET_KEY')}`, // e.g., 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY'
+          accessKeyId: `${this.configService.get<string>('AWS_ACCESS_KEY')}`,
+          secretAccessKey: `${this.configService.get<string>('AWS_SECRET_KEY')}`,
         },
       });
       for (const file of files) {

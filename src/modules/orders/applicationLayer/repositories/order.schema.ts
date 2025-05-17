@@ -1,49 +1,71 @@
 /**
- * import the required packages
+ * © Bigburry Hypersystems LLP. All rights reserved.
+ * This source code is confidential and intended only for internal use.
+ * Unauthorized copying, modification, distribution, or disclosure is prohibited.
+ */
+
+/**
+ * Import the required packages
  */
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+
 /**
- * schema for user model
+ * Schema for user order model
  */
 @Schema({timestamps:true})
 export class Order extends Document {
+  
   /**
-   * cake id
+   * Payment tracking ID for the order
    */
   @Prop()
   payment_tracking_id: string;
+
   /**
-   * cake id
+   * The ID of the cake being ordered
    */
   @Prop({ required: true })
   cake_id: string;
+
   /**
-   * status of the order
+   * The current status of the order
    */
   @Prop({ required: true })
   order_status: string;
+
   /**
-   * variant id of the cake
+   * The variant ID of the ordered cake
    */
   @Prop({ required: true })
   cake_variant_id: string;
+
   /**
-   * maximum time buyer can wait
+   * The maximum time the buyer can wait for the order
    */
   @Prop({ required: true })
   need_before: string;
+
   /**
-   * user id of the order
+   * The user ID of the buyer who placed the order
    */
   @Prop({ required: true })
   buyer_id: string;
+
+  /**
+   * The 'known for' attribute of the cake being ordered
+   */
   @Prop({ required: true })
   known_for: string;
+
+  /**
+   * The seller ID who is fulfilling the order
+   */
   @Prop({ required: true })
   seller_id: string;
 }
+
 /**
- * exporting the user schema
+ * Exporting the Order schema
  */
 export const OrderSchema = SchemaFactory.createForClass(Order);

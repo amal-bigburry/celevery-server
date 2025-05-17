@@ -1,5 +1,9 @@
+/*
+ * Company License: Bigburry Hypersystems LLP
+ * All rights reserved © Bigburry Hypersystems LLP
+ */
 /**
- * importing the required pakcages
+ * Importing the required packages and modules
  */
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -11,15 +15,24 @@ import { CreateCakeCategoryUseCase } from './applicationLayer/use-cases/createca
 import { CAKE_CATEGORY_REPOSITORY } from './applicationLayer/tokens/cakeCategoryRepository.token';
 import { FindCakeCategoryByIDUseCase } from './applicationLayer/use-cases/findcategorybyid.usecase';
 /**
- * Module
+ * Defines the CakeCategoryModule which organizes controllers, providers, and imports
  */
 @Module({
+  /**
+   * Imports Mongoose schema for cake categories
+   */
   imports: [
     MongooseModule.forFeature([
       { name: 'CakeCategories', schema: CakeCategoryModel },
     ]),
   ],
+  /**
+   * Declares the controller responsible for handling cake category HTTP requests
+   */
   controllers: [CakeCategoryController],
+  /**
+   * Provides the use cases and repository implementation for dependency injection
+   */
   providers: [
     CreateCakeCategoryUseCase,
     FindCakeCategoryUseCase,
@@ -29,6 +42,9 @@ import { FindCakeCategoryByIDUseCase } from './applicationLayer/use-cases/findca
       useClass: CakeCategoryRepositoryImp,
     },
   ],
-  exports:[FindCakeCategoryUseCase, FindCakeCategoryByIDUseCase]
+  /**
+   * Exports specific use cases for use in other modules
+   */
+  exports: [FindCakeCategoryUseCase, FindCakeCategoryByIDUseCase],
 })
 export class CakeCategoryModule {}

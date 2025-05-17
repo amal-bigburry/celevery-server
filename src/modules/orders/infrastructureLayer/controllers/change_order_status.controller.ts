@@ -1,4 +1,7 @@
 /**
+ * Company License: Bigburry Hypersystems LLP
+ */
+/**
  * importing the required packages
  */
 import { Body, Controller, Param, Post, Req, UseGuards } from '@nestjs/common';
@@ -7,6 +10,7 @@ import { ChangeOrderStatusDto } from '../../dtos/changeOrderStatus.dto';
 import { JwtAuthGuard } from 'src/middlewares/jwtauth.middleware';
 import ORDER_STATUS from 'src/common/utils/contants';
 import { AuthRequest } from 'src/middlewares/AuthRequest';
+
 /**
  * route to handle the /order
  */
@@ -24,8 +28,17 @@ export class ChangeOrderStatus {
     @Body() changeOrderStatusDto: ChangeOrderStatusDto,
     @Req() request:AuthRequest
   ) {
+    /**
+     * setting the new order status to WAITINGTOPAY
+     */
     changeOrderStatusDto.new_status = ORDER_STATUS.WAITINGTOPAY;
+    /**
+     * assigning user id from the request
+     */
     changeOrderStatusDto.user_id = request.user['userId']
+    /**
+     * executing the use case to change order status
+     */
     return this.changeOrderStatusUseCase.execute(changeOrderStatusDto);
   }
   /**
@@ -37,12 +50,21 @@ export class ChangeOrderStatus {
     @Body() changeOrderStatusDto: ChangeOrderStatusDto,
     @Req() request: AuthRequest
   ) {
+    /**
+     * setting the new order status to CANCELLED
+     */
     changeOrderStatusDto.new_status = ORDER_STATUS.CANCELLED;
+    /**
+     * assigning user id from the request
+     */
     changeOrderStatusDto.user_id = request.user['userId']
+    /**
+     * executing the use case to change order status
+     */
     return this.changeOrderStatusUseCase.execute(changeOrderStatusDto);
   }
   /**
-   * route to handle the /order/cancel
+   * route to handle the /order/preparing
    */
   @Post('prepairing')
   @UseGuards(JwtAuthGuard)
@@ -50,12 +72,21 @@ export class ChangeOrderStatus {
     @Body() changeOrderStatusDto: ChangeOrderStatusDto,
     @Req() request: AuthRequest
   ) {
+    /**
+     * assigning user id from the request
+     */
     changeOrderStatusDto.user_id = request.user['userId']
+    /**
+     * setting the new order status to PREPAIRING
+     */
     changeOrderStatusDto.new_status = ORDER_STATUS.PREPAIRING;
+    /**
+     * executing the use case to change order status
+     */
     return this.changeOrderStatusUseCase.execute(changeOrderStatusDto);
   }
   /**
-   * route to handle the /order/cancel
+   * route to handle the /order/packed
    */
   @Post('packed')
   @UseGuards(JwtAuthGuard)
@@ -63,12 +94,21 @@ export class ChangeOrderStatus {
     @Body() changeOrderStatusDto: ChangeOrderStatusDto,
     @Req() request: AuthRequest
   ) {
+    /**
+     * assigning user id from the request
+     */
     changeOrderStatusDto.user_id = request.user['userId']
+    /**
+     * setting the new order status to PACKED
+     */
     changeOrderStatusDto.new_status = ORDER_STATUS.PACKED;
+    /**
+     * executing the use case to change order status
+     */
     return this.changeOrderStatusUseCase.execute(changeOrderStatusDto);
   }
   /**
-   * route to handle the /order/cancel
+   * route to handle the /order/waitingforpickup
    */
   @Post('waitingforpickup')
   @UseGuards(JwtAuthGuard)
@@ -76,13 +116,22 @@ export class ChangeOrderStatus {
     @Body() changeOrderStatusDto: ChangeOrderStatusDto,
     @Req() request: AuthRequest
   ) {
+    /**
+     * assigning user id from the request
+     */
     changeOrderStatusDto.user_id = request.user['userId']
+    /**
+     * setting the new order status to WAITINGFORPICKUP
+     */
     changeOrderStatusDto.new_status = ORDER_STATUS.WAITINGFORPICKUP;
+    /**
+     * executing the use case to change order status
+     */
     return this.changeOrderStatusUseCase.execute(changeOrderStatusDto);
   }
 
   /**
-   * route to handle the /order/cancel
+   * route to handle the /order/delivered
    */
   @Post('delivered')
   @UseGuards(JwtAuthGuard)
@@ -90,8 +139,17 @@ export class ChangeOrderStatus {
     @Body() changeOrderStatusDto: ChangeOrderStatusDto,
     @Req() request: AuthRequest
   ) {
+    /**
+     * assigning user id from the request
+     */
     changeOrderStatusDto.user_id = request.user['userId']
+    /**
+     * setting the new order status to DELIVERED
+     */
     changeOrderStatusDto.new_status = ORDER_STATUS.DELIVERED;
+    /**
+     * executing the use case to change order status
+     */
     return this.changeOrderStatusUseCase.execute(changeOrderStatusDto);
   }
 }

@@ -1,4 +1,7 @@
 /**
+ * Company License: Bigburry Hypersystems LLP
+ */
+/**
  * import the required packages
  */
 import { Controller, Get, Param, Query, Req, UseGuards } from '@nestjs/common';
@@ -6,6 +9,7 @@ import { GetAllOrdersPlacedUseCase } from '../../applicationLayer/use-cases/get_
 import { JwtAuthGuard } from 'src/middlewares/jwtauth.middleware';
 import { AuthRequest } from 'src/middlewares/AuthRequest';
 import { GetAllOrdersReceivedUseCase } from '../../applicationLayer/use-cases/get_all_orders_received.usecase';
+
 /**
  * handles the route to orders_placed
  */
@@ -16,7 +20,7 @@ export class OrderController {
     private readonly getAllOrdersReceivedUseCase: GetAllOrdersReceivedUseCase,
   ) {}
   /**
-   * get all orders that are placed my the buyer
+   * get all orders that are placed by the buyer
    */
   @Get('/placed')
   @UseGuards(JwtAuthGuard)
@@ -26,7 +30,7 @@ export class OrderController {
     @Query('limit') limit: number,
   ) {
     /**
-     * return the order
+     * returning the placed orders
      */
     return this.getAllOrdersPlacedUseCase.execute(
       request.user['userId'],
@@ -35,6 +39,9 @@ export class OrderController {
     );
   }
 
+  /**
+   * get all orders that are received by the seller
+   */
   @Get('/received')
   @UseGuards(JwtAuthGuard)
   async get_all_orders(
@@ -42,6 +49,9 @@ export class OrderController {
     @Query('page') page: number,
     @Query('limit') limit: number,
   ) {
+    /**
+     * returning the received orders
+     */
     return this.getAllOrdersReceivedUseCase.execute(
       request.user['userId'],
       page,

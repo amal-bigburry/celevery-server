@@ -1,4 +1,9 @@
 /**
+ * © Bigburry Hypersystems LLP. All rights reserved.
+ * This source code is confidential and intended only for internal use.
+ * Unauthorized copying, modification, distribution, or disclosure is prohibited.
+ */
+/**
  * importing the required packages 
  */
 import { forwardRef, Module } from '@nestjs/common';
@@ -25,22 +30,37 @@ import { StoreModule } from '../stores/store.module';
 import { CakeCategoryModule } from '../cakecategories/cakecategories.module';
 import { UpdateKnownFor } from './applicationLayer/use-cases/UpdateKnownFor.usecase';
 /**
- * module declatation
+ * module declaration
  */
 @Module({
   imports: [
+    /**
+     * registering mongoose models for cakes, cake categories, and stores
+     */
     MongooseModule.forFeature([
       { name: 'Cakes', schema: CakeSchema },
       { name: 'CakeCategories', schema: CakeCategoryModel },
       { name: 'Stores', schema: StoreModel },
     ]),
+    /**
+     * configuring multer for file uploads
+     */
     MulterModule.register({
       dest: './uploads',
     }),
+    /**
+     * importing store and cake category modules
+     */
     forwardRef(() =>StoreModule),
     CakeCategoryModule,
   ],
+  /**
+   * registering controller for cake module
+   */
   controllers: [CakeController],
+  /**
+   * providing use cases and repository implementations
+   */
   providers: [
     SearchForCakesUseCase,
     CreateCakeUseCase,
@@ -49,19 +69,19 @@ import { UpdateKnownFor } from './applicationLayer/use-cases/UpdateKnownFor.usec
     GetCakeDetailsUseCase,
     GetSimilarCakesUseCase,
     {
-      provide: CAKE_REPOSITORY, // string token for interface
+      provide: CAKE_REPOSITORY,
       useClass: CakeRepositoryImp,
     },
     {
-      provide: CAKE_CATEGORY_REPOSITORY, // string token for interface
+      provide: CAKE_CATEGORY_REPOSITORY,
       useClass: CakecategoryRepositoryImp,
     },
     {
-      provide: GETSTORE, // string token for interface
+      provide: GETSTORE,
       useClass: GetStoreUsecaseImp,
     },
     {
-      provide: GETSTORE, // string token for interface
+      provide: GETSTORE,
       useClass: GetStoreUsecaseImp,
     },
     {
@@ -69,6 +89,9 @@ import { UpdateKnownFor } from './applicationLayer/use-cases/UpdateKnownFor.usec
       useClass: IGetCakeDetailsUseCaseImp,
     },
   ],
+  /**
+   * exporting specific use cases for external usage
+   */
   exports: [GetCakeDetailsUseCase, UpdateKnownFor],
 })
 export class CakeModule {}

@@ -1,5 +1,9 @@
 /**
- * importing required packages
+ * Company: Bigburry Hypersystems LLP
+ * 
+ * Importing required packages and interfaces to implement the notification mechanism
+ * for seller support system. This implementation will use an MQTT service to publish
+ * notification messages to relevant topics.
  */
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -10,8 +14,13 @@ import { BadRequestException } from '@nestjs/common';
 import { Notify } from '../../applicationLayer/interfaces/Notify.interface';
 import { MqttService } from 'src/modules/mqtt/applicationLayer/usecases/mqtt.usecase';
 import { PopDto } from 'src/modules/mqtt/dtos/pop.dto';
+
 /**
- * implimenting docuemt repository
+ * Company: Bigburry Hypersystems LLP
+ * 
+ * NotifyImp class implements the Notify interface to send notifications
+ * via MQTT whenever there is an update in the support messages.
+ * It publishes a simple "update" message to the provided MQTT topic.
  */
 export class NotifyImp implements Notify {
   constructor(
@@ -19,21 +28,32 @@ export class NotifyImp implements Notify {
     private sellerSupportModel: Model<SellerSupportEntity>,
     private readonly MqttService: MqttService,
   ) {}
-    async seller(topic: string): Promise<string> {
-        let notifydata:PopDto = {
-            message:"update",
-            topic:topic
-        }
-        this.MqttService.publish(notifydata)
-        return 'send'
-    }
 
-    async buyer(topic: string): Promise<string> {
-        let notifydata:PopDto = {
-            message:"update",
-            topic:topic
-        }
-        this.MqttService.publish(notifydata)
-        return 'send'
-    }
+  /**
+   * Sends a notification to seller subscribers on the given MQTT topic.
+   * @param topic - MQTT topic to publish the notification message to.
+   * @returns string confirmation of notification sent.
+   */
+  async seller(topic: string): Promise<string> {
+    const notifydata: PopDto = {
+      message: "update",
+      topic: topic,
+    };
+    this.MqttService.publish(notifydata);
+    return 'send';
+  }
+
+  /**
+   * Sends a notification to buyer subscribers on the given MQTT topic.
+   * @param topic - MQTT topic to publish the notification message to.
+   * @returns string confirmation of notification sent.
+   */
+  async buyer(topic: string): Promise<string> {
+    const notifydata: PopDto = {
+      message: "update",
+      topic: topic,
+    };
+    this.MqttService.publish(notifydata);
+    return 'send';
+  }
 }

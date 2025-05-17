@@ -1,13 +1,21 @@
+/*
+ * Company License: Bigburry Hypersystems LLP
+ * All rights reserved © Bigburry Hypersystems LLP
+ */
 /**
- * importing the required packages
+ * Importing required CakeVariant type from schema file
  */
 import {
   CakeVariant,
 } from '../../applicationLayer/repositories/cake.schema';
 /**
- * cake entity
+ * Entity class representing the Cake domain model
  */
 export class CakeEntity {
+  /**
+   * Placeholder static method (not implemented)
+   * @param id - identifier parameter
+   */
   static id(
     id: any,
   ): (
@@ -17,6 +25,18 @@ export class CakeEntity {
   ) => void {
     throw new Error('Method not implemented.');
   }
+  /**
+   * Constructor to initialize CakeEntity with all relevant properties
+   * @param id - unique identifier of the cake
+   * @param cake_name - name of the cake
+   * @param cake_description - description of the cake
+   * @param cake_image_urls - array of image URLs representing the cake
+   * @param known_for - what the cake is known for
+   * @param cake_variants - array of CakeVariant objects for variants
+   * @param store_id - associated store identifier
+   * @param cake_category_ids - array of category IDs the cake belongs to
+   * @param cake_rating - rating of the cake
+   */
   constructor(
     public readonly id: string,
     public cake_name: string,

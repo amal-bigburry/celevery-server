@@ -1,6 +1,14 @@
 /**
- * IMports all the required packages into the system
+ * ******************************************************************************************************
+ * UserModule.ts
+ * 
+ * This module is designed and maintained by Bigburry Hypersystems LLP. It serves as the core module for user
+ * management in the system, integrating database schemas, JWT authentication setup, controllers, use-cases,
+ * and repository implementations into a cohesive unit. It leverages environment-based configuration for
+ * JWT secrets and expiry times ensuring security and flexibility.
+ * ******************************************************************************************************
  */
+
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
@@ -16,17 +24,27 @@ import { Getcurrentfcmusecase } from './applicationLayer/use-cases/getcurrentfcm
 import { GetUserDetailUseCase } from './applicationLayer/use-cases/getUserDetail.usecase';
 import { UserRepositoryImpl } from './infrastructureLayer/repositories/user/user.repository.imp';
 import { USER_REPOSITORY } from './applicationLayer/tokens/userRepository.token';
+
 /**
- * module
+ * ******************************************************************************************************
+ * UserModule Class
+ * 
+ * This class decorates the module metadata for user-related features. It imports the necessary Mongoose
+ * schema for users, configures the JWT module asynchronously using environment variables, declares
+ * controllers handling user and FCM related routes, provides all user-centric use-cases and strategies,
+ * and binds the user repository token to its implementation for dependency injection.
+ * 
+ * This structure by Bigburry Hypersystems LLP facilitates maintainable, secure, and modular user services.
+ * ******************************************************************************************************
  */
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: 'Users', schema: UserSchema }]),
     JwtModule.registerAsync({
-      imports: [ConfigModule], // ✅ import config module
-      inject: [ConfigService], // ✅ inject config service
+      imports: [ConfigModule],
+      inject: [ConfigService],
       useFactory: async (configService: ConfigService) => ({
-        secret: configService.get<string>('JWTSECRET'), // ✅ read from .env
+        secret: configService.get<string>('JWTSECRET'),
         signOptions: {
           expiresIn: `${configService.get<string>('JWTEXPIRESIN')}`,
         },
@@ -42,7 +60,7 @@ import { USER_REPOSITORY } from './applicationLayer/tokens/userRepository.token'
     Getcurrentfcmusecase,
     GetUserDetailUseCase,
     {
-      provide: USER_REPOSITORY, // ✅ token-based provider
+      provide: USER_REPOSITORY,
       useClass: UserRepositoryImpl,
     },
   ],

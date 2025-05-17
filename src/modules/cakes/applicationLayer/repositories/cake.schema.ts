@@ -1,52 +1,78 @@
+/*
+ * Company License: Bigburry Hypersystems LLP
+ * All rights reserved © Bigburry Hypersystems LLP
+ */
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 /**
- * Schema for cakevariant field
+ * Schema representing the CakeVariant embedded document
  */
 @Schema()
 export class CakeVariant {
+  /**
+   * Preparation time in minutes for this cake variant
+   */
   @Prop() preparation_time: number;
+  /**
+   * Weight of the cake variant
+   */
   @Prop() weight: number;
+  /**
+   * Maximum retail price of the cake variant
+   */
   @Prop() cake_mrp: number;
+  /**
+   * Selling price of the cake variant
+   */
   @Prop() cake_price: number;
 }
 /**
- * schema for cake document
+ * Main schema for Cake document in the database
  */
 @Schema()
 export class Cake extends Document {
   /**
-   * stores name of the cake
+   * Stores the name of the cake (required)
    */
   @Prop({ required: true })
   cake_name: string;
   /**
-   * stores the description of the cake
+   * Stores description of the cake
    */
   @Prop()
   cake_description: string;
   /**
-   * save the images urls of uploaded cake images
+   * Stores array of image URLs uploaded for the cake (required)
    */
   @Prop({ required: true })
   cake_image_urls: Array<string>;
   /**
-   * this says what the cake is famouse of like birthday
+   * Indicates what the cake is known for (e.g., birthday) (required)
    */
   @Prop({ required: true })
   known_for: string;
-
+  /**
+   * Embedded array of cake variant objects with pricing and preparation details
+   */
   @Prop({ type: [CakeVariant], required: true }) // ✅ Correct way to embed nested object
   cake_varients: CakeVariant[];
-
+  /**
+   * Identifier for the store this cake belongs to
+   */
   @Prop()
   store_id: string;
-
+  /**
+   * Array of category IDs this cake belongs to (required)
+   */
   @Prop({ required: true })
   cake_category_ids: Array<string>;
-
+  /**
+   * Rating value assigned to the cake
+   */
   @Prop()
   cake_rating: number;
 }
-
+/**
+ * Creates Mongoose schema for Cake class
+ */
 export const CakeSchema = SchemaFactory.createForClass(Cake);

@@ -1,3 +1,7 @@
+/*
+ * Company License: Bigburry Hypersystems LLP
+ * All rights reserved © Bigburry Hypersystems LLP
+ */
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { CakeRepository } from '../repositories/cake.repository';
 import { CakeDto } from '../../dtos/cake.dto';
@@ -6,23 +10,37 @@ import { CAKE_CATEGORY_REPOSITORY } from '../tokens/cakeCategoryRepository.token
 import { CakeCategoryRepository } from '../interfaces/cakeCategoryRepository.interface';
 import { IGetStoreUseCase } from '../interfaces/getStoreUsecase.interface';
 import { GETSTORE } from '../tokens/getstoreusecase.token';
-
+/**
+ * Injectable use case class responsible for creating a cake entity
+ */
 @Injectable()
 export class CreateCakeUseCase {
   constructor(
+    /**
+     * Injecting CakeRepository for cake related data operations
+     */
     @Inject(CAKE_REPOSITORY) private readonly CakeRepository: CakeRepository,
+    /**
+     * Injecting CakeCategoryRepository for category validation
+     */
     @Inject(CAKE_CATEGORY_REPOSITORY)
     private readonly cakeCategoryRepository: CakeCategoryRepository,
+    /**
+     * Injecting GetStoreUseCase to validate store existence
+     */
     @Inject(GETSTORE)
     private readonly getStoreUsecase: IGetStoreUseCase,
   ) {}
   /**
-   * executing function
+   * Main execution method to create a cake
+   * @param cakeDto - DTO containing cake details
+   * @param files - Uploaded files representing cake images
+   * @returns Promise resolving with created cake object
    */
   async execute(cakeDto: CakeDto, files): Promise<{ cake: Object }> {
     let cakeCategoryIdsInThisCake = cakeDto.cake_category_ids;
     /**
-     * Validate the provided category ids exist
+     * Validate the provided category IDs exist in the system
      */
     await Promise.all(
       cakeCategoryIdsInThisCake.map(async (cakeCategoryId) => {
@@ -36,21 +54,25 @@ export class CreateCakeUseCase {
         return cakeCategoryId;
       }),
     );
+    /**
+     * Validate the store ID provided in the cake DTO
+     */
     let store = await this.getStoreUsecase.execute(cakeDto.store_id);
     if (!store) {
       throw new BadRequestException('Invalid store id');
     }
     /**
-     * Uploads the images of cake and returns the image urls
+     * Upload the cake images and get URLs
      */
-    // console.log('uploading', files)
     let imageUrls = await this.CakeRepository.uploadImage(files);
-    // console.log('url', imageUrls)
     cakeDto.cake_image_urls = imageUrls ? imageUrls : [];
     /**
-     * Now its time to create a cake document
+     * Create the cake record in the repository
      */
     let cake = await this.CakeRepository.createcake(cakeDto);
+    /**
+     * Return the created cake or empty object if creation failed
+     */
     return { cake: cake ? cake : {} };
   }
 }

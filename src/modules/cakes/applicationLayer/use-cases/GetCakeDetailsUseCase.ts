@@ -1,20 +1,30 @@
+/*
+ * Company License: Bigburry Hypersystems LLP
+ * All rights reserved © Bigburry Hypersystems LLP
+ */
 /**
- * imports the required packages
+ * Importing necessary packages and dependencies
  */
 import { BadRequestException, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { CakeRepository } from '../repositories/cake.repository';
 import { CakeEntity } from '../../domainLayer/entities/cake.entity';
 import { CAKE_REPOSITORY } from '../tokens/cakeRepository.token';
 /**
- * INjectable file to get the details of a cake by passing the cake id
+ * Injectable use case class to get details of a cake by its ID
  */
 @Injectable()
 export class GetCakeDetailsUseCase {
   constructor(
+    /**
+     * Injecting CakeRepository to fetch cake data
+     */
     @Inject(CAKE_REPOSITORY) private readonly CakeRepository: CakeRepository,
   ) {}
   /**
-   * This is were it executes
+   * Executes the retrieval of cake details based on cake ID
+   * @param cake_id - The unique identifier of the cake
+   * @returns Promise resolving to the CakeEntity if found
+   * @throws BadRequestException if the cake is not found
    */
   async execute(cake_id: string): Promise<CakeEntity> {
     const cake = await this.CakeRepository.findById(cake_id);

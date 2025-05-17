@@ -1,10 +1,35 @@
 /**
  * importing required packages
+ * 
+ * The following packages are imported to define MongoDB schemas and interact with MongoDB collections using 
+ * NestJS and Mongoose. The `@nestjs/mongoose` package provides the necessary decorators and helpers, while 
+ * the `mongoose` package is used for interacting with MongoDB directly.
+ * 
+ * - `Prop`: Used to define properties in a Mongoose schema.
+ * - `Schema`: Used to define the structure of a MongoDB document.
+ * - `SchemaFactory`: A helper function that converts the class-based schema into a Mongoose schema.
+ * - `Document`: The base class that represents a Mongoose document.
+ * 
+ * Company: BigBurry Hypersystems LLP
  */
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+
 /**
- * schema of linse details
+ * The `licenseDetails` class represents the schema for storing license-related details of a store. 
+ * It includes various properties such as the name of the entity that licensed the store, the license 
+ * number, and the URLs of the license and ID proof files.
+ * 
+ * The properties defined in this schema are:
+ * - `licensed_by`: A string representing the entity that issued the license.
+ * - `license_number`: The unique identifier for the license.
+ * - `license_file_url`: URL to access the license file.
+ * - `licensed_country`: The country where the store is licensed.
+ * - `id_proof_name`: The name on the identification proof document.
+ * - `id_proof_number`: The identification number associated with the ID proof.
+ * - `id_proof_file_url`: URL to access the ID proof file.
+ * 
+ * Company: BigBurry Hypersystems LLP
  */
 @Schema()
 export class licenseDetails extends Document {
@@ -23,8 +48,26 @@ export class licenseDetails extends Document {
   @Prop()
   id_proof_file_url: string;
 }
+
 /**
- * schena for the store
+ * The `Store` class represents the schema for the store entity. It contains information related to the store 
+ * such as the owner's details, contact information, license details, and physical location.
+ * 
+ * The properties defined in this schema are:
+ * - `store_owner_id`: The unique identifier of the store owner.
+ * - `store_name`: The name of the store (must be unique).
+ * - `store_contact_number`: The contact phone number for the store.
+ * - `store_contact_email`: The contact email address for the store.
+ * - `store_license_details`: An embedded object that holds the `licenseDetails` schema, which contains 
+ *   license and ID proof information.
+ * - `address`: The physical address of the store.
+ * - `lat`: The latitude of the store's location (optional).
+ * - `log`: The longitude of the store's location (optional).
+ * 
+ * The `Store` schema also includes `timestamps: true`, which automatically adds `createdAt` and `updatedAt` 
+ * fields to the schema for tracking when the document was created and last modified.
+ * 
+ * Company: BigBurry Hypersystems LLP
  */
 @Schema({ timestamps: true })
 export class Store extends Document {
@@ -42,4 +85,12 @@ export class Store extends Document {
   @Prop() lat: number;
   @Prop() log: number;
 }
+
+/**
+ * The `StoreModel` is the Mongoose model that is created from the `Store` schema using the 
+ * `SchemaFactory.createForClass()` function. This model will be used to interact with the `stores` 
+ * collection in the MongoDB database, providing methods for CRUD operations and querying.
+ * 
+ * Company: BigBurry Hypersystems LLP
+ */
 export const StoreModel = SchemaFactory.createForClass(Store);

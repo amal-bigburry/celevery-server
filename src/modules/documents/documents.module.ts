@@ -1,5 +1,10 @@
 /**
- * IMports all the required packages into the system
+ * © Bigburry Hypersystems LLP. All rights reserved.
+ * This source code is confidential and intended only for internal use.
+ * Unauthorized copying, modification, distribution, or disclosure is prohibited.
+ */
+/**
+ * Imports all the required packages into the system
  */
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -13,7 +18,7 @@ import { GET_PP } from './applicationLayer/tokens/getprivacypolicay.token';
 import { GetTermsAndConditionsuseCase } from './applicationLayer/use-cases/GetTermsAndConditions.usecase';
 import { GetPrivacyAndPolicyUseCase } from './applicationLayer/use-cases/GetPrivacyAndPolicy.usecase';
 /**
- * module
+ * module definition for document handling
  */
 @Module({
   imports: [

@@ -1,4 +1,8 @@
 /**
+ * Company License: Bigburry Hypersystems LLP
+ * All rights reserved © Bigburry Hypersystems LLP
+ */
+/**
  * Importing Required Packages
  */
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';

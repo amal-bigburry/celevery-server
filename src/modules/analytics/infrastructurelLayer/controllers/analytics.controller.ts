@@ -1,21 +1,38 @@
 /**
- * importing all the required packages
+ * Licensed to Bigburry Hypersystems LLP
+ * All rights reserved. Unauthorized copying, redistribution or modification of this file, 
+ * via any medium is strictly prohibited. Proprietary and confidential.
+ */
+/**
+ * Importing all the required packages
+ * Importing NestJS decorators, use case classes and JWT auth guard middleware
  */
 import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
 import { GetPopularProductsUseCase } from '../../applicationLayer/usecases/GetPopularProducts.usecase';
 import { GetTrendingProductsUseCase } from '../../applicationLayer/usecases/GetTrendingProducts.usecase';
 import { JwtAuthGuard } from 'src/middlewares/jwtauth.middleware';
 /**
- * Main route /cakecategories
+ * Main route /analytics
+ * Defines endpoints for analytics data related to trending and popular products
  */
 @Controller('analytics')
 export class AnalyticsController {
+  /**
+   * Constructor injects use case classes for handling trending and popular product data
+   * @param getTrendingProducts - Use case to get trending products
+   * @param getPopularProducts - Use case to get popular products
+   */
   constructor(
     private readonly getTrendingProducts: GetTrendingProductsUseCase,
     private readonly getPopularProducts: GetPopularProductsUseCase,
   ) {}
   /**
-   * route get request to /cakecategories
+   * GET /analytics/trending
+   * Protected route to fetch paginated trending products data
+   * Uses JwtAuthGuard to secure the endpoint
+   * @param page - Pagination page number, defaults to 1
+   * @param limit - Pagination limit per page, defaults to 10
+   * @returns Trending products data as paginated response
    */
   @Get('/trending')
   @UseGuards(JwtAuthGuard)
@@ -26,7 +43,12 @@ export class AnalyticsController {
     return this.getTrendingProducts.execute(page, limit);
   }
   /**
-   * route get request to /cakecategories
+   * GET /analytics/popular
+   * Protected route to fetch paginated popular products data
+   * Uses JwtAuthGuard to secure the endpoint
+   * @param page - Pagination page number, defaults to 1
+   * @param limit - Pagination limit per page, defaults to 10
+   * @returns Popular products data as paginated response
    */
   @Get('/popular')
   @UseGuards(JwtAuthGuard)

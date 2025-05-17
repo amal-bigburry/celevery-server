@@ -1,9 +1,13 @@
 /**
+ * Licensed to Bigburry Hypersystems LLP
+ * All rights reserved. Unauthorized copying, redistribution or modification of this file, 
+ * via any medium is strictly prohibited. Proprietary and confidential.
+ */
+/**
  * Importing Required Packages
+ * Importing decorators, interfaces, DTOs, tokens, entities and config service
  */
-import { Inject, Injectable } from '@nestjs/common'; /**
- * Returns and injectable cake category
- */
+import { Inject, Injectable } from '@nestjs/common';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { IGetOrdersToAnalyse } from '../interfaces/IGetOrdersToAnalyse.interface';
 import { IGetCakeDetailsUseCase } from 'src/modules/orders/applicationLayer/interfaces/GetCakeDetailsusecase.interface';
@@ -12,25 +16,41 @@ import { CakeEntity } from 'src/modules/cakes/domainLayer/entities/cake.entity';
 import { CAKEREPOSITORY } from '../../tokens/cake_Repository.token';
 import { OrderDto } from 'src/modules/orders/dtos/Order.dto';
 import { ConfigService } from '@nestjs/config';
+/**
+ * Returns and injectable cake category
+ * Use case class to get trending products based on order analysis across levels
+ */
 @Injectable()
 export class GetTrendingProductsUseCase {
-  private orders: OrderDto[];
-  private cake_occurences = {};
-  private occurenceInArray: [string, number][];
-  private ordersAboveTTV: [string, number][];
+  private orders: OrderDto[]; // Stores orders fetched from analysis service
+  private cake_occurences = {}; // Tracks count of each cake occurrence across orders
+  private occurenceInArray: [string, number][]; // Array representation of cake occurrences for filtering
+  private ordersAboveTTV: [string, number][]; // Filtered cakes exceeding minimum quantity threshold
+  /**
+   * Constructor injects dependencies for fetching orders, cake details and config
+   * @param getOrdersToAnalyse - Interface for fetching orders by level
+   * @param IGetCakeDetailsUseCase - Interface to fetch cake details by cake ID
+   * @param configService - Provides configuration parameters like thresholds and limits
+   */
   constructor(
     @Inject(GETORDERANALYSE)
     private readonly getOrdersToAnalyse: IGetOrdersToAnalyse,
     @Inject(CAKEREPOSITORY)
     private readonly IGetCakeDetailsUseCase: IGetCakeDetailsUseCase,
-    private readonly configService:ConfigService,
+    private readonly configService: ConfigService,
   ) {}
   /**
-   * function that execute the logic
+   * Function that execute the logic
+   * Iterates through analysis levels to gather trending cake data meeting thresholds
+   * @param page - Page number for pagination
+   * @param limit - Items per page for pagination
+   * @returns Promise resolving to PaginationDto of trending cakes
    */
   async execute(page, limit): Promise<PaginationDto> {
     /**
-     * trying level 1
+     * Trying levels 0 to 6
+     * Accumulate cake occurrences and filter based on minimum quantity threshold
+     * Break loop if trending cake count surpasses configured maximum
      */
     for (let level = 0; level <= 6; level++) {
       this.orders = await this.getOrdersToAnalyse.execute(level);
@@ -48,21 +68,31 @@ export class GetTrendingProductsUseCase {
     }
     return await this.respond(this.ordersAboveTTV, page, limit);
   }
-
+  /**
+   * Prepare the paginated response of trending cakes
+   * Sorts filtered cakes and fetches detailed cake entities for pagination
+   * @param orders - Array of [cake_id, occurrence] tuples filtered by threshold
+   * @param page - Current page number for pagination
+   * @param limit - Number of items per page
+   * @returns Promise resolving to a PaginationDto with paginated trending cake data
+   */
   async respond(orders, page, limit): Promise<PaginationDto> {
-    // console.log(orders)
+    // Sort cakes by descending order of occurrences
     const sortedCakes = orders.sort((a, b) => b[1] - a[1]);
+    // Slice top trending cakes based on maximum trending cake count configuration
     let topCakeObject = sortedCakes.slice(0, parseInt(this.configService.get<string>('TTC') || '0'));
+    // Fetch detailed cake data concurrently for the top trending cakes
     const topCakeDetails: CakeEntity[] = await Promise.all(
       topCakeObject.map((cakeobj) =>
         this.IGetCakeDetailsUseCase.execute(cakeobj[0]),
       ),
     );
-    const total = topCakeDetails.length;
-    const totalPages = Math.ceil(total / limit);
-    const start = (page - 1) * limit;
-    const end = start + limit;
-    const paginatedData = topCakeDetails.slice(start, end);
+    const total = topCakeDetails.length; // Total trending cakes found
+    const totalPages = Math.ceil(total / limit); // Calculate total pages for pagination
+    const start = (page - 1) * limit; // Start index for slicing
+    const end = start + limit; // End index for slicing
+    const paginatedData = topCakeDetails.slice(start, end); // Paginated cake data
+    // Return paginated response with metadata
     return {
       data: paginatedData,
       total,

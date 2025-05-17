@@ -1,4 +1,10 @@
 /**
+ * © Bigburry Hypersystems LLP. All rights reserved.
+ * This source code is confidential and intended only for internal use.
+ * Unauthorized copying, modification, distribution, or disclosure is prohibited.
+ */
+
+/**
  * importing required packages
  */
 import {
@@ -10,7 +16,6 @@ import {
 import { OrderRepository } from '../repositories/order.repositoty';
 import { ChangeOrderStatusDto } from '../../dtos/changeOrderStatus.dto';
 import ORDER_STATUS from 'src/common/utils/contants';
-import { Order } from '../../domainLayer/entities.ts/order.entity';
 import { ORDER_REPOSITORY } from '../tokens/orderRepository.token';
 import { INotificationUseCase } from '../interfaces/NotificationUsecase.interface';
 import { IGetCakeDetailsUseCase } from '../interfaces/GetCakeDetailsusecase.interface';
@@ -21,6 +26,7 @@ import { GET_CAKE_DETAILS } from '../tokens/get_cake_details.token';
 import { NOTIFICATION_USECASE } from '../tokens/notificationusecase.token';
 import { GET_USER_DETAILS } from '../tokens/get_user_details.token';
 import { GET_STORE_DETAILS } from '../tokens/get_store_details.token';
+
 /**
  * Injectable service file that handles the order status change
  */
@@ -33,195 +39,50 @@ export class ChangeOrderStatusUseCase {
     private readonly notificationUseCase: INotificationUseCase,
     @Inject(GET_USER_DETAILS)
     private readonly getuserDetailsUseCase: IGetUserDetailUseCase,
-    
     @Inject(GET_CAKE_DETAILS)
     private readonly getCakeDetailsUseCase: IGetCakeDetailsUseCase,
-    @Inject(GET_STORE_DETAILS) // Replace with actual type
-    private readonly getStoreUsecase: IGetStoreUsecase, // Replace with actual type
+    @Inject(GET_STORE_DETAILS)
+    private readonly getStoreUsecase: IGetStoreUsecase,
   ) {}
+
   async execute(
     changeOrderStatusDto: ChangeOrderStatusDto,
   ): Promise<OrderDto> {
-    /**
-     * Check order availablity and status
-     */
-    let order = await this.OrderRepository.findById(
-      changeOrderStatusDto.order_id,
-    );
-    /**
-     * validate the order id
-     */
+    // 1. Validate order
+    const order = await this.OrderRepository.findById(changeOrderStatusDto.order_id);
     if (!order) {
       throw new UnauthorizedException('Order not found');
     }
-    /**
-     * validate whether the order is already cancelled.
-     */
-    if (order.order_status == ORDER_STATUS.CANCELLED) {
+    if (order.order_status === ORDER_STATUS.CANCELLED) {
       throw new BadRequestException('Its a Cancelled Order');
     }
-    /**
-     * Validate the user id belongs to the seller, Status can only be changed if the order belongs to that seller.
-     */
-    let thiscake = await this.getCakeDetailsUseCase.execute(order.cake_id)
-    let seller_id = (await this.getStoreUsecase.execute(thiscake.store_id)).store_owner_id
-    // console.log(seller_id, changeOrderStatusDto.user_id)
-    if (seller_id != changeOrderStatusDto.user_id){
-      throw new BadRequestException('This order do not belongs to you, So you are not permited to change the status of this order.')
+
+    // 2. Authorization check: Does this seller own the cake?
+    const thiscake = await this.getCakeDetailsUseCase.execute(order.cake_id);
+    const seller_id = (await this.getStoreUsecase.execute(thiscake.store_id)).store_owner_id;
+    if (seller_id !== changeOrderStatusDto.user_id) {
+      throw new BadRequestException(
+        'This order does not belong to you, so you are not permitted to change the status.',
+      );
     }
-    /**
-     * Send the Request to change the
-     */
-    // console.log(changeOrderStatusDto)
-    let updated_order:OrderDto;
-    updated_order = await this.OrderRepository.changeStatus(
+
+    // 3. Change order status
+    const updated_order = await this.OrderRepository.changeStatus(
       changeOrderStatusDto.order_id,
       changeOrderStatusDto.new_status,
     );
-    /**
-     * get the seller details of this order
-     */
-    let seller = await this.getuserDetailsUseCase.execute(seller_id);
-    /**
-     * validate the seller
-     */
-    if (!seller) {
-      throw new UnauthorizedException('Cake seller not found');
-    }
-    /**
-     * get the buyer details of the order
-     */
-    let buyer = await this.getuserDetailsUseCase.execute(order.buyer_id);
-    /**
-     * validate the buyer
-     */
-    if (!buyer) {
-      throw new UnauthorizedException('Customer not found');
-    }
-    /**
-     * get the cake details of the order
-     */
-    let cake = await this.getCakeDetailsUseCase.execute(order.cake_id);
-    /**
-     * validate the cake
-     */
-    if (!cake) {
-      throw new UnauthorizedException('Cake not found');
-    }
-    /**
-     * Notifying seller and buyer About the status that says its time to pay
-     */
-    // if (changeOrderStatusDto.new_status === ORDER_STATUS.WAITINGTOPAY) {
-    //   // sending to the cake seller
-    //   await this.notificationUseCase.execute({
-    //     title: 'You have Confirmed the Order. Please wait for the Buyer to Pay',
-    //     message: `Order Confirmed for the buyer ${buyer.email} for ${cake.cake_name} of variant with weight of ${cake.cake_variants[0].weight} kg, price of ${cake.cake_variants[0].cake_price} and quantity of ${order.quantity}. Will be Ready before ${order.need_before}. You can track your order from My orders.`,
-    //     token: seller.fcm_token,
-    //   });
-    //   // sending to the buyer
-    //   await this.notificationUseCase.execute({
-    //     title: 'Your Order has been Confirmed< Please Do the Payment',
-    //     message: `Cake Model - ${cake.cake_name} of variant with weight of ${cake.cake_variants[0].weight} kg, price of ${cake.cake_variants[0].cake_price} and quantity of ${order.quantity}. Collect it before ${order.need_before}`,
-    //     token: buyer.fcm_token,
-    //   });
-    // } else if (changeOrderStatusDto.new_status === ORDER_STATUS.DELIVERED) {
-    //   /**
-    //    * Notifying buyer and buyer About the order status when status becomes delivered
-    //    */
-    //   // sending to the cake buyer
-    //   await this.notificationUseCase.execute({
-    //     title: `Thank You, Delivery of the Order ${changeOrderStatusDto.order_id} is Confirmed`,
-    //     message: `Delivery confirmed for ${buyer.email} for ${cake.cake_name} of variant with weight of ${cake.cake_variants[0].weight} kg, price of ${cake.cake_variants[0].cake_price} and quantity of ${order.quantity}. Customer Needs it before ${order.need_before}`,
-    //     token: seller.fcm_token,
-    //   });
-    //   // // sending to the buyer
-    //   await this.notificationUseCase.execute({
-    //     title: 'Thank You, Your Order has been Delivered. Hope you like it',
-    //     message: `Cake Model - ${cake.cake_name} of variant with weight of ${cake.cake_variants[0].weight} kg, price of ${cake.cake_variants[0].cake_price} and quantity of ${order.quantity}. Needs it before ${order.need_before}`,
-    //     token: buyer.fcm_token,
-    //   });
-    // } else if (changeOrderStatusDto.new_status === ORDER_STATUS.CANCELLED) {
-    //   /**
-    //    * Notify buyer and buyer About the order status when order gets canceled by either buyer or buyer after request
-    //    */
-    //   await this.notificationUseCase.execute({
-    //     title: 'Your Order has been Cancelled',
-    //     message: `Order from ${buyer.email} for ${cake.cake_name} of variant with weight of ${cake.cake_variants[0].weight} kg, price of ${cake.cake_variants[0].cake_price} and quantity of ${order.quantity}.  Needs it before ${order.need_before}. Is Cancelled.`,
-    //     token: seller.fcm_token,
-    //   });
-    //   // sending to the buyer
-    //   await this.notificationUseCase.execute({
-    //     title: 'Your Order has been Cancelled',
-    //     message: `Order of Cake Model - ${cake.cake_name} of variant with weight of ${cake.cake_variants[0].weight} kg, price of ${cake.cake_variants[0].cake_price} and quantity of ${order.quantity}. Needs it before ${order.need_before}, is Cancelled.`,
-    //     token: buyer.fcm_token,
-    //   });
-    // } else if (changeOrderStatusDto.new_status === ORDER_STATUS.PAID) {
-    //   /**
-    //    * Notify buyer and buyer About the order status when order gets canceled by either buyer or buyer after request
-    //    */
-    //   await this.notificationUseCase.execute({
-    //     title:
-    //       'buyer Paid for Your cake. Time to Make the cake Ready to Deliver!',
-    //     message: `Order from ${buyer.email} for ${cake.cake_name} of variant with weight of ${cake.cake_variants[0].weight} kg, price of ${cake.cake_variants[0].cake_price} and quantity of ${order.quantity}.  Needs it before ${order.need_before}. Is Cancelled.`,
-    //     token: seller.fcm_token,
-    //   });
-    //   // sending to the buyer
-    //   await this.notificationUseCase.execute({
-    //     title: 'Thank You for the Payment, Your cake is getting Ready.',
-    //     message: `Order of Cake Model - ${cake.cake_name} of variant with weight of ${cake.cake_variants[0].weight} kg, price of ${cake.cake_variants[0].cake_price} and quantity of ${order.quantity}. Needs it before ${order.need_before}, is Cancelled.`,
-    //     token: buyer.fcm_token,
-    //   });
-    // } else if (changeOrderStatusDto.new_status === ORDER_STATUS.PREPAIRING) {
-    //   /**
-    //    * Notify buyer and buyer About the order status when order gets canceled by either buyer or buyer after request
-    //    */
-    //   await this.notificationUseCase.execute({
-    //     title: 'Order Marked as Prepairing Successfully',
-    //     message: `Order from ${buyer.email} for ${cake.cake_name} of variant with weight of ${cake.cake_variants[0].weight} kg, price of ${cake.cake_variants[0].cake_price} and quantity of ${order.quantity}.  Needs it before ${order.need_before}. Is Cancelled.`,
-    //     token: seller.fcm_token,
-    //   });
-    //   // sending to the buyer
-    //   await this.notificationUseCase.execute({
-    //     title: 'Your Order is Getting prepaired',
-    //     message: `Order of Cake Model - ${cake.cake_name} of variant with weight of ${cake.cake_variants[0].weight} kg, price of ${cake.cake_variants[0].cake_price} and quantity of ${order.quantity}. Needs it before ${order.need_before}, is Cancelled.`,
-    //     token: buyer.fcm_token,
-    //   });
-    // } else if (changeOrderStatusDto.new_status === ORDER_STATUS.WAITINGFORPICKUP) {
-    //   /**
-    //    * Notify buyer and buyer About the order status when order gets canceled by either buyer or buyer after request
-    //    */
-    //   await this.notificationUseCase.execute({
-    //     title: 'Order Status Marked as Waiting to Pickup',
-    //     message: `Order from ${buyer.email} for ${cake.cake_name} of variant with weight of ${cake.cake_variants[0].weight} kg, price of ${cake.cake_variants[0].cake_price} and quantity of ${order.quantity}.  Needs it before ${order.need_before}. Is Cancelled.`,
-    //     token: seller.fcm_token,
-    //   });
-    //   // sending to the buyer
-    //   await this.notificationUseCase.execute({
-    //     title:
-    //       'Your Order Is Ready, You can Go to the location and Collect it. All the best wishes from Cake Factory!',
-    //     message: `Order of Cake Model - ${cake.cake_name} of variant with weight of ${cake.cake_variants[0].weight} kg, price of ${cake.cake_variants[0].cake_price} and quantity of ${order.quantity}. Needs it before ${order.need_before}, is Cancelled.`,
-    //     token: buyer.fcm_token,
-    //   });
-    // } else if (changeOrderStatusDto.new_status === ORDER_STATUS.UNDELIVERED) {
-    //   /**
-    //    * Notify buyer and buyer About the order status when order gets canceled by either buyer or buyer after request
-    //    */
-    //   await this.notificationUseCase.execute({
-    //     title: 'Order Status Marked as Waiting for UnDelivery',
-    //     message: `Order from ${buyer.email} for ${cake.cake_name} of variant with weight of ${cake.cake_variants[0].weight} kg, price of ${cake.cake_variants[0].cake_price} and quantity of ${order.quantity}.  Needs it before ${order.need_before}. Is Cancelled.`,
-    //     token: seller.fcm_token,
-    //   });
-    //   // sending to the buyer
-    //   // start the refunc process
-    //   await this.notificationUseCase.execute({
-    //     title:
-    //       'Your Order was Unable to Delivered. Seller Is Sorry for that. Your Amount Will be Refunded within 2 days from Now.',
-    //     message: `Order of Cake Model - ${cake.cake_name} of variant with weight of ${cake.cake_variants[0].weight} kg, price of ${cake.cake_variants[0].cake_price} and quantity of ${order.quantity}. Needs it before ${order.need_before}, is Cancelled.`,
-    //     token: buyer.fcm_token,
-    //   });
-    // }
-    /**returns the new updated order back to the request */
-    return updated_order
-    // return { order: order ? order : {} };
+
+    // 4. Notify both buyer and seller (optional code block commented for now)
+    // Note: If you want to enable notifications, uncomment this block and refine messages.
+
+    // const seller = await this.getuserDetailsUseCase.execute(seller_id);
+    // const buyer = await this.getuserDetailsUseCase.execute(order.buyer_id);
+    // const cake = await this.getCakeDetailsUseCase.execute(order.cake_id);
+    // if (!seller || !buyer || !cake) throw new UnauthorizedException('Entity not found');
+
+    // Add notification logic here...
+
+    // 5. Return updated order
+    return updated_order;
   }
 }

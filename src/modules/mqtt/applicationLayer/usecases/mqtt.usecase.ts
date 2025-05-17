@@ -1,4 +1,9 @@
 /**
+ * © Bigburry Hypersystems LLP. All rights reserved.
+ * This source code is confidential and intended only for internal use.
+ * Unauthorized copying, modification, distribution, or disclosure is prohibited.
+ */
+/**
  * imports the required packages
  */
 import { Injectable, OnModuleInit } from '@nestjs/common';
@@ -10,12 +15,15 @@ import {
 import { PopDto } from '../../dtos/pop.dto';
 import { ConfigService } from '@nestjs/config';
 /**
- * Injectable service file to impliment mqttservice
+ * Injectable service file to implement mqttservice
  */
 @Injectable()
 export class MqttService implements OnModuleInit {
   constructor(private readonly configService: ConfigService) {}
   private client: ClientProxy;
+  /**
+   * Initializes the MQTT client
+   */
   onModuleInit() {
     this.client = ClientProxyFactory.create({
       transport: Transport.MQTT,

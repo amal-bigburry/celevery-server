@@ -1,5 +1,9 @@
+/*
+ * Company License: Bigburry Hypersystems LLP
+ * All rights reserved © Bigburry Hypersystems LLP
+ */
 /**
- * import the required packages
+ * Importing required packages and modules
  */
 import {
   BadRequestException,
@@ -22,7 +26,7 @@ import { FilesInterceptor } from '@nestjs/platform-express';
 import { GetCakeDetailsUseCase } from '../../applicationLayer/use-cases/GetCakeDetailsUseCase';
 import { GetSimilarCakesUseCase } from '../../applicationLayer/use-cases/GetSimilarCakes.usecase';
 /**
- * Handles the requests comming to the cakes endpoint
+ * Controller handling HTTP requests related to cakes
  */
 @Controller('cakes')
 export class CakeController {
@@ -34,7 +38,7 @@ export class CakeController {
     private readonly getSimilarCakesUseCase: GetSimilarCakesUseCase,
   ) {}
   /**
-   * Handles the cakes comming get request to the cakes endpoint
+   * Handles GET requests to fetch cakes with pagination and location filters
    */
   @Get()
   @UseGuards(JwtAuthGuard)
@@ -47,7 +51,7 @@ export class CakeController {
     return this.findCakeUseCase.execute(page, limit, log, lat);
   }
   /**
-   * handle post requests
+   * Handles POST requests to create a new cake with image uploads
    */
   @Post()
   @UseGuards(JwtAuthGuard)
@@ -62,11 +66,10 @@ export class CakeController {
         'At least one image file (images) is required!',
       );
     }
-    // return ""
     return this.createCakeUseCase.execute(cakeDto, files);
   }
   /**
-   * handle cakes/search endpoint
+   * Handles GET requests to search cakes by keyword and category
    */
   @Get('search')
   @UseGuards(JwtAuthGuard)
@@ -80,7 +83,7 @@ export class CakeController {
     return this.searchForCakesUseCase.execute(keyword, category_id);
   }
   /**
-   * handles cakes/similar_cakes endpoint
+   * Handles GET requests to fetch similar cakes by cake and variant IDs
    */
   @Get('similar_cakes')
   async get_other_sellers(
@@ -93,12 +96,12 @@ export class CakeController {
     return this.getSimilarCakesUseCase.execute(cake_id, variant_id);
   }
   /**
-   * handles cakes:423423443 endpoint
+   * Handles GET request to fetch details of a specific cake by ID
    */
   @Get(':cake_id')
   @UseGuards(JwtAuthGuard)
   async getCakeDetails(@Param('cake_id') cake_id: string) {
-    console.log('here ',cake_id)
+    console.log('here ', cake_id);
     return this.getCakeDetailsUseCase.execute(cake_id);
   }
 }

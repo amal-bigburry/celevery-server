@@ -1,5 +1,16 @@
 /**
  * importing required packages
+ * 
+ * This section imports essential packages and modules used to implement the functionality of a payment gateway system. 
+ * The `axios` library is used for making HTTP requests to external APIs, specifically for interacting with the CashFree payment gateway. 
+ * The `PaymentGateway` interface is implemented to define the structure and contract for the payment gateway operations. 
+ * The `DtoToGetPaymentSessionId` is a Data Transfer Object (DTO) that holds the necessary information for initiating a payment session. 
+ * The `ConfigService` is used to retrieve configuration settings from the environment, such as API URLs and secret keys. 
+ * The `DtoToRefund` DTO represents the data required to process a refund. The `BadRequestException` is used to throw exceptions when invalid requests are made.
+ * Various injected use case interfaces like `IGetCakeDetailsUseCase`, `IGetUserDetailUseCase`, and `IGetOrderDetailsUseCaese` 
+ * are utilized to fetch the required data for processing payments and refunds.
+ * 
+ * Company: BigBurry Hypersystems LLP
  */
 import axios from 'axios';
 import { PaymentGateway } from 'src/modules/payments/applicationLayer/repository/payment.repository';
@@ -14,8 +25,26 @@ import { GETUSERDETAILS } from '../../applicationLayer/tokens/getuserdetails.tok
 import { IGetOrderDetailsUseCaese } from '../../applicationLayer/interfaces/IGetOrderDetailsUseCaese.interface';
 import ORDER_STATUS from 'src/common/utils/contants';
 import { GETORDERDETAILS } from '../../applicationLayer/tokens/getOrderDetails.token';
+
 /**
- * injectable file of cashfreepayment gateway
+ * The `CashFreePaymentGatewayImp` class implements the `PaymentGateway` interface, providing concrete methods 
+ * for interacting with the CashFree API to handle payment session creation, refund processing, and other related tasks. 
+ * This service is part of the application layer responsible for communication with external payment systems.
+ * 
+ * The `getsessionid` method is responsible for initiating a payment session with CashFree. It first retrieves the cake, 
+ * user, and order details, validating the order's status before making an API request to create a payment order. If the order 
+ * is in a valid state, it sends a request to CashFree's API, and if the order is successfully created, it returns the 
+ * payment session ID.
+ * 
+ * The `refundPayment` method handles refund requests by interacting with CashFree's API. It generates a unique refund ID 
+ * and sends a refund request for the specified order. The response from CashFree is returned, providing information 
+ * about the success or failure of the refund.
+ * 
+ * This class is injected with dependencies such as `IGetCakeDetailsUseCase`, `IGetUserDetailUseCase`, and `IGetOrderDetails` 
+ * to access cake, user, and order information, ensuring that the correct data is used for processing payments and refunds. 
+ * The `ConfigService` is also used to retrieve necessary API credentials and configuration settings from environment variables.
+ * 
+ * Company: BigBurry Hypersystems LLP
  */
 @Injectable()
 export class CashFreePaymentGatewayImp implements PaymentGateway {
@@ -28,8 +57,18 @@ export class CashFreePaymentGatewayImp implements PaymentGateway {
     private readonly IGetOrderDetails: IGetOrderDetailsUseCaese,
     private readonly configService: ConfigService,
   ) {}
+
   /**
-   * get sessionid
+   * The `getsessionid` method interacts with the CashFree API to create a payment session. It first validates the 
+   * order's status, ensuring that the order is confirmed and not already paid. If the order is valid, it constructs 
+   * a request with the order, user, and cake details and sends it to the CashFree API. If successful, it returns the 
+   * payment session ID, which is needed to complete the payment process.
+   * 
+   * @param DtoToGetPaymentSessionId The data transfer object containing details such as the order ID, cake ID, and user ID.
+   * @returns Returns the payment session ID upon successful creation of the payment session.
+   * @throws BadRequestException If the order is either not confirmed or already paid, an exception is thrown.
+   * 
+   * Company: BigBurry Hypersystems LLP
    */
   async getsessionid(
     DtoToGetPaymentSessionId: DtoToGetPaymentSessionId,
@@ -76,8 +115,16 @@ export class CashFreePaymentGatewayImp implements PaymentGateway {
       throw new Error(response.data?.message || 'Order creation failed');
     }
   }
+
   /**
-   * refunding function
+   * The `refundPayment` method processes refunds via the CashFree API. It creates a refund request with the provided 
+   * refund amount and other necessary details, such as the refund ID and refund speed. The response from CashFree's API 
+   * is returned to indicate the success or failure of the refund operation.
+   * 
+   * @param DtoToRefund The data transfer object containing details like the refund amount, refund note, and order ID.
+   * @returns Returns the response from the CashFree API indicating the status of the refund request.
+   * 
+   * Company: BigBurry Hypersystems LLP
    */
   async refundPayment(DtoToRefund: DtoToRefund): Promise<string> {
     DtoToRefund.refund_speed = 'STANDARD';
@@ -103,10 +150,26 @@ export class CashFreePaymentGatewayImp implements PaymentGateway {
     return response.data;
   }
 
+  /**
+   * This method is a placeholder for future functionality to retrieve the refund status from CashFree. 
+   * Currently, it returns an empty string but could be expanded to interact with CashFree's API to fetch refund status details.
+   * 
+   * @returns Returns an empty string as a placeholder for refund status.
+   * 
+   * Company: BigBurry Hypersystems LLP
+   */
   async GetRefundStatus(): Promise<string> {
     return '';
   }
 
+  /**
+   * This method is a placeholder for future functionality to split payments. 
+   * Currently, it returns an empty string but could be expanded to implement the payment splitting functionality.
+   * 
+   * @returns Returns an empty string as a placeholder for split payment functionality.
+   * 
+   * Company: BigBurry Hypersystems LLP
+   */
   async splitpayment(): Promise<string> {
     return '';
   }
