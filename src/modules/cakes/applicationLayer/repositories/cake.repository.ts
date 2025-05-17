@@ -13,4 +13,5 @@ export interface CakeRepository {
   find(keyword: string, category_id: string): Promise<CakeEntity[]>;
   createcake(cakeDto: CakeDto): Promise<Object>;
   uploadImage(files: Express.Multer.File[]): Promise<Array<string> | null>;
+  updateKnownfor(cake_id:string, known_for:string):Promise<string> 
 }

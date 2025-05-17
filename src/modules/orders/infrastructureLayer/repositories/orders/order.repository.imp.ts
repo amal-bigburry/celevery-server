@@ -42,21 +42,19 @@ export class OrderRepositoryImp implements OrderRepository {
       return await this.orderModel.find({
         createdAt: { $gte: oneMonthAgo },
       });
-    } else if (level == 6) {
+    } else if (level == 0) {
+      return await this.orderModel.find();
+    } else {
       const oneYearAgo = new Date();
       oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1);
       return await this.orderModel.find({
         createdAt: { $gte: oneYearAgo },
       });
-    } else if (level == 7) {
-      return await this.orderModel.find();
-    } else {
-      return await this.orderModel.find();
     }
   }
 
-  findAllPaymentWaitingOrders(): Promise<OrderDto[]> {
-    let paymentWaitingOrders = this.orderModel.find({
+  async findAllPaymentWaitingOrders(): Promise<OrderDto[]> {
+    let paymentWaitingOrders = await this.orderModel.find({
       order_status: ORDER_STATUS.WAITINGTOPAY,
     });
     return paymentWaitingOrders;
@@ -65,7 +63,7 @@ export class OrderRepositoryImp implements OrderRepository {
    * Returns all the orders
    */
   async findAll(): Promise<OrderDto[]> {
-    return this.orderModel.find().exec();
+    return await this.orderModel.find().exec();
   }
   /**
    * Creates order

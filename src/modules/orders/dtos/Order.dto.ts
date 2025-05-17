@@ -1,5 +1,6 @@
 import { Expose } from 'class-transformer';
-import { IsMongoId, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { IsEnum, isEnum, IsMongoId, IsNotEmpty, IsNumber, IsString } from 'class-validator';
+import { known_fors } from 'src/common/utils/known_fors';
 /**
  * dto to handle the order
  */
@@ -47,5 +48,7 @@ export class OrderDto {
   quantity: number;
 
   buyer_id: string;
+  @IsEnum(known_fors,{message:"Pease choose the known_for from the available ones"})
+  known_for:string;
   seller_id: string;
 }

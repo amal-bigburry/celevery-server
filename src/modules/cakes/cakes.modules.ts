@@ -23,6 +23,7 @@ import { I_GET_CAKE_DETAILS_USECASE } from './applicationLayer/tokens/getcakedet
 import { IGetCakeDetailsUseCaseImp } from '../orders/infrastructureLayer/ExternalUseCaseImplimentation/GetCakeDetailsUseCase.implimentation';
 import { StoreModule } from '../stores/store.module';
 import { CakeCategoryModule } from '../cakecategories/cakecategories.module';
+import { UpdateKnownFor } from './applicationLayer/use-cases/UpdateKnownFor.usecase';
 /**
  * module declatation
  */
@@ -44,6 +45,7 @@ import { CakeCategoryModule } from '../cakecategories/cakecategories.module';
     SearchForCakesUseCase,
     CreateCakeUseCase,
     FindCakeUseCase,
+    UpdateKnownFor,
     GetCakeDetailsUseCase,
     GetSimilarCakesUseCase,
     {
@@ -67,6 +69,6 @@ import { CakeCategoryModule } from '../cakecategories/cakecategories.module';
       useClass: IGetCakeDetailsUseCaseImp,
     },
   ],
-  exports: [GetCakeDetailsUseCase],
+  exports: [GetCakeDetailsUseCase, UpdateKnownFor],
 })
 export class CakeModule {}

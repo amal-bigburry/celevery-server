@@ -1,0 +1,1 @@
+export const UPDATE_KNOWN_FOR_IN_CAKE = Symbol('UPDATE_KNOWN_FOR_IN_CAKE');

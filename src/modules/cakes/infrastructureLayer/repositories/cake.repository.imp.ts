@@ -26,6 +26,17 @@ export class CakeRepositoryImp implements CakeRepository {
     private readonly getstoreusecase: IGetStoreUseCase,
   ) {}
   /**
+   * Updates the 'known_for' field of a cake by its ID.
+   * Returns the updated known_for array or null if not found.
+   */
+  async updateKnownfor(cake_id: string, known_for: string): Promise<string> {
+    const cake = await this.cakeModel.findById(cake_id).exec();
+    if (!cake) throw new BadRequestException('Cake not found');
+    cake.known_for = known_for;
+    await cake.save();
+    return'updated';
+  }
+  /**
    * finall method
    */
   async findAll(

@@ -22,7 +22,7 @@ export class CakeEntity {
     public cake_name: string,
     public cake_description: string,
     public cake_image_urls: Array<string>,
-    public known_for: Array<string>,
+    public known_for: string,
     public cake_variants: CakeVariant[],
     public store_id: string,
     public cake_category_ids: Array<string>,

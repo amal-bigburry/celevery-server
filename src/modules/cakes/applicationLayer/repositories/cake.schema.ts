@@ -34,7 +34,7 @@ export class Cake extends Document {
    * this says what the cake is famouse of like birthday
    */
   @Prop({ required: true })
-  known_for: Array<string>;
+  known_for: string;
 
   @Prop({ type: [CakeVariant], required: true }) // ✅ Correct way to embed nested object
   cake_varients: CakeVariant[];

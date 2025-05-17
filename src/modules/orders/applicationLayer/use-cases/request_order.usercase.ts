@@ -1,7 +1,12 @@
 /**
  * importing the required packages
  */
-import { BadRequestException, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
+import {
+  BadRequestException,
+  Inject,
+  Injectable,
+  UnauthorizedException,
+} from '@nestjs/common';
 import { OrderDto } from '../../dtos/Order.dto';
 import { OrderRepository } from '../repositories/order.repositoty';
 import { ORDER_REPOSITORY } from '../tokens/orderRepository.token';
@@ -16,11 +21,18 @@ import { GET_STORE_DETAILS } from '../tokens/get_store_details.token';
 import { GET_USER_DETAILS } from '../tokens/get_user_details.token';
 import { GET_CAKE_DETAILS } from '../tokens/get_cake_details.token';
 import { MQTTTOKEN } from '../tokens/mqtt.token';
+import { GET_ORDERS_OFCAKE } from '../tokens/get_orders_with_cakeid.token';
+import { GetOrdersWithCakeId } from '../interfaces/GetOrdersWithCakeId.interface';
+import { UPDATE_KNOWN_FOR_IN_CAKE } from '../tokens/update_known_for_in_cake.token';
+import { UpdateKnownForOfCakeUseCase } from '../interfaces/UpdateKnownForOfCakeUseCase.interface';
 /**
  * injectable service file that makes an order request
  */
 @Injectable()
 export class RequestOrderUseCase {
+  private orders: OrderDto[] = [];
+  private knownfor_occurences = {};
+  private occurenceInArray: any;
   constructor(
     @Inject(ORDER_REPOSITORY)
     private readonly OrderRepository: OrderRepository,
@@ -35,8 +47,11 @@ export class RequestOrderUseCase {
     private readonly getuserDetailsUseCase: IGetUserDetailUseCase,
     @Inject(GET_CAKE_DETAILS)
     private readonly getCakeDetailsUseCase: IGetCakeDetailsUseCase,
+    @Inject(GET_ORDERS_OFCAKE)
+    private readonly getOrdersWithCakeId: GetOrdersWithCakeId,
+    @Inject(UPDATE_KNOWN_FOR_IN_CAKE)
+    private readonly updateKnownForOfCake: UpdateKnownForOfCakeUseCase,
     @Inject(MQTTTOKEN)
-    // Replace with actual type
     private readonly mqttService: IMqttService, // Replace with actual type
   ) {}
   /**
@@ -68,24 +83,45 @@ export class RequestOrderUseCase {
       throw new UnauthorizedException('Cake seller not found');
     }
 
-    orderDto.seller_id = store.store_owner_id
-    
+    orderDto.seller_id = store.store_owner_id;
+
     let buyer = await this.getuserDetailsUseCase.execute(buyer_id);
     if (!buyer) {
       throw new UnauthorizedException('buyer not found');
     }
     // console.log('buyer')
+    if (cake?.cake_variants?.length == 0) {
+      throw new BadRequestException('invalid varient id');
+    }
     /**
      * create new order by setting the status as Requested
      */
     orderDto.payment_tracking_id = '';
     let order = await this.OrderRepository.create(orderDto);
+
+    /**
+     * Get all the orders of the cake from db.
+     * Arrage the orders with known_for
+     * Find the  top known_for
+     * Update the cake known_for with that one
+     */
+    let AllordersWithTheCurrentCake = await this.getOrdersWithCakeId.execute(
+      orderDto.cake_id,
+    );
+    // console.log(AllordersWithTheCurrentCake)
+    this.knownfor_occurences = [];
+    AllordersWithTheCurrentCake.forEach((order) => {
+      this.knownfor_occurences[order.known_for] =
+        (this.knownfor_occurences[order.known_for] || 0) + 1;
+    });
+
+    this.occurenceInArray = Object.entries(this.knownfor_occurences);
+    const sortedKnownFors = this.occurenceInArray.sort((a, b) => b[1] - a[1]);
+    let topWaitingfor = sortedKnownFors[0];
+    await this.updateKnownForOfCake.execute(cake.id,topWaitingfor[0])
     /**
      * Sends push notification to the buyer
      */
-    if(cake?.cake_variants?.length == 0){
-      throw new BadRequestException("invalid varient id")
-    }
 
     // await this.notificationUseCase.execute({
     //   title: 'New Order Received',

@@ -39,6 +39,8 @@ export class Order extends Document {
   @Prop({ required: true })
   buyer_id: string;
   @Prop({ required: true })
+  known_for: string;
+  @Prop({ required: true })
   seller_id: string;
 }
 /**

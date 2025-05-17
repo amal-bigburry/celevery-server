@@ -34,4 +34,6 @@ export class CakeDto {
   @Type(() => CakeVariantDto)
   @IsArray()
   cake_varients: CakeVariantDto[];
+  @IsString()
+  known_for:string;
 }

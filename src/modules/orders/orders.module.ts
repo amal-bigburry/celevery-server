@@ -30,6 +30,10 @@ import { OrderController } from './infrastructureLayer/controllers/orders.contro
 import { RequestOrderController } from './infrastructureLayer/controllers/request_order.controller';
 import { GetOrderDetailsUseCase } from './applicationLayer/use-cases/get_order_details.usecase';
 import { GetAllPaymentWaitingOrdersUseCase } from './applicationLayer/use-cases/get_all_payment_waiting_orders.usecase';
+import { GET_ORDERS_OFCAKE } from './applicationLayer/tokens/get_orders_with_cakeid.token';
+import { GetOrdersWithCakeIdImp } from './infrastructureLayer/repositories/orders/get_orders_withcakeid.implimentation';
+import { UPDATE_KNOWN_FOR_IN_CAKE } from './applicationLayer/tokens/update_known_for_in_cake.token';
+import { UpdateKnownForOfCakeUseCaseImp } from './infrastructureLayer/repositories/orders/UpdateKnownForOfCakeUseCase.implimentation';
 
 @Module({
   imports: [
@@ -77,8 +81,16 @@ import { GetAllPaymentWaitingOrdersUseCase } from './applicationLayer/use-cases/
       useClass: INotificationUseCaseImp,
     },
     {
+      provide: GET_ORDERS_OFCAKE, // string token for interface
+      useClass: GetOrdersWithCakeIdImp,
+    },
+    {
       provide: MQTTTOKEN, // string token for interface
       useClass: IMqttServiceImp,
+    },
+    {
+      provide: UPDATE_KNOWN_FOR_IN_CAKE, // string token for interface
+      useClass: UpdateKnownForOfCakeUseCaseImp,
     },
   ],
   exports: [ChangeOrderStatusUseCase, GetOrdersToAnalyse, GetOrderDetailsUseCase,GetAllPaymentWaitingOrdersUseCase],
