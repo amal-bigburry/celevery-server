@@ -51,6 +51,7 @@ export class GetUserDetailUseCase {
         user.email,
         user.password,
         user.fcm_token,
+        user.profile_url,
       );
     }
   }

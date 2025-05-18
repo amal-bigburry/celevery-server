@@ -1,6 +1,23 @@
 /**
- * Importing Required Packages
- * Importing necessary decorators, interfaces, DTOs, tokens, and entities for the use case
+ * @fileoverview Use case implementation for retrieving popular products based on order analysis
+ * @description
+ * This injectable service class is part of Bigburry Hypersystems LLP's application layer
+ * and encapsulates the business logic to identify and paginate popular cake products.
+ * It leverages injected interfaces to fetch orders for analysis and to retrieve detailed
+ * cake information by their identifiers. The class uses configuration parameters to
+ * determine limits for processing and paginating popular products.
+ * 
+ * The service collects order data, counts occurrences of each cake ordered, sorts
+ * cakes by popularity, fetches detailed cake entities, and returns paginated results
+ * in a PaginationDto structure.
+ * 
+ * Company: Bigburry Hypersystems LLP
+ * All rights reserved © Bigburry Hypersystems LLP
+ */
+
+/**
+ * Importing necessary decorators and types from NestJS and local modules
+ * Includes DTOs, tokens for dependency injection, domain entities, and configuration service
  */
 import { Inject, Injectable } from '@nestjs/common';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
@@ -11,21 +28,42 @@ import { CakeEntity } from 'src/modules/cakes/domainLayer/entities/cake.entity';
 import { CAKEREPOSITORY } from '../../tokens/cake_Repository.token';
 import { OrderDto } from 'src/modules/orders/dtos/Order.dto';
 import { ConfigService } from '@nestjs/config';
+
 /**
- * Returns an injectable cake category
- * Use case class to get popular products based on order analysis
+ * Injectable service class implementing the business use case to get popular products
+ * based on order analysis within the system.
+ * 
+ * This class orchestrates fetching orders to analyze, computing cake occurrence frequencies,
+ * retrieving detailed cake data, and returning paginated popular product listings.
+ * 
+ * Company: Bigburry Hypersystems LLP
+ * All rights reserved © Bigburry Hypersystems LLP
  */
 @Injectable()
 export class GetPopularProductsUseCase {
-  private orders: OrderDto[]; // Holds list of orders retrieved for analysis
-  private cake_occurences = {}; // Object to count occurrences of each cake_id in orders
-  private occurenceInArray: [string, number][]; // Array form of cake occurrences for sorting
-  private ordersAboveTTV: [string, number][]; // Placeholder for further filtered orders (not used here)
   /**
-   * Constructor injects dependencies via tokens and config service
-   * @param getOrdersToAnalyse - Interface to fetch orders for analysis
-   * @param IGetCakeDetailsUseCase - Interface to fetch cake details by ID
-   * @param configService - Service to access configuration variables
+   * Stores the list of orders retrieved for analysis purposes.
+   */
+  private orders: OrderDto[];
+  /**
+   * Object that maps cake IDs to the count of their occurrences in the orders.
+   */
+  private cake_occurences = {};
+  /**
+   * Array representation of cake occurrences as [cake_id, occurrence_count] tuples, used for sorting.
+   */
+  private occurenceInArray: [string, number][];
+  /**
+   * Placeholder array for orders filtered above a certain threshold (not utilized here).
+   */
+  private ordersAboveTTV: [string, number][];
+
+  /**
+   * Constructor to inject required dependencies using tokens and configuration service.
+   * 
+   * @param getOrdersToAnalyse Interface to fetch orders filtered for analysis.
+   * @param IGetCakeDetailsUseCase Interface to retrieve detailed cake data by ID.
+   * @param configService Service to access environment and application configuration variables.
    */
   constructor(
     @Inject(GETORDERANALYSE)
@@ -34,57 +72,93 @@ export class GetPopularProductsUseCase {
     private readonly IGetCakeDetailsUseCase: IGetCakeDetailsUseCase,
     private readonly configService: ConfigService,
   ) {}
+
   /**
-   * Function that execute the logic
-   * Retrieves orders, counts cake occurrences, and returns paginated popular cakes
-   * @param page - Current page number for pagination
-   * @param limit - Number of items per page
-   * @returns Promise resolving to a PaginationDto containing popular cake data
+   * Main method executing the use case logic:
+   * - Retrieves orders filtered by analysis level.
+   * - Counts how many times each cake appears in the orders.
+   * - Converts the occurrence map to an array for sorting.
+   * - Returns a paginated response of the most popular cakes.
+   * 
+   * @param page Current pagination page number requested.
+   * @param limit Number of items per page for pagination.
+   * @returns Promise resolving to PaginationDto containing paginated popular cake data.
    */
   async execute(page, limit): Promise<PaginationDto> {
     /**
-     * Trying level 1
-     * Fetch orders with analysis level 0
+     * Fetch orders at analysis level 0 as a starting point.
      */
     this.orders = await this.getOrdersToAnalyse.execute(0);
-    // Count how many times each cake_id appears in the orders
+    /**
+     * Count occurrences of each cake_id found in the orders.
+     */
     this.orders.forEach((order) => {
       this.cake_occurences[order.cake_id] =
         (this.cake_occurences[order.cake_id] || 0) + 1;
     });
-    // Convert occurrences object into an array for sorting
+    /**
+     * Convert the occurrences object to an array of tuples for sorting.
+     */
     this.occurenceInArray = Object.entries(this.cake_occurences);
-    // Return paginated response with cake details
+    /**
+     * Prepare and return the paginated popular cakes response.
+     */
     return await this.respond(this.occurenceInArray, page, limit);
   }
+
   /**
-   * Prepare the paginated response of popular cakes
-   * Sorts cakes by popularity and retrieves detailed information for top cakes
-   * @param orders - Array of [cake_id, occurrence] tuples
-   * @param page - Current page number for pagination
-   * @param limit - Number of items per page
-   * @returns Promise resolving to a PaginationDto with paginated cake data
+   * Helper method to build a paginated response of popular cakes.
+   * - Sorts cakes by descending popularity count.
+   * - Limits the selection based on configured PLC (Popular Limit Count) value.
+   * - Fetches detailed CakeEntity objects for the top cakes.
+   * - Slices the detailed results according to pagination parameters.
+   * - Returns a PaginationDto including paginated data and metadata.
+   * 
+   * @param orders Array of [cake_id, occurrence_count] tuples representing cake popularity.
+   * @param page Current page number requested for pagination.
+   * @param limit Number of items per page requested.
+   * @returns Promise resolving to a PaginationDto with paginated cake data and metadata.
    */
   async respond(orders, page, limit): Promise<PaginationDto> {
-    // Sort cakes in descending order by occurrence count
+    /**
+     * Sort cakes descending by occurrence count to prioritize popular cakes.
+     */
     const sortedCakes = orders.sort((a, b) => b[1] - a[1]);
-    // Slice the top cakes based on configured limit from environment variables
+    /**
+     * Select top cakes limited by PLC environment configuration or 0 if unset.
+     */
     let topCakeObject = sortedCakes.slice(
       0,
       parseInt(this.configService.get<string>('PLC') || '0'),
     );
-    // Fetch detailed cake entities for the top cakes concurrently
+    /**
+     * Concurrently fetch detailed CakeEntity instances for the top cakes.
+     */
     const topCakeDetails: CakeEntity[] = await Promise.all(
       topCakeObject.map((cakeobj) =>
         this.IGetCakeDetailsUseCase.execute(cakeobj[0]),
       ),
     );
-    const total = topCakeDetails.length; // Total number of popular cakes found
-    const totalPages = Math.ceil(total / limit); // Total pages for pagination
-    const start = (page - 1) * limit; // Calculate slice start index
-    const end = start + limit; // Calculate slice end index
-    const paginatedData = topCakeDetails.slice(start, end); // Get paginated cake data
-    // Return pagination DTO with paginated popular cake data and metadata
+    /**
+     * Calculate total number of popular cakes found.
+     */
+    const total = topCakeDetails.length;
+    /**
+     * Compute total number of pages based on the limit per page.
+     */
+    const totalPages = Math.ceil(total / limit);
+    /**
+     * Calculate slice indices for paginating the result set.
+     */
+    const start = (page - 1) * limit;
+    const end = start + limit;
+    /**
+     * Slice the detailed cake data for the current page.
+     */
+    const paginatedData = topCakeDetails.slice(start, end);
+    /**
+     * Return the PaginationDto containing paginated popular cake data and metadata.
+     */
     return {
       data: paginatedData,
       total,

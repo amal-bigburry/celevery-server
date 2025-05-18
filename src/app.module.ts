@@ -25,6 +25,7 @@ import { TwilioModule } from './modules/OTP/otp.module';
 import { DocumentModule } from './modules/documents/documents.module';
 import { AnalyticsModule } from './modules/analytics/analytics.module';
 import { SellerSupportModule } from './modules/support/support.module';
+import { AdvertismentModule } from './modules/Advertisments/advertisment.module';
 
 // Initialize Firebase Admin SDK
 admin.initializeApp({
@@ -68,6 +69,8 @@ admin.initializeApp({
 
     // Seller support and assistance features
     SellerSupportModule,
+    // Seller support and assistance features
+    AdvertismentModule,
 
     // Load environment variables globally
     ConfigModule.forRoot({ isGlobal: true }),

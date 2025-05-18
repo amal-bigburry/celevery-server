@@ -10,8 +10,7 @@
  * maintaining a clear separation between routing and application logic.
  * ******************************************************************************************************
  */
-
-import { Body, Controller, Get, Post, Req, UseGuards } from '@nestjs/common';
+import { BadRequestException, Body, Controller, Get, Post, Put, Req, UploadedFile, UseGuards, UseInterceptors } from '@nestjs/common';
 import { LoginDto } from '../../UserDtos/Login.dto';
 import { RegisterDto } from '../../UserDtos/Register.dto';
 import { LoginUseCase } from '../../applicationLayer/use-cases/login.usecase';
@@ -19,7 +18,8 @@ import { RegisterUseCase } from '../../applicationLayer/use-cases/register.useca
 import { GetUserDetailUseCase } from '../../applicationLayer/use-cases/getUserDetail.usecase';
 import { JwtAuthGuard } from 'src/middlewares/jwtauth.middleware';
 import { AuthRequest } from 'src/middlewares/AuthRequest';
-
+import { FileInterceptor } from '@nestjs/platform-express';
+import { UpdateProfileImageUseCase } from '../../applicationLayer/use-cases/updateProfileImage.usecase';
 /**
  * ******************************************************************************************************
  * AuthController Class
@@ -34,8 +34,8 @@ export class AuthController {
     private readonly loginUseCase: LoginUseCase,
     private readonly registerUseCase: RegisterUseCase,
     private readonly getUserDetailUseCase: GetUserDetailUseCase,
+    private readonly UpdateProfileImageUseCase : UpdateProfileImageUseCase
   ) {}
-
   /**
    * **************************************************************************************************
    * login Method
@@ -48,7 +48,6 @@ export class AuthController {
   async login(@Body() loginDto: LoginDto) {
     return this.loginUseCase.execute(loginDto);
   }
-
   /**
    * **************************************************************************************************
    * getUserDetails Method
@@ -62,7 +61,6 @@ export class AuthController {
   async getUserDetails(@Req() request: AuthRequest) {
     return this.getUserDetailUseCase.execute(request.user['userId']);
   }
-
   /**
    * **************************************************************************************************
    * register Method
@@ -73,6 +71,16 @@ export class AuthController {
    */
   @Post('register')
   async register(@Body() RegisterDto: RegisterDto) {
+    RegisterDto.profile_url = "unassigned"
     return this.registerUseCase.execute(RegisterDto);
+  }
+  @Put('profileimg')
+  @UseGuards(JwtAuthGuard)
+  @UseInterceptors(FileInterceptor('file'))
+  async update_profileimage(@UploadedFile() file:Express.Multer.File, @Req() request: AuthRequest){
+    if(!file){
+      throw new BadRequestException("Please upload the profile image with the key as file")
+    }
+    return await this.UpdateProfileImageUseCase.execute(request.user['userId'],file)
   }
 }

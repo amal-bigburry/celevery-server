@@ -24,6 +24,7 @@ import { Getcurrentfcmusecase } from './applicationLayer/use-cases/getcurrentfcm
 import { GetUserDetailUseCase } from './applicationLayer/use-cases/getUserDetail.usecase';
 import { UserRepositoryImpl } from './infrastructureLayer/repositories/user/user.repository.imp';
 import { USER_REPOSITORY } from './applicationLayer/tokens/userRepository.token';
+import { UpdateProfileImageUseCase } from './applicationLayer/use-cases/updateProfileImage.usecase';
 
 /**
  * ******************************************************************************************************
@@ -59,6 +60,7 @@ import { USER_REPOSITORY } from './applicationLayer/tokens/userRepository.token'
     UpdatefcmUseCase,
     Getcurrentfcmusecase,
     GetUserDetailUseCase,
+    UpdateProfileImageUseCase,
     {
       provide: USER_REPOSITORY,
       useClass: UserRepositoryImpl,

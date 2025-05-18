@@ -38,6 +38,8 @@ export class User extends Document {
 
   @Prop({ required: true })
   display_name: string;
+  @Prop({ required: true })
+  profile_url: string;
 
   @Prop({ required: true })
   fcm_token: string;

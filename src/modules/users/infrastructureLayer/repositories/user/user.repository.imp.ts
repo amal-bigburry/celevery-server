@@ -1,40 +1,55 @@
 /**
  * ******************************************************************************************************
  * UserRepositoryImpl.ts
- * 
- * This file contains the implementation of the UserRepository interface for Bigburry Hypersystems LLP. It 
+ *
+ * This file contains the implementation of the UserRepository interface for Bigburry Hypersystems LLP. It
  * interacts with the MongoDB database using Mongoose models to perform CRUD operations related to User entities.
- * 
+ *
  * The class provides methods to find users by email or ID, create new users, update FCM tokens, and retrieve FCM tokens,
  * encapsulating data access logic and error handling as per application requirements.
  * ******************************************************************************************************
  */
 
 import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
+import mongoose, { Model } from 'mongoose';
 import { UserEntity } from 'src/modules/users/domainLayer/entities.ts/user.entity';
 import { UserRepository } from 'src/modules/users/applicationLayer/repositories/user.repositoty';
 import { RegisterDto } from 'src/modules/users/UserDtos/Register.dto';
 import { TokenDto } from 'src/modules/users/UserDtos/token.dto';
 import { BadRequestException } from '@nestjs/common';
+import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
+import { ConfigService } from '@nestjs/config';
+import { extname } from 'path';
+import { randomUUID } from 'crypto';
 
 /**
  * ******************************************************************************************************
  * UserRepositoryImpl Class
- * 
- * Implements UserRepository interface with methods to handle user data persistence using Mongoose. 
- * Injects the 'Users' model for database operations. Methods ensure proper transformation between 
+ *
+ * Implements UserRepository interface with methods to handle user data persistence using Mongoose.
+ * Injects the 'Users' model for database operations. Methods ensure proper transformation between
  * database documents and domain entities, including error management for duplicate users.
  * ******************************************************************************************************
  */
 export class UserRepositoryImpl implements UserRepository {
-  constructor(@InjectModel('Users') private userModel: Model<UserEntity>) {}
+  constructor(
+    @InjectModel('Users') private userModel: Model<UserEntity>,
+    private readonly configService: ConfigService,
+  ) {}
+
+  async updateProfileImage(userid: string, file: any): Promise<string> {
+    let url = await this.uploadImage(file);
+    let user = await this.userModel.findById(userid)
+    if(user){user.profile_url = url;user.save()}
+    // console.log(res, url, userid);
+    return 'updated';
+  }
 
   /**
    * **************************************************************************************************
    * findByEmail Method
-   * 
-   * Searches the database for a user document matching the provided email. Returns a UserEntity 
+   *
+   * Searches the database for a user document matching the provided email. Returns a UserEntity
    * instance if found; otherwise returns null.
    * **************************************************************************************************
    */
@@ -48,13 +63,14 @@ export class UserRepositoryImpl implements UserRepository {
       user.email,
       user.password,
       user.fcm_token,
+      user.profile_url,
     );
   }
 
   /**
    * **************************************************************************************************
    * findById Method
-   * 
+   *
    * Retrieves a user document by its unique identifier and returns it directly. Returns null if not found.
    * **************************************************************************************************
    */
@@ -66,13 +82,15 @@ export class UserRepositoryImpl implements UserRepository {
   /**
    * **************************************************************************************************
    * createUser Method
-   * 
-   * Creates a new user document in the database after verifying the email does not already exist. 
+   *
+   * Creates a new user document in the database after verifying the email does not already exist.
    * Throws a BadRequestException if a user with the same email exists.
    * **************************************************************************************************
    */
   async createUser(RegisterDto: RegisterDto): Promise<UserEntity> {
-    const user = await this.userModel.findOne({ email: RegisterDto.email }).exec();
+    const user = await this.userModel
+      .findOne({ email: RegisterDto.email })
+      .exec();
     if (user) throw new BadRequestException('User already exists');
     const newUser = new this.userModel(RegisterDto);
     return newUser.save();
@@ -81,7 +99,7 @@ export class UserRepositoryImpl implements UserRepository {
   /**
    * **************************************************************************************************
    * updatefcm Method
-   * 
+   *
    * Updates the FCM token for the user identified by userid. Returns 'ok' if successful, otherwise returns an empty string.
    * **************************************************************************************************
    */
@@ -94,7 +112,7 @@ export class UserRepositoryImpl implements UserRepository {
   /**
    * **************************************************************************************************
    * getfcm Method
-   * 
+   *
    * Retrieves the FCM token associated with the user identified by userid. Returns an empty string if user not found.
    * **************************************************************************************************
    */
@@ -102,5 +120,35 @@ export class UserRepositoryImpl implements UserRepository {
     const user = await this.userModel.findById(userid).exec();
     if (!user) return '';
     return user.fcm_token;
+  }
+
+  async uploadImage(file: Express.Multer.File): Promise<string> {
+    let s3Url = '';
+    try {
+      const s3 = new S3Client({
+        region: this.configService.get<string>('AWS_REGION'), // ap-south-1
+        forcePathStyle: false, // ✅ correct URL style
+        endpoint: `https://s3.${this.configService.get<string>('AWS_REGION')}.amazonaws.com`,
+        credentials: {
+          accessKeyId: `${this.configService.get<string>('AWS_ACCESS_KEY')}`, // e.g., 'AKIAIOSFODNN7EXAMPLE'
+          secretAccessKey: `${this.configService.get<string>('AWS_SECRET_KEY')}`, // e.g., 'wJalrXUtnFEMI/K7MDENG/bPxRfiCYEXAMPLEKEY'
+        },
+      });
+      let fileExtension = extname(file.originalname);
+      const s3FileName = `${randomUUID()}${fileExtension}`;
+      const uploadResult = await s3.send(
+        new PutObjectCommand({
+          Bucket: `${this.configService.get<string>('AWS_BUCKET_NAME')}`, // e.g., 'my-bucket'
+          Key: s3FileName,
+          Body: file.buffer, // 👈 Multer gives buffer directly
+          ContentType: file.mimetype,
+        }),
+      );
+      s3Url = `https://${this.configService.get<string>('AWS_BUCKET_NAME')}.s3.${this.configService.get<string>('AWS_REGION')}.amazonaws.com/${s3FileName}`;
+      return s3Url;
+    } catch (error) {
+      console.error('S3 Upload Error:', error); // 🔥 This will show the actual reason
+      throw new BadRequestException('Image Not saved, Aws not Connected');
+    }
   }
 }

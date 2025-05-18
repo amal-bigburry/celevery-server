@@ -33,6 +33,8 @@ export class RegisterDto {
   @IsNotEmpty()
   display_name: string;
 
+  profile_url:string;
+
   @IsString()
   @IsNotEmpty()
   fcm_token: string;
