@@ -21,7 +21,7 @@ export class GetTermsAndConditionsuseCase {
   /**
    * executable file
    */
-  async execute(): Promise<string> {
+  async execute(): Promise<object> {
     const document = await this.documentRepository.getTermsAndConditions();
     return document;
   }

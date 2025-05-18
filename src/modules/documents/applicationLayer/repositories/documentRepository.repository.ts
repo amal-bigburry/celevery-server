@@ -10,9 +10,9 @@ export interface DocumentRepository {
   /**
    * retrieves the privacy policy content
    */
-  getPrivacyPolicy(): Promise<string>;
+  getPrivacyPolicy(): Promise<object>;
   /**
    * retrieves the terms and conditions content
    */
-  getTermsAndConditions(): Promise<string>;
+  getTermsAndConditions(): Promise<object>;
 }

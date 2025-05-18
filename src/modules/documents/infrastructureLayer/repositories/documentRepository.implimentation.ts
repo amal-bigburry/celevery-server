@@ -21,23 +21,23 @@ export class DocumentRepositoryImpl implements DocumentRepository {
   /**
    * retrieves the privacy policy from the database
    */
-  async getPrivacyPolicy(): Promise<string> {
+  async getPrivacyPolicy(): Promise<object> {
     let doc = await this.Documents.findOne()
       .sort({ createdAt: -1 }) // Sort by createdAt descending
       .exec();
     if (doc) {
-      return doc.privacypolicy;
+      return {"html":doc.privacypolicy};
     } else throw new BadRequestException('No doc found in db');
   }
   /**
    * overriding the function to retrieve terms and conditions
    */
-  async getTermsAndConditions(): Promise<string> {
+  async getTermsAndConditions(): Promise<object> {
     let doc = await this.Documents.findOne()
       .sort({ createdAt: -1 }) // Sort by createdAt descending
       .exec();
     if (doc) {
-      return doc.termsandcondition;
+      return {"html":doc.termsandcondition};
     } else throw new BadRequestException('No doc found in db');
   }
 }

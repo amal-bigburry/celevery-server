@@ -21,7 +21,7 @@ export class GetPrivacyAndPolicyUseCase {
   /**
    * executable file
    */
-  async execute(): Promise<string> {
+  async execute(): Promise<object> {
     const document = await this.documentRepository.getPrivacyPolicy();
     return document;
   }
