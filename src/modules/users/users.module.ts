@@ -1,7 +1,7 @@
 /**
  * ******************************************************************************************************
  * UserModule.ts
- * 
+ *
  * This module is designed and maintained by Bigburry Hypersystems LLP. It serves as the core module for user
  * management in the system, integrating database schemas, JWT authentication setup, controllers, use-cases,
  * and repository implementations into a cohesive unit. It leverages environment-based configuration for
@@ -9,7 +9,7 @@
  * ******************************************************************************************************
  */
 
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
 import { AuthController } from './infrastructureLayer/controllers/user.controller';
@@ -25,22 +25,27 @@ import { GetUserDetailUseCase } from './applicationLayer/use-cases/getUserDetail
 import { UserRepositoryImpl } from './infrastructureLayer/repositories/user/user.repository.imp';
 import { USER_REPOSITORY } from './applicationLayer/tokens/userRepository.token';
 import { UpdateProfileImageUseCase } from './applicationLayer/use-cases/updateProfileImage.usecase';
+import { GetMyFavouritesUsecase } from './applicationLayer/use-cases/GetMyFavourites.usecase';
+import { AddToFavouritesUsecase } from './applicationLayer/use-cases/AddToFavourites.usecase';
+import { RemoveMyFavouritesUsecase } from './applicationLayer/use-cases/RemoveMyFavourites.usecase';
+import { CakeModule } from '../cakes/cakes.modules';
 
 /**
  * ******************************************************************************************************
  * UserModule Class
- * 
+ *
  * This class decorates the module metadata for user-related features. It imports the necessary Mongoose
  * schema for users, configures the JWT module asynchronously using environment variables, declares
  * controllers handling user and FCM related routes, provides all user-centric use-cases and strategies,
  * and binds the user repository token to its implementation for dependency injection.
- * 
+ *
  * This structure by Bigburry Hypersystems LLP facilitates maintainable, secure, and modular user services.
  * ******************************************************************************************************
  */
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: 'Users', schema: UserSchema }]),
+    // FavouritesModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -51,6 +56,8 @@ import { UpdateProfileImageUseCase } from './applicationLayer/use-cases/updatePr
         },
       }),
     }),
+    CakeModule,
+    // FavouritesModule,
   ],
   controllers: [AuthController, FcmController],
   providers: [
@@ -61,11 +68,19 @@ import { UpdateProfileImageUseCase } from './applicationLayer/use-cases/updatePr
     Getcurrentfcmusecase,
     GetUserDetailUseCase,
     UpdateProfileImageUseCase,
+    GetMyFavouritesUsecase,
+    AddToFavouritesUsecase,
+    RemoveMyFavouritesUsecase,
     {
       provide: USER_REPOSITORY,
       useClass: UserRepositoryImpl,
     },
   ],
-  exports: [GetUserDetailUseCase],
+  exports: [
+    GetUserDetailUseCase,
+    GetMyFavouritesUsecase,
+    AddToFavouritesUsecase,
+    RemoveMyFavouritesUsecase,
+  ],
 })
 export class UserModule {}

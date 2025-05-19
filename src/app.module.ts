@@ -26,6 +26,7 @@ import { DocumentModule } from './modules/documents/documents.module';
 import { AnalyticsModule } from './modules/analytics/analytics.module';
 import { SellerSupportModule } from './modules/support/support.module';
 import { AdvertismentModule } from './modules/Advertisments/advertisment.module';
+import { FavouritesModule } from './modules/favourites/favourites.module';
 
 // Initialize Firebase Admin SDK
 admin.initializeApp({
@@ -71,6 +72,9 @@ admin.initializeApp({
     SellerSupportModule,
     // Seller support and assistance features
     AdvertismentModule,
+
+    // Favourites handler
+    FavouritesModule ,
 
     // Load environment variables globally
     ConfigModule.forRoot({ isGlobal: true }),

@@ -21,6 +21,9 @@ import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { ConfigService } from '@nestjs/config';
 import { extname } from 'path';
 import { randomUUID } from 'crypto';
+import { CakeDto } from 'src/modules/cakes/dtos/cake.dto';
+import { GetCakeDetailsUseCase } from 'src/modules/cakes/applicationLayer/use-cases/GetCakeDetailsUseCase';
+import { CakeEntity } from 'src/modules/cakes/domainLayer/entities/cake.entity';
 
 /**
  * ******************************************************************************************************
@@ -35,12 +38,50 @@ export class UserRepositoryImpl implements UserRepository {
   constructor(
     @InjectModel('Users') private userModel: Model<UserEntity>,
     private readonly configService: ConfigService,
+    private readonly getCakeDetailsUsecase: GetCakeDetailsUseCase,
   ) {}
+  async addFavourite(userid: string, cake_id: string): Promise<string> {
+    let user = await this.userModel.findById(userid);
+    user?.favourites?.push(cake_id);
+    user?.save();
+    return 'added';
+  }
+  async removeFavourite(userid: string, cake_id: string): Promise<string> {
+    let user = await this.userModel.findById(userid);
+    let favourites = user?.favourites;
+    let indexOfcakeid = favourites?.indexOf(cake_id);
+    if (indexOfcakeid) {
+      favourites?.splice(indexOfcakeid, 1); // Removes 1 element at the found index
+    }
+    return 'removed';
+  }
+  async getFavourite(userid: string): Promise<Array<CakeEntity>> {
+    const user = await this.userModel.findById(userid);
+    if (!user) return [];
 
+    const cake_ids = Array.isArray(user.favourites) ? user.favourites : [];
+
+    const cakeDetails: CakeEntity[] = [];
+
+    // console.log('cakeids', cake_ids)
+
+    for (const cake_id of cake_ids) {
+      console.log(cake_id)
+      const cake = await this.getCakeDetailsUsecase.execute(cake_id);
+      if (cake) {
+        cakeDetails.push(cake);
+      }
+    }
+
+    return cakeDetails;
+  }
   async updateProfileImage(userid: string, file: any): Promise<string> {
     let url = await this.uploadImage(file);
-    let user = await this.userModel.findById(userid)
-    if(user){user.profile_url = url;user.save()}
+    let user = await this.userModel.findById(userid);
+    if (user) {
+      user.profile_url = url;
+      user.save();
+    }
     // console.log(res, url, userid);
     return 'updated';
   }
@@ -64,6 +105,7 @@ export class UserRepositoryImpl implements UserRepository {
       user.password,
       user.fcm_token,
       user.profile_url,
+      user.favourites,
     );
   }
 

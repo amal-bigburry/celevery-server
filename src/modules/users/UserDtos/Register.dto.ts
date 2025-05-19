@@ -34,6 +34,7 @@ export class RegisterDto {
   display_name: string;
 
   profile_url:string;
+  favourites:Array<string>;
 
   @IsString()
   @IsNotEmpty()

@@ -71,7 +71,8 @@ export class AuthController {
    */
   @Post('register')
   async register(@Body() RegisterDto: RegisterDto) {
-    RegisterDto.profile_url = "unassigned"
+    RegisterDto.profile_url = "unassigned";
+    RegisterDto.favourites = []
     return this.registerUseCase.execute(RegisterDto);
   }
   @Put('profileimg')

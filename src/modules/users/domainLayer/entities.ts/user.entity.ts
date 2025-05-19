@@ -1,3 +1,5 @@
+import { CakeDto } from "src/modules/cakes/dtos/cake.dto";
+
 /**
  * ******************************************************************************************************
  * UserEntity.ts
@@ -20,6 +22,7 @@ export class UserEntity {
     public password: string,
     public fcm_token: string,
     public profile_url: string,
+    public favourites:Array<string>,
   ) {}
 
   /**

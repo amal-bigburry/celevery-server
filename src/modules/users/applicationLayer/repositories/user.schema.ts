@@ -43,6 +43,9 @@ export class User extends Document {
 
   @Prop({ required: true })
   fcm_token: string;
+  
+  @Prop({ required: true })
+  favourites: Array<string>;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

@@ -18,9 +18,11 @@
  * ******************************************************************************************************
  */
 
+import { CakeDto } from 'src/modules/cakes/dtos/cake.dto';
 import { UserEntity } from '../../domainLayer/entities.ts/user.entity';
 import { RegisterDto } from '../../UserDtos/Register.dto';
 import { TokenDto } from '../../UserDtos/token.dto';
+import { CakeEntity } from 'src/modules/cakes/domainLayer/entities/cake.entity';
 
 /**
  * ******************************************************************************************************
@@ -56,4 +58,7 @@ export interface UserRepository {
   getfcm(userid: string): Promise<string>;
   findById(userid: string): Promise<UserEntity | null>;
   updateProfileImage(userid: string, file): Promise<string>;
+  addFavourite(userid: string, cake_id:string): Promise<string>;
+  removeFavourite(userid: string, cake_id:string): Promise<string>;
+  getFavourite(userid: string): Promise<Array<CakeEntity>>;
 }
