@@ -6,19 +6,30 @@
 /**
  * importing the required packages
  */
-import { Controller, Post, Body, UseGuards, Req, Get, Delete, BadRequestException } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  UseGuards,
+  Req,
+  Get,
+  Delete,
+  BadRequestException,
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthRequest } from 'src/middlewares/AuthRequest';
 import { AddToFavouritesUsecase } from '../../applicationLayer/usecases/AddToFavourites.usecase';
 import { GetMyFavouritesUsecase } from '../../applicationLayer/usecases/GetMyFavourites.usecase';
 import { RemoveMyFavouritesUsecase } from '../../applicationLayer/usecases/RemoveMyFavourites.usecase';
 import { JwtAuthGuard } from 'src/middlewares/jwtauth.middleware';
+import { Types } from 'mongoose';
 /**
  * controller to handle the pop request
  */
 @Controller('favourites')
 export class FavouritesController {
-  constructor(private readonly AddToFavouritesUsecase: AddToFavouritesUsecase,
+  constructor(
+    private readonly AddToFavouritesUsecase: AddToFavouritesUsecase,
     private readonly GetMyFavouritesUsecase: GetMyFavouritesUsecase,
     private readonly RemoveMyFavouritesUsecase: RemoveMyFavouritesUsecase,
   ) {}
@@ -27,11 +38,22 @@ export class FavouritesController {
    */
   @Post()
   @UseGuards(JwtAuthGuard)
-  async add_to_favourites(@Body() cake_id:{cake_id:string}, @Req() request:AuthRequest) {
-    if(!cake_id){
-      throw new BadRequestException('Body needs cake_id')
+  async add_to_favourites(
+    @Body() cake_id: { cake_id: string },
+    @Req() request: AuthRequest,
+  ) {
+    if (!cake_id) {
+      throw new BadRequestException('Body needs cake_id');
     }
-    await this.AddToFavouritesUsecase.execute(request.user['userId'], cake_id.cake_id);
+    const isValidObjectId = Types.ObjectId.isValid(cake_id.cake_id);
+    if (!isValidObjectId) {
+      
+      throw new BadRequestException('Invalid MongoDB ObjectId');
+    }
+    await this.AddToFavouritesUsecase.execute(
+      request.user['userId'],
+      cake_id.cake_id,
+    );
     return 'added';
   }
   /**
@@ -39,8 +61,11 @@ export class FavouritesController {
    */
   @Get()
   @UseGuards(JwtAuthGuard)
-  async get_favourites(@Body() cake_id:string, @Req() request:AuthRequest) {
-    let res = await this.GetMyFavouritesUsecase.execute(request.user['userId'], cake_id);
+  async get_favourites(@Body() cake_id: string, @Req() request: AuthRequest) {
+    let res = await this.GetMyFavouritesUsecase.execute(
+      request.user['userId'],
+      cake_id,
+    );
     return res;
   }
   /**
@@ -48,8 +73,14 @@ export class FavouritesController {
    */
   @Delete()
   @UseGuards(JwtAuthGuard)
-  async delete_favourites(@Body() cake_id:string, @Req() request:AuthRequest) {
-    let res = await this.RemoveMyFavouritesUsecase.execute(request.user['userId'], cake_id);
+  async delete_favourites(
+    @Body() cake_id: string,
+    @Req() request: AuthRequest,
+  ) {
+    let res = await this.RemoveMyFavouritesUsecase.execute(
+      request.user['userId'],
+      cake_id,
+    );
     return 'removed';
   }
 }

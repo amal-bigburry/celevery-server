@@ -42,6 +42,14 @@ export class UserRepositoryImpl implements UserRepository {
   ) {}
   async addFavourite(userid: string, cake_id: string): Promise<string> {
     let user = await this.userModel.findById(userid);
+    let cake = await this.getCakeDetailsUsecase.execute(cake_id)
+    if(!cake){
+      throw new BadRequestException("Invalid cake id")
+    }
+    let existing = await user?.favourites.filter(cakeid=>cakeid==cake_id)
+    if(existing){
+      throw new BadRequestException("already exist in your favorites")
+    }
     user?.favourites?.push(cake_id);
     user?.save();
     return 'added';
@@ -55,26 +63,27 @@ export class UserRepositoryImpl implements UserRepository {
     }
     return 'removed';
   }
-  async getFavourite(userid: string): Promise<Array<CakeEntity>> {
-    const user = await this.userModel.findById(userid);
-    if (!user) return [];
+  async getFavourite(userid: string): Promise<CakeEntity[]> {
+    const user = await this.userModel.findById(userid).lean(); // lean() for performance
+    if (!user || !Array.isArray(user.favourites)) return [];
 
-    const cake_ids = Array.isArray(user.favourites) ? user.favourites : [];
+    const cake_ids = user.favourites;
 
-    const cakeDetails: CakeEntity[] = [];
+    const cakes = await Promise.all(
+      cake_ids.map(async (cake_id) => {
+        try {
+          const cake = await this.getCakeDetailsUsecase.execute(cake_id);
+          return cake || null;
+        } catch (err) {
+          console.error(`Error fetching cake with ID ${cake_id}:`, err);
+          return null;
+        }
+      }),
+    );
 
-    // console.log('cakeids', cake_ids)
-
-    for (const cake_id of cake_ids) {
-      console.log(cake_id)
-      const cake = await this.getCakeDetailsUsecase.execute(cake_id);
-      if (cake) {
-        cakeDetails.push(cake);
-      }
-    }
-
-    return cakeDetails;
+    return cakes.filter((cake): cake is CakeEntity => cake !== null);
   }
+
   async updateProfileImage(userid: string, file: any): Promise<string> {
     let url = await this.uploadImage(file);
     let user = await this.userModel.findById(userid);
