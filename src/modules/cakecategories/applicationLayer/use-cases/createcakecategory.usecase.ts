@@ -31,6 +31,8 @@ export class CreateCakeCategoryUseCase {
     cakeCategoryDto: CakeCategoryDto,
     file,
   ): Promise<{ cake: Object }> {
+    //validate and check does this category name already exist
+    let existStatus = await this.cakeCategoryRepository.checkifexist(cakeCategoryDto.category_name)
     // Upload the image file and get the URL if available
     let s3Url = await this.cakeCategoryRepository.uploadImage(file);
     // Set the image URL in the DTO, or empty string if none

@@ -26,4 +26,5 @@ export interface CakeCategoryRepository {
    * Finds a cake category by its unique identifier
    */
   findCategoryById(cakeCategoryId: string): Promise<CakeCategoryDto>;
+  checkifexist(name: string):Promise<string>;
 }

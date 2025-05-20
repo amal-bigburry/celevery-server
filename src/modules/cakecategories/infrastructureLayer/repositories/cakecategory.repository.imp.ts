@@ -24,6 +24,18 @@ export class CakeCategoryRepositoryImp implements CakeCategoryRepository {
     private configService: ConfigService,
   ) {}
   /**
+   * Checks if a cake category with the given name exists.
+   * Returns the category ID if found, otherwise returns null.
+   */
+  async checkifexist(name: string): Promise<string> {
+    const category = await this.cakecategoryModel.find({ category_name:  name })
+    if(category?.length>0){
+      throw new BadRequestException("Category name already exist")
+    }
+    return ""
+  
+  }
+  /**
    * helps to create cake category
    */
   async createcakecategory(cakeCategoryDto: CakeCategoryDto): Promise<Object> {
