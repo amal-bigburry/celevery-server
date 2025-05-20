@@ -7,7 +7,6 @@
  * It also sets up MongoDB connection asynchronously using environment variables and initializes Firebase Admin SDK.
  * ******************************************************************************************************
  */
-
 import { Module } from '@nestjs/common';
 import { UserModule } from './modules/users/users.module';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -27,58 +26,45 @@ import { AnalyticsModule } from './modules/analytics/analytics.module';
 import { SellerSupportModule } from './modules/support/support.module';
 import { AdvertismentModule } from './modules/Advertisments/advertisment.module';
 import { FavouritesModule } from './modules/favourites/favourites.module';
-
 // Initialize Firebase Admin SDK
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
 });
-
+/**
+ * Main module of the applications starts here
+ */
 @Module({
   imports: [
     // User management
     UserModule,
-
-    // Order management (create, cancel, track orders)
+    // Order management
     OrderModule,
-
-    // Cake info management (add, update, retrieve cakes)
+    // Cake management
     CakeModule,
-
     // MQTT protocol communication
     MqttModule,
-
     // Cake categories management
     CakeCategoryModule,
-
     // User notifications (push notifications etc.)
     NotificationModule,
-
     // Payment processing and management
     PaymentModule,
-
     // Store management features
     StoreModule,
-
     // OTP and authentication via Twilio
     TwilioModule,
-
     // Terms, privacy, and other documents
     DocumentModule,
-
     // Analytics and reporting
     AnalyticsModule,
-
     // Seller support and assistance features
     SellerSupportModule,
     // Seller support and assistance features
     AdvertismentModule,
-
     // Favourites handler
     FavouritesModule ,
-
     // Load environment variables globally
     ConfigModule.forRoot({ isGlobal: true }),
-
     // MongoDB connection (async with env variables)
     MongooseModule.forRootAsync({
       imports: [ConfigModule],

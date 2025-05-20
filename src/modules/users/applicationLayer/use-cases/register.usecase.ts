@@ -11,7 +11,7 @@
  * ******************************************************************************************************
  */
 
-import { Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { UserRepository } from '../repositories/user.repositoty';
 import { RegisterDto } from '../../UserDtos/Register.dto';
 import { USER_REPOSITORY } from '../tokens/userRepository.token';
@@ -39,6 +39,10 @@ export class RegisterUseCase {
    * **************************************************************************************************
    */
   async execute(RegisterDto: RegisterDto): Promise<{ user: object }> {
+    if(RegisterDto.password.length < 8)
+    {
+      throw new BadRequestException("Password must be minimum 8 charecters")
+    }
     const user = await this.userRepo.createUser(RegisterDto);
     return { user: user ? user : {} };
   }

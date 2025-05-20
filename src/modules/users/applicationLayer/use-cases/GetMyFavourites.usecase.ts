@@ -18,8 +18,9 @@ import { CakeEntity } from 'src/modules/cakes/domainLayer/entities/cake.entity';
 @Injectable()
 export class GetMyFavouritesUsecase {
   constructor(
-      @Inject(USER_REPOSITORY)
-      private readonly UserRepository: UserRepository) {}
+    @Inject(USER_REPOSITORY)
+    private readonly UserRepository: UserRepository,
+  ) {}
 
   /**
    * Method to send a notification
@@ -27,8 +28,7 @@ export class GetMyFavouritesUsecase {
    * @returns a string indicating the success status
    * @throws UnauthorizedException if there is an error sending the notification
    */
-  async execute(user_id:string): Promise<Array<CakeEntity>> {
-    return await this.UserRepository.getFavourite(user_id)
+  async execute(user_id: string): Promise<Array<CakeEntity>> {
+    return await this.UserRepository.getFavourite(user_id);
   }
-
-  }
+}

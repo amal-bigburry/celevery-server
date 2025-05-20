@@ -47,7 +47,6 @@ export class FavouritesController {
     }
     const isValidObjectId = Types.ObjectId.isValid(cake_id.cake_id);
     if (!isValidObjectId) {
-      
       throw new BadRequestException('Invalid MongoDB ObjectId');
     }
     await this.AddToFavouritesUsecase.execute(
