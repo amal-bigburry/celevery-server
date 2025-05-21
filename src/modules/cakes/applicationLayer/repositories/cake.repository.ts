@@ -33,7 +33,12 @@ export interface CakeRepository {
    * @param category_id - Category identifier to filter cakes
    * @returns A Promise resolving to an array of CakeEntity matching the criteria
    */
-  find(keyword: string, category_id: string): Promise<CakeEntity[]>;
+  find(
+    keyword: string,
+    category_id: string,
+    log: number,
+    lat: number,
+  ): Promise<CakeEntity[]>;
   /**
    * Creates a new cake record using the provided data transfer object
    * @param cakeDto - Data transfer object containing cake details
@@ -52,5 +57,5 @@ export interface CakeRepository {
    * @param known_for - New known_for value
    * @returns A Promise resolving to a string status or message
    */
-  updateKnownfor(cake_id:string, known_for:string):Promise<string>;
+  updateKnownfor(cake_id: string, known_for: string): Promise<string>;
 }

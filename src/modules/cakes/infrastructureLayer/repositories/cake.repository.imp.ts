@@ -43,7 +43,7 @@ export class CakeRepositoryImp implements CakeRepository {
     if (!cake) throw new BadRequestException('Cake not found');
     cake.known_for = known_for;
     await cake.save();
-    return'updated';
+    return 'updated';
   }
   /**
    * Retrieves all cakes and calculates distance from user location
@@ -113,7 +113,12 @@ export class CakeRepositoryImp implements CakeRepository {
    * Constructs query filter conditionally
    * Returns list of cakes that match the criteria
    */
-  async find(keyword: string, category_id: string): Promise<CakeEntity[]> {
+  async find(
+    keyword: string,
+    category_id: string,
+    log: number,
+    lat: number,
+  ): Promise<CakeEntity[]> {
     let filter: any = {};
     if (category_id) {
       filter.cake_category_ids = category_id;
@@ -121,6 +126,27 @@ export class CakeRepositoryImp implements CakeRepository {
       filter.cake_name = { $regex: keyword, $options: 'i' };
     }
     const cakes = await this.cakeModel.find(filter).exec();
+
+    const cakelist = await Promise.all(
+      cakes.map(async (cake) => {
+        const store = await this.getstoreusecase.execute(cake.store_id);
+        const distanceBetweenUserAndCake = getDistanceFromLatLonInKm(
+          store?.lat,
+          store?.log,
+          lat,
+          log,
+        );
+        return {
+          _id: cake._id.toString(),
+          cake_name: cake.cake_name,
+          cake_description: cake.cake_description,
+          cake_image_urls: cake.cake_image_urls,
+          distance: distanceBetweenUserAndCake,
+          store_name: store.store_name,
+        };
+      }),
+    );
+    cakelist.sort((a, b) => a.distance - b.distance);
     return cakes;
   }
   /**

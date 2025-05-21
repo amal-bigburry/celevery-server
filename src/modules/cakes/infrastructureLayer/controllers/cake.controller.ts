@@ -79,8 +79,9 @@ export class CakeController {
     @Query('page') page = 1,
     @Query('limit') limit = 10,
     @Query('log') log = 0,
+    @Query('lat') lat = 0,
   ) {
-    return this.searchForCakesUseCase.execute(keyword, category_id);
+    return this.searchForCakesUseCase.execute(keyword, category_id, log, lat);
   }
   /**
    * Handles GET requests to fetch similar cakes by cake and variant IDs

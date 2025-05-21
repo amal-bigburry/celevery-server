@@ -25,8 +25,18 @@ export class SearchForCakesUseCase {
    * @param category_id - Category ID to filter cakes
    * @returns Promise resolving to an array of matching cakes
    */
-  async execute(keyword: string, category_id: string): Promise<Array<any>> {
-    const cakes = await this.CakeRepository.find(keyword, category_id);
+  async execute(
+    keyword: string,
+    category_id: string,
+    log: number,
+    lat: number,
+  ): Promise<Array<any>> {
+    const cakes = await this.CakeRepository.find(
+      keyword,
+      category_id,
+      log,
+      lat,
+    );
     return cakes;
   }
 }
