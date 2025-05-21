@@ -29,7 +29,7 @@ export class FavouritesRepositoryImp implements FavouritesRepository {
     }
     async remove(user_id: string, cake_id: string): Promise<string> {
         let res = await this.RemoveMyFavouritesUsecase.execute(user_id, cake_id)
-        return 'done'
+        return res
     }
     async get(user_id: string): Promise<Array<CakeEntity>> {
         let res = await this.GetMyFavouritesUsecase.execute(user_id)

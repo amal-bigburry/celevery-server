@@ -77,6 +77,7 @@ export class CakeRepositoryImp implements CakeRepository {
         };
       }),
     );
+    cakelist.sort((a, b) => a.distance - b.distance);
     const total = cakelist.length;
     const totalPages = Math.ceil(total / limit);
     const start = (page - 1) * limit;

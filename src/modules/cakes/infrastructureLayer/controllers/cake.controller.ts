@@ -60,7 +60,7 @@ export class CakeController {
     @UploadedFiles() files: Express.Multer.File[],
     @Body() cakeDto: CakeDto,
   ) {
-    console.log(cakeDto);
+    // console.log(cakeDto);
     if (!files || files.length === 0) {
       throw new BadRequestException(
         'At least one image file (images) is required!',
@@ -101,7 +101,7 @@ export class CakeController {
   @Get(':cake_id')
   @UseGuards(JwtAuthGuard)
   async getCakeDetails(@Param('cake_id') cake_id: string) {
-    console.log('here ', cake_id);
+    // console.log('here ', cake_id);
     return this.getCakeDetailsUseCase.execute(cake_id);
   }
 }

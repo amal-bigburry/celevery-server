@@ -42,25 +42,31 @@ export class UserRepositoryImpl implements UserRepository {
   ) {}
   async addFavourite(userid: string, cake_id: string): Promise<string> {
     let user = await this.userModel.findById(userid);
-    let cake = await this.getCakeDetailsUsecase.execute(cake_id)
-    if(!cake){
-      throw new BadRequestException("Invalid cake id")
+    let cake = await this.getCakeDetailsUsecase.execute(cake_id);
+    if (!cake) {
+      throw new BadRequestException('Invalid cake id');
     }
-    let existing = await user?.favourites.filter(cakeid=>cakeid==cake_id)
-    if(existing){
-      throw new BadRequestException("already exist in your favorites")
-    }
+    let existing = await user?.favourites.filter((cakeid) => cakeid == cake_id);
+    // if(existing){
+    //   throw new BadRequestException("already exist in your favorites")
+    // }
     user?.favourites?.push(cake_id);
     user?.save();
     return 'added';
   }
   async removeFavourite(userid: string, cake_id: string): Promise<string> {
     let user = await this.userModel.findById(userid);
+    if (!user) {
+      throw new BadRequestException('user id not found');
+    }
     let favourites = user?.favourites;
-    let indexOfcakeid = favourites?.indexOf(cake_id);
-    if (indexOfcakeid) {
+    let indexOfcakeid = favourites?.indexOf(cake_id, 0);
+    // console.log(favourites, cake_id)
+    if (indexOfcakeid >= 0) {
       favourites?.splice(indexOfcakeid, 1); // Removes 1 element at the found index
     }
+    user.favourites = favourites;
+    user.save();
     return 'removed';
   }
   async getFavourite(userid: string): Promise<CakeEntity[]> {

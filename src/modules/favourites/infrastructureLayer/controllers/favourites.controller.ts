@@ -73,13 +73,13 @@ export class FavouritesController {
   @Delete()
   @UseGuards(JwtAuthGuard)
   async delete_favourites(
-    @Body() cake_id: string,
+    @Body() cake: {cake_id:string},
     @Req() request: AuthRequest,
   ) {
     let res = await this.RemoveMyFavouritesUsecase.execute(
       request.user['userId'],
-      cake_id,
+      cake.cake_id,
     );
-    return 'removed';
+    return res;
   }
 }
