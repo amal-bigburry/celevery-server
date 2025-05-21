@@ -23,7 +23,6 @@ import ORDER_STATUS from 'src/common/utils/contants';
 @Controller('request_order')
 export class RequestOrderController {
   constructor(private readonly RequestOrderUseCase: RequestOrderUseCase) {}
-
   /**
    * This route handles the POST request to initiate a new order.
    * The buyer's user ID is attached to the order, and the status is set to "REQUESTED".
@@ -37,13 +36,11 @@ export class RequestOrderController {
      * This is crucial to identify the buyer placing the order.
      */
     orderDto.buyer_id = request.user['userId'];
-    
     /**
      * Setting the initial order status to 'REQUESTED'.
      * This marks the order as a pending request.
      */
     orderDto.order_status = ORDER_STATUS.REQUESTED;
-    
     /**
      * Executing the use case to process the order request.
      * The business logic for order creation is handled by the RequestOrderUseCase.

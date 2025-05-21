@@ -1,6 +1,6 @@
 /**
  * Licensed to Bigburry Hypersystems LLP
- * All rights reserved. Unauthorized copying, redistribution or modification of this file, 
+ * All rights reserved. Unauthorized copying, redistribution or modification of this file,
  * via any medium is strictly prohibited. Proprietary and confidential.
  */
 /**
@@ -11,6 +11,7 @@ import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
 import { GetPopularProductsUseCase } from '../../applicationLayer/usecases/GetPopularProducts.usecase';
 import { GetTrendingProductsUseCase } from '../../applicationLayer/usecases/GetTrendingProducts.usecase';
 import { JwtAuthGuard } from 'src/middlewares/jwtauth.middleware';
+import { GetStoreLocationsUsecase } from '../../applicationLayer/usecases/GetStoreLocations.usecase';
 /**
  * Main route /analytics
  * Defines endpoints for analytics data related to trending and popular products
@@ -25,6 +26,7 @@ export class AnalyticsController {
   constructor(
     private readonly getTrendingProducts: GetTrendingProductsUseCase,
     private readonly getPopularProducts: GetPopularProductsUseCase,
+    private readonly getStoreLocations: GetStoreLocationsUsecase,
   ) {}
   /**
    * GET /analytics/trending
@@ -57,5 +59,14 @@ export class AnalyticsController {
     @Query('limit') limit = 10,
   ) {
     return this.getPopularProducts.execute(page, limit);
+  }
+  @Get('/storelocations')
+  @UseGuards(JwtAuthGuard)
+  async getlocation_ofstores(
+    @Query('page') page = 1,
+    @Query('limit') limit = 10,
+  ) {
+    let res = await this.getStoreLocations.execute(page, limit);
+    return res;
   }
 }

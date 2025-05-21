@@ -38,7 +38,14 @@ export class StoreRepositoryImplimentation implements StoreRepository {
       },
     });
   }
-
+  /**
+   * Bigburry Hypersystems LLP - Method: getAllStoreInPlatform
+   * Retrieves all store records present in the platform, regardless of ownership.
+   * Returns an array of StoreDto objects representing all stores.
+   */
+  async getAllStoreInPlatform(): Promise<Array<StoreDto>> {
+    return await this.storeModel.find({});
+  }
   /**
    * Bigburry Hypersystems LLP - Method: getAllStoreCakes
    * This method retrieves all cake entries that are associated with the specified store identifier. It performs a Mongoose query to filter cakes by the provided store_id and returns the result as an array of CakeDto.

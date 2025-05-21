@@ -26,11 +26,16 @@ import { ICakeRepositoryUseCaseImp } from './infrastructurelLayer/implimentation
 import { OrderModule } from '../orders/orders.module';
 import { GETORDERANALYSE } from './tokens/GetOrdersToAnalyse.token';
 import { IGetOrdersToAnalyseImp } from './infrastructurelLayer/implimentations/IGetOrdersToAnalyse.implimentation';
+import { GetStoreLocationsUsecase } from './applicationLayer/usecases/GetStoreLocations.usecase';
+import { StoreModule } from '../stores/store.module';
+import { IGetAllStoreInPlatformUsecaseImp } from './infrastructurelLayer/implimentations/IGetAllStoreInPlatform.implimentation';
+import { GETALLSTOREINPLATFORM } from './tokens/Getallstorelocation.token';
 @Module({
-  imports: [ConfigModule, CakeModule, OrderModule],
+  imports: [ConfigModule, CakeModule, OrderModule, StoreModule],
   providers: [
     GetPopularProductsUseCase,
     GetTrendingProductsUseCase,
+    GetStoreLocationsUsecase,
     {
       provide: ORDER_REPOSITORY, // Token for order repository interface
       useClass: IOrderRepositoryImp, // Implementation class for order repository
@@ -42,6 +47,10 @@ import { IGetOrdersToAnalyseImp } from './infrastructurelLayer/implimentations/I
     {
       provide: GETORDERANALYSE, // Token for order analysis data provider
       useClass: IGetOrdersToAnalyseImp, // Implementation class for orders to analyse
+    },
+    {
+      provide: GETALLSTOREINPLATFORM, // Token for order analysis data provider
+      useClass: IGetAllStoreInPlatformUsecaseImp, // Implementation class for orders to analyse
     },
   ],
   controllers: [AnalyticsController], // Controller handling analytics routes

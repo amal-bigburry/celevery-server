@@ -45,7 +45,6 @@ import { CakeModule } from '../cakes/cakes.modules';
 @Module({
   imports: [
     MongooseModule.forFeature([{ name: 'Users', schema: UserSchema }]),
-    // FavouritesModule,
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -57,7 +56,6 @@ import { CakeModule } from '../cakes/cakes.modules';
       }),
     }),
     CakeModule,
-    // FavouritesModule,
   ],
   controllers: [AuthController, FcmController],
   providers: [

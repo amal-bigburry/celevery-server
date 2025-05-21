@@ -63,6 +63,8 @@ export class Order extends Document {
    */
   @Prop({ required: true })
   seller_id: string;
+  @Prop({ required: true })
+  text_on_cake:string;
 }
 
 /**

@@ -105,6 +105,7 @@ export class OrderRepositoryImp implements OrderRepository {
    * @returns A promise that resolves to the newly created order object.
    */
   async create(order: OrderDto): Promise<Object> {
+    console.log(order)
     const newOrder = new this.orderModel(order);
     return newOrder.save();
   }

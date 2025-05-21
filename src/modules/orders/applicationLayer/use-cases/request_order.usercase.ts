@@ -79,8 +79,8 @@ export class RequestOrderUseCase {
     let buyer = await this.getuserDetailsUseCase.execute(orderDto.buyer_id);
     if (!buyer) throw new UnauthorizedException('buyer not found');
 
-    if (!cake?.cake_variants?.length)
-      throw new BadRequestException('invalid varient id');
+    // if (!cake?.cake_variants?.length)
+    //   throw new BadRequestException('invalid varient id');
 
     orderDto.payment_tracking_id = '';
     let order = await this.OrderRepository.create(orderDto);
@@ -88,6 +88,31 @@ export class RequestOrderUseCase {
     let AllordersWithTheCurrentCake = await this.getOrdersWithCakeId.execute(
       orderDto.cake_id,
     );
+
+    // await this.notificationUseCase.execute({
+    //   title: 'New Order Received',
+    //   message: `New order received from ${buyer.email} for ${cake.cake_name} of variant with weight of ${cake.cake_variants[orderDto.cake_variant_id].weight} kg, price of ${cake.cake_variants[orderDto.cake_variant_id].cake_price} and quantity of ${orderDto.quantity}. Customer Needs it before ${orderDto.need_before}`,
+    //   token: cake_seller.fcm_token,
+    // });
+    // /**
+    //  * sends push notification to the buyer
+    //  */
+    // await this.notificationUseCase.execute({
+    //   title: 'Order Placed - Requested',
+    //   message: `Cake Model - ${cake.cake_name} of variant with weight of ${cake.cake_variants[orderDto.cake_variant_id].weight} kg, price of ${cake.cake_variants[orderDto.cake_variant_id].cake_price} and quantity of ${orderDto.quantity}. Needs it before ${orderDto.need_before}`,
+    //   token: buyer.fcm_token,
+    // });
+    // /**
+    //  * send a trigger to sellers app to show the pop up and alert the buyer about the order
+    //  */
+    // let data: PopDto = {
+    //   topic: store.store_owner_id,
+    //   message: `New order received from ${buyer.email} for ${cake.cake_name} of variant with weight of ${cake.cake_variants[orderDto.cake_variant_id].weight} kg, price of ${cake.cake_variants[orderDto.cake_variant_id].cake_price} and quantity of ${orderDto.quantity}. Customer Needs it before ${orderDto.need_before}`,
+    // };
+    // await this.mqttService.publish(data);
+    /**
+     * return the order
+     */
 
     this.knownfor_occurences = [];
     AllordersWithTheCurrentCake.forEach((order) => {

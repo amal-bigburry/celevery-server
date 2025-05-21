@@ -48,5 +48,6 @@ export interface StoreRepository {
   updateStore(store_id: string, field: string, value: string): Promise<string>;
   deleteStore(): Promise<string>;
   getAllStores(store_owner_id: string): Promise<Array<StoreDto>>;
+  getAllStoreInPlatform(): Promise<Array<StoreDto>>;
   getAllStoreCakes(store_id: string): Promise<Array<CakeDto>>;
 }

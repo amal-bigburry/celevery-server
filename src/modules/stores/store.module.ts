@@ -20,6 +20,7 @@ import { CakeSchema } from '../cakes/applicationLayer/repositories/cake.schema';
 import { GetAllStoreCakesUsecase } from './applicationLayer/usercases/GetAllStoreCakes.Usecase';
 import { STORE_REPOSITORY } from './applicationLayer/tokens/storeRepository.token';
 import { GetAllStoreUseCase } from './applicationLayer/usercases/getAllStores.usecase';
+import { GetAllStoreInPlatformUsecase } from './applicationLayer/usercases/getAllStoreInPlatform.usecase';
 
 /**
  * Bigburry Hypersystems LLP - StoreModule Definition
@@ -59,6 +60,7 @@ import { GetAllStoreUseCase } from './applicationLayer/usercases/getAllStores.us
     GetAllStoreCakesUsecase,
     GetAllStoreUseCase,
     getStoreUsecase,
+    GetAllStoreInPlatformUsecase,
     {
       provide: STORE_REPOSITORY,
       useClass: StoreRepositoryImplimentation,
@@ -69,6 +71,6 @@ import { GetAllStoreUseCase } from './applicationLayer/usercases/getAllStores.us
    * Exported providers to be used by other modules.
    * - getStoreUsecase is made available to other modules that import StoreModule.
    */
-  exports: [getStoreUsecase],
+  exports: [getStoreUsecase, GetAllStoreInPlatformUsecase],
 })
 export class StoreModule {}

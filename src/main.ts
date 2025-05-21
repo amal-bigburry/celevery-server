@@ -29,6 +29,12 @@ import * as dotenv from 'dotenv';
 async function bootstrap() {
   dotenv.config();
   const app = await NestFactory.create(AppModule);
+    // Enable CORS
+  app.enableCors({
+    origin: '*', // <-- frontend origin
+    // credentials: true,               // <-- allow cookies / auth headers
+  });
+
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
   await app.listen(process.env.PORT ?? 3000);
 }
