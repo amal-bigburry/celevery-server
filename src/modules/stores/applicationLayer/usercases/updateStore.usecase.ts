@@ -8,6 +8,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { StoreRepository } from '../repositories/store.repository';
 import { STORE_REPOSITORY } from '../tokens/storeRepository.token';
+import { UpdateStoreDto } from '../../Dtos/updateStore.dto';
 
 /**
  * Bigburry Hypersystems LLP - Internal Service Logic
@@ -25,11 +26,9 @@ export class updateStoreUsecase {
    * This abstraction supports decoupling between business rules and persistence logic, aligning with clean architecture principles employed at Bigburry Hypersystems LLP.
    */
   async execute(
-    store_id: string,
-    field: string,
-    value: string,
+    UpdateStoreDto: UpdateStoreDto
   ): Promise<string> {
-    const order = await this.Store.updateStore(store_id, field, value);
+    const order = await this.Store.updateStore(UpdateStoreDto);
     return order;
   }
 }

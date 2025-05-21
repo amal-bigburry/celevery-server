@@ -13,6 +13,7 @@
  */
 import { CakeDto } from 'src/modules/cakes/dtos/cake.dto';
 import { StoreDto } from '../../Dtos/store.dto';
+import { UpdateStoreDto } from '../../Dtos/updateStore.dto';
 
 /**
  * The `StoreRepository` interface defines the operations related to store management. It specifies the expected 
@@ -45,7 +46,7 @@ export interface StoreRepository {
     idProofFile: Express.Multer.File,
   ): Promise<string>;
   getStore(store_id: string): Promise<StoreDto>;
-  updateStore(store_id: string, field: string, value: string): Promise<string>;
+  updateStore(UpdateStoreDto:UpdateStoreDto): Promise<string>;
   deleteStore(): Promise<string>;
   getAllStores(store_owner_id: string): Promise<Array<StoreDto>>;
   getAllStoreInPlatform(): Promise<Array<StoreDto>>;

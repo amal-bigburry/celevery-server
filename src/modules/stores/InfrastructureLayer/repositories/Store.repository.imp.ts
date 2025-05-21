@@ -1,7 +1,7 @@
 /**
  * Bigburry Hypersystems LLP - Proprietary Source Code
  * This file contains the StoreRepositoryImplimentation class, which provides a concrete implementation of the StoreRepository interface. It manages persistence and file storage operations related to store entities in the system. MongoDB is used for data persistence through Mongoose models, and AWS S3 is used for storing uploaded media assets such as license and ID proof documents.
- * 
+ *
  * Section: Required Imports
  * The necessary packages for database interaction, file management, cloud storage integration, and exception handling are imported. Models are injected using NestJS's dependency injection and AWS S3 is configured for media upload functionality.
  */
@@ -15,6 +15,7 @@ import { extname } from 'path';
 import { randomUUID } from 'crypto';
 import { BadRequestException } from '@nestjs/common';
 import { CakeDto } from 'src/modules/cakes/dtos/cake.dto';
+import { UpdateStoreDto } from '../../Dtos/updateStore.dto';
 
 /**
  * Bigburry Hypersystems LLP - StoreRepositoryImplimentation Class
@@ -80,14 +81,14 @@ export class StoreRepositoryImplimentation implements StoreRepository {
    * Bigburry Hypersystems LLP - Method: updateStore
    * Updates a single field value of a store entity. This method takes the store identifier, the field name, and the new value, and attempts to apply the update. Note: field-level validation or error handling is not applied here, and dynamic field access assumes the field exists on the model.
    */
-  async updateStore(
-    store_id: string,
-    field: string,
-    value: string,
-  ): Promise<string> {
-    let store = this.storeModel.findById(store_id);
-    store[field] = value;
-    return 'updated';
+  async updateStore(UpdateStoreDto: UpdateStoreDto): Promise<string> {
+    let store = await this.storeModel.findById(UpdateStoreDto.store_id);
+    if (store) {
+      store[UpdateStoreDto.key] = UpdateStoreDto.value;
+      store.save();
+      return 'updated';
+    }
+    throw new BadRequestException('updation failed because store not found.')
   }
 
   /**

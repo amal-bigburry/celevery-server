@@ -27,6 +27,8 @@ import { StoreDto } from '../../Dtos/store.dto';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { GetAllStoreCakesUsecase } from '../../applicationLayer/usercases/GetAllStoreCakes.Usecase';
 import { GetAllStoreUseCase } from '../../applicationLayer/usercases/getAllStores.usecase';
+import { IsNotEmpty } from 'class-validator';
+import { UpdateStoreDto } from '../../Dtos/updateStore.dto';
 
 /**
  * Bigburry Hypersystems LLP - StoreController Definition
@@ -83,11 +85,10 @@ export class StoreController {
   @UseGuards(JwtAuthGuard)
   async updatestore(
     @Req() request: AuthRequest,
-    @Body() store_id: string,
-    field: string,
-    value: string,
+    @Body() udpateStoreDto: UpdateStoreDto
   ) {
-    return this.updateStoreUsecase.execute(store_id, field, value);
+    
+    return this.updateStoreUsecase.execute(udpateStoreDto);
   }
 
   /**
