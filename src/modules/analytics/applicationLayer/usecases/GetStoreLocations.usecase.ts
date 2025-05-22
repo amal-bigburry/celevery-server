@@ -49,9 +49,10 @@ export class GetStoreLocationsUsecase {
       lat: number;
       log: number;
       store_name: string;
+      store_id:string;
     }[] = [];
     stores.map((store) => {
-      finalstores.push({ lat: store.lat, log: store.log , store_name:store.store_name});
+      finalstores.push({ lat: store.lat, log: store.log , store_name:store.store_name, store_id: store._id});
     });
     const total = finalstores.length;
     /**

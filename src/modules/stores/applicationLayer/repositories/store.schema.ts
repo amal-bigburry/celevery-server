@@ -31,7 +31,7 @@ import { Document } from 'mongoose';
  * 
  * Company: BigBurry Hypersystems LLP
  */
-@Schema()
+@Schema({timestamps:true})
 export class licenseDetails extends Document {
   @Prop()
   licensed_by: string;

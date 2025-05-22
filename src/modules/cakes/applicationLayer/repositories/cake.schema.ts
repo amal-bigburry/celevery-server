@@ -7,7 +7,7 @@ import { Document } from 'mongoose';
 /**
  * Schema representing the CakeVariant embedded document
  */
-@Schema()
+@Schema({timestamps:true})
 export class CakeVariant {
   /**
    * Preparation time in minutes for this cake variant

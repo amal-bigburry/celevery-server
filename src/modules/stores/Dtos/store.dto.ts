@@ -15,6 +15,7 @@ import {
  * The StoreDto class outlines the schema required for operations that involve creation or modification of store records. It contains metadata about store ownership, contact details, licensing, geolocation, and identification documents. Each property is optionally adorned with validation decorators, where applicable, to assert both presence and type correctness. Several mismatches exist between data types and validators—for instance, numeric fields being validated as strings—which are preserved unmodified in accordance with company policy that prohibits source logic edits.
  */
 export class StoreDto {
+  _id:string;
   store_owner_id: string;
   @IsNotEmpty()
   store_name: string;

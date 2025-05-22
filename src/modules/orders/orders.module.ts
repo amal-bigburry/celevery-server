@@ -50,7 +50,6 @@ import { NotificationModule } from '../Notifications/notification.module';
 import { MqttModule } from '../mqtt/mqtt.module';
 import { GetOrdersToAnalyse } from './applicationLayer/use-cases/getOrderToAnalyse.usecase';
 import { OrderController } from './infrastructureLayer/controllers/orders.controller';
-import { RequestOrderController } from './infrastructureLayer/controllers/request_order.controller';
 import { GetOrderDetailsUseCase } from './applicationLayer/use-cases/get_order_details.usecase';
 import { GetAllPaymentWaitingOrdersUseCase } from './applicationLayer/use-cases/get_all_payment_waiting_orders.usecase';
 import { GET_ORDERS_OFCAKE } from './applicationLayer/tokens/get_orders_with_cakeid.token';
@@ -85,7 +84,6 @@ import { UpdateKnownForOfCakeUseCaseImp } from './infrastructureLayer/repositori
      */
     OrderController,
     ChangeOrderStatus,
-    RequestOrderController,
   ],
   providers: [
     /**

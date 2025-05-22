@@ -88,9 +88,10 @@ export class HerosRepositoryImp implements HerosRepository {
         }),
       );
       s3Url = `https://${this.configService.get<string>('AWS_BUCKET_NAME')}.s3.${this.configService.get<string>('AWS_REGION')}.amazonaws.com/${s3FileName}`;
-      heroDto.hero_content_url = s3Url;
-      heroDto.hero_content_type = fileExtension;
-      return heroDto;
+      
+      // heroDto.hero_content_url = s3Url;
+      // heroDto.hero_content_type = fileExtension;
+      return {...heroDto, hero_content_type: fileExtension, hero_content_url:s3Url};
     } catch (error) {
       console.error('S3 Upload Error:', error);
       throw new BadRequestException('Image Not saved, Aws not Connected');

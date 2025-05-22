@@ -28,7 +28,7 @@ import { Document } from 'mongoose';
  * This class extends Mongoose Document to inherit database interaction capabilities.
  * ******************************************************************************************************
  */
-@Schema()
+@Schema({timestamps:true})
 export class User extends Document {
   @Prop({ required: true, unique: true })
   email: string;

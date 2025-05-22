@@ -105,7 +105,7 @@ export class OrderRepositoryImp implements OrderRepository {
    * @returns A promise that resolves to the newly created order object.
    */
   async create(order: OrderDto): Promise<Object> {
-    console.log(order)
+    // console.log(order)
     const newOrder = new this.orderModel(order);
     return newOrder.save();
   }
@@ -120,18 +120,18 @@ export class OrderRepositoryImp implements OrderRepository {
    */
   async findPlacedOrders(
     user_id: string,
-    page: number,
-    limit: number,
+    page: number = 1,
+    limit: number = 1,
   ): Promise<PaginationDto> {
     const skip = (page - 1) * limit;
     const [data, total] = await Promise.all([
       this.orderModel
-        .find({ user_id })
+        .find({buyer_id: user_id })
         .skip(skip)
         .limit(limit)
         .sort({ createdAt: -1 })
         .exec(),
-      this.orderModel.countDocuments({ user_id }).exec(),
+      this.orderModel.countDocuments({ buyer_id: user_id }).exec(),
     ]);
     return {
       data,
@@ -152,9 +152,11 @@ export class OrderRepositoryImp implements OrderRepository {
    */
   async findReceivedOrders(
     user_id: string,
-    page: number,
-    limit: number,
+    page: number = 1,
+    limit: number = 1,
   ): Promise<PaginationDto> {
+    
+    // console.log(user_id)
     const skip = (page - 1) * limit;
     const filter = { seller_id: user_id };
     const [data, total] = await Promise.all([

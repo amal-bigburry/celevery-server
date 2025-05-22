@@ -28,7 +28,8 @@ import { Document } from 'mongoose';
  *
  * Company: Bigburry Hypersystems LLP
  */
-@Schema()
+
+@Schema({timestamps:true})
 export class HeroDocument extends Document {
   /**
    * Represents the title or headline text associated with the hero content.

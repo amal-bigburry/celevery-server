@@ -13,6 +13,7 @@ import {
   Param,
   Post,
   Query,
+  Req,
   UploadedFiles,
   UseGuards,
   UseInterceptors,
@@ -25,6 +26,7 @@ import { SearchForCakesUseCase } from '../../applicationLayer/use-cases/searchca
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { GetCakeDetailsUseCase } from '../../applicationLayer/use-cases/GetCakeDetailsUseCase';
 import { GetSimilarCakesUseCase } from '../../applicationLayer/use-cases/GetSimilarCakes.usecase';
+import { AuthRequest } from 'src/middlewares/AuthRequest';
 /**
  * Controller handling HTTP requests related to cakes
  */
@@ -59,6 +61,7 @@ export class CakeController {
   async create_cake(
     @UploadedFiles() files: Express.Multer.File[],
     @Body() cakeDto: CakeDto,
+    @Req() request: AuthRequest
   ) {
     // console.log(cakeDto);
     if (!files || files.length === 0) {
@@ -66,7 +69,7 @@ export class CakeController {
         'At least one image file (images) is required!',
       );
     }
-    return this.createCakeUseCase.execute(cakeDto, files);
+    return this.createCakeUseCase.execute(cakeDto, files, request.user['userId']);
   }
   /**
    * Handles GET requests to search cakes by keyword and category

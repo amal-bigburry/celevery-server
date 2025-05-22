@@ -37,7 +37,7 @@ export class CreateCakeUseCase {
    * @param files - Uploaded files representing cake images
    * @returns Promise resolving with created cake object
    */
-  async execute(cakeDto: CakeDto, files): Promise<{ cake: Object }> {
+  async execute(cakeDto: CakeDto, files, user_id:string): Promise<{ cake: Object }> {
     let cakeCategoryIdsInThisCake = cakeDto.cake_category_ids;
     /**
      * Validate the provided category IDs exist in the system
@@ -60,6 +60,9 @@ export class CreateCakeUseCase {
     let store = await this.getStoreUsecase.execute(cakeDto.store_id);
     if (!store) {
       throw new BadRequestException('Invalid store id');
+    }
+    if (store.store_owner_id !== user_id){
+      throw new BadRequestException("This store does belongs to you. Not Permitted.")
     }
     /**
      * Upload the cake images and get URLs

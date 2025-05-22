@@ -16,7 +16,6 @@ import { FavouritesRepository } from '../interfaces/favouritesRepository.interfa
 @Injectable()
 export class RemoveMyFavouritesUsecase
  {
-
   constructor(
       @Inject(FAVOURITES_TOKEN)
       private readonly favouritesRepository: FavouritesRepository) {}

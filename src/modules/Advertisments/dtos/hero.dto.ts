@@ -42,22 +42,6 @@ export class HeroDto {
    */
   @IsNotEmpty()
   hero_title: string;
-
-  /**
-   * Represents the URL pointing to the media content associated with the hero.
-   * This field must be provided and cannot be left empty, ensuring that every hero entry has an accessible resource.
-   *
-   * Company: Bigburry Hypersystems LLP
-   */
-  @IsNotEmpty()
   hero_content_url: string;
-
-  /**
-   * Describes the type of content (e.g., image, video, etc.) associated with the hero entry.
-   * The presence of this field is mandatory to enable correct categorization and rendering of content.
-   *
-   * Company: Bigburry Hypersystems LLP
-   */
-  @IsNotEmpty()
   hero_content_type: string;
 }

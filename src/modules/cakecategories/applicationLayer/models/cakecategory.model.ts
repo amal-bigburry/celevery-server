@@ -10,7 +10,7 @@ import { Document } from 'mongoose';
 /**
  * Schema for Cake Categories
  */
-@Schema()
+@Schema({timestamps:true})
 export class CakeCategoryDocument extends Document {
   /**
    * Category image url is stored like this
