@@ -18,6 +18,7 @@ export class UserEntity {
     public readonly _id: string,
     public display_name: string,
     public contact_number: string,
+    public contact_number_isVerified:Boolean,
     public email: string,
     public password: string,
     public fcm_token: string,

@@ -48,6 +48,7 @@ export class GetUserDetailUseCase {
         user._id.toString(),
         user.display_name,
         user.contact_number, // display_name
+        user.contact_number_isVerified,
         user.email,
         user.password,
         user.fcm_token,

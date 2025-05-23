@@ -52,7 +52,8 @@ import { CakeEntity } from 'src/modules/cakes/domainLayer/entities/cake.entity';
  * ******************************************************************************************************
  */
 export interface UserRepository {
-  findByEmail(email: string): Promise<UserEntity | null>;
+  findByEmail(email: string): Promise<UserEntity>;
+  findByNumber(number: string): Promise<UserEntity>;
   createUser(RegisterDto: RegisterDto): Promise<UserEntity | null>;
   updatefcm(userid: string, token: TokenDto): Promise<string>;
   getfcm(userid: string): Promise<string>;
@@ -61,4 +62,5 @@ export interface UserRepository {
   addFavourite(userid: string, cake_id:string): Promise<string>;
   removeFavourite(userid: string, cake_id:string): Promise<string>;
   getFavourite(userid: string): Promise<Array<CakeEntity>>;
+  updateContactNumber(userid:string, contact_number:string):Promise<string>;
 }

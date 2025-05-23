@@ -20,6 +20,7 @@ import { JwtAuthGuard } from 'src/middlewares/jwtauth.middleware';
 import { AuthRequest } from 'src/middlewares/AuthRequest';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UpdateProfileImageUseCase } from '../../applicationLayer/use-cases/updateProfileImage.usecase';
+import { UpdateContactNumberUsecase } from '../../applicationLayer/use-cases/updateContactNumber.usecase';
 /**
  * ******************************************************************************************************
  * AuthController Class
@@ -34,7 +35,8 @@ export class AuthController {
     private readonly loginUseCase: LoginUseCase,
     private readonly registerUseCase: RegisterUseCase,
     private readonly getUserDetailUseCase: GetUserDetailUseCase,
-    private readonly UpdateProfileImageUseCase : UpdateProfileImageUseCase
+    private readonly UpdateProfileImageUseCase : UpdateProfileImageUseCase,
+    private readonly UpdateContactNumberUsecase : UpdateContactNumberUsecase,
   ) {}
   /**
    * **************************************************************************************************
@@ -71,8 +73,6 @@ export class AuthController {
    */
   @Post('register')
   async register(@Body() RegisterDto: RegisterDto) {
-    RegisterDto.profile_url = "unassigned";
-    RegisterDto.favourites = []
     return this.registerUseCase.execute(RegisterDto);
   }
   @Put('profileimg')
@@ -83,5 +83,11 @@ export class AuthController {
       throw new BadRequestException("Please upload the profile image with the key as file")
     }
     return await this.UpdateProfileImageUseCase.execute(request.user['userId'],file)
+  }
+  @Put('contact_number')
+  @UseGuards(JwtAuthGuard)
+  async update_contact_number(@Req() request: AuthRequest, @Body() data: {contact_number:string}){
+    if(!data.contact_number)throw new BadRequestException("Missing contact_number")
+    return await this.UpdateContactNumberUsecase.execute(request.user['userId'], data.contact_number)
   }
 }

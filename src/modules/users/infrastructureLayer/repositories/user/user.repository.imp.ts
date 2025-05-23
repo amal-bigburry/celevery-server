@@ -40,6 +40,50 @@ export class UserRepositoryImpl implements UserRepository {
     private readonly configService: ConfigService,
     private readonly getCakeDetailsUsecase: GetCakeDetailsUseCase,
   ) {}
+  /**
+   * **************************************************************************************************
+   * findByNumber Method
+   *
+   * Searches the database for a user document matching the provided contact number. Returns a UserEntity
+   * instance if found; otherwise throws BadRequestException.
+   * **************************************************************************************************
+   */
+  async findByNumber(number: string): Promise<UserEntity> {
+    const user = await this.userModel.findOne({ contact_number: number }).exec();
+    if (!user) throw new BadRequestException('User not found');
+    return new UserEntity(
+      user._id.toString(),
+      user.display_name,
+      user.contact_number,
+      user.contact_number_isVerified,
+      user.email,
+      user.password,
+      user.fcm_token,
+      user.profile_url,
+      user.favourites,
+    );
+  }
+  
+  async updateContactNumber(
+    userid: string,
+    contact_number: string,
+  ): Promise<string> {
+
+    const user = await this.userModel.findById(userid);
+    if (!user) {
+      throw new BadRequestException('User not found');
+    }
+
+    // Ensure fields are updated or created
+    user.set({
+      contact_number,
+      contact_number_isVerified: false,
+    });
+
+    await user.save();
+    return 'Contact number updated';
+  }
+
   async addFavourite(userid: string, cake_id: string): Promise<string> {
     let user = await this.userModel.findById(userid);
     let cake = await this.getCakeDetailsUsecase.execute(cake_id);
@@ -109,13 +153,14 @@ export class UserRepositoryImpl implements UserRepository {
    * instance if found; otherwise returns null.
    * **************************************************************************************************
    */
-  async findByEmail(email: string): Promise<UserEntity | null> {
+  async findByEmail(email: string): Promise<UserEntity > {
     const user = await this.userModel.findOne({ email }).exec();
-    if (!user) return null;
+    if (!user) throw new BadRequestException('user not found');
     return new UserEntity(
       user._id.toString(),
       user.display_name,
       user.contact_number,
+      user.contact_number_isVerified,
       user.email,
       user.password,
       user.fcm_token,

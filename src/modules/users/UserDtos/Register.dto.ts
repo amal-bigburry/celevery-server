@@ -35,6 +35,7 @@ export class RegisterDto {
 
   profile_url:string;
   favourites:Array<string>;
+  contact_number_isVerified:Boolean;
 
   @IsString()
   @IsNotEmpty()
