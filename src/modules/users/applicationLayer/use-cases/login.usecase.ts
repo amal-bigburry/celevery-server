@@ -18,7 +18,7 @@ import { JwtService } from '@nestjs/jwt';
 import { LoginDto } from '../../UserDtos/Login.dto';
 import { USER_REPOSITORY } from '../tokens/userRepository.token';
 import { UserEntity } from '../../domainLayer/entities.ts/user.entity';
-
+import * as bcrypt from 'bcrypt';
 /**
  * ******************************************************************************************************
  * LoginUseCase Class
@@ -41,22 +41,35 @@ export class LoginUseCase {
    * Takes LoginDto containing email and password, verifies the credentials against stored user data, and if
    * valid, returns an access token signed with the user's email and ID as payload. Throws an exception on failure.
    * **************************************************************************************************
-   */
-  async execute(loginDto: LoginDto): Promise<{ access_token: string }> {
+   */ async execute(loginDto: LoginDto): Promise<{ access_token: string }> {
     let user: UserEntity;
+
+    // Check if the input is an email or phone number
     const isEmail = loginDto.emailOrNumber.includes('@');
     if (isEmail) {
       user = await this.userRepo.findByEmail(loginDto.emailOrNumber);
     } else {
       user = await this.userRepo.findByNumber(loginDto.emailOrNumber);
     }
-    if (!user || user.password != loginDto.password) {
+
+    // If user is not found, throw an error
+    if (!user) {
       throw new UnauthorizedException('Invalid credentials');
-    } else {
-      const payload = { email: user.email, sub: user._id };
-      return {
-        access_token: this.jwtService.sign(payload),
-      };
     }
+
+    // Compare the provided password with the stored hashed password
+    const isPasswordValid = await bcrypt.compare(
+      loginDto.password,
+      user.password,
+    );
+    if (!isPasswordValid) {
+      throw new UnauthorizedException('Invalid credentials');
+    }
+
+    // Generate JWT token
+    const payload = { email: user.email, sub: user._id };
+    return {
+      access_token: this.jwtService.sign(payload),
+    };
   }
 }

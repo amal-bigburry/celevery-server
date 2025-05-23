@@ -39,10 +39,6 @@ export class RegisterUseCase {
    * **************************************************************************************************
    */
   async execute(RegisterDto: RegisterDto): Promise<{ user: object }> {
-    if(RegisterDto.password.length < 8)
-    {
-      throw new BadRequestException("Password must be minimum 8 charecters")
-    }
     const user = await this.userRepo.createUser(RegisterDto);
     return { user: user ? user : {} };
   }

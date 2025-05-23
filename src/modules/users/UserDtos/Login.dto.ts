@@ -7,9 +7,7 @@
  * email format, and the password field is a non-empty string, ensuring basic input validation before processing.
  * ******************************************************************************************************
  */
-
 import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
-
 /**
  * ******************************************************************************************************
  * LoginDto Class

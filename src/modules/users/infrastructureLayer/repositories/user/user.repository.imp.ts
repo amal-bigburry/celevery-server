@@ -24,7 +24,7 @@ import { randomUUID } from 'crypto';
 import { CakeDto } from 'src/modules/cakes/dtos/cake.dto';
 import { GetCakeDetailsUseCase } from 'src/modules/cakes/applicationLayer/use-cases/GetCakeDetailsUseCase';
 import { CakeEntity } from 'src/modules/cakes/domainLayer/entities/cake.entity';
-
+import * as bcrypt from 'bcrypt';
 /**
  * ******************************************************************************************************
  * UserRepositoryImpl Class
@@ -42,6 +42,22 @@ export class UserRepositoryImpl implements UserRepository {
   ) {}
   /**
    * **************************************************************************************************
+   * updatePassword Method
+   *
+   * Updates the password for the user identified by userid. Throws BadRequestException if user not found.
+   * **************************************************************************************************
+   */
+  async updatePassword(userid: string, password: string): Promise<string> {
+    const user = await this.userModel.findById(userid);
+    if (!user) {
+      throw new BadRequestException('User not found');
+    }
+    user.password = password;
+    await user.save();
+    return 'Password updated successfully';
+  }
+  /**
+   * **************************************************************************************************
    * findByNumber Method
    *
    * Searches the database for a user document matching the provided contact number. Returns a UserEntity
@@ -49,7 +65,9 @@ export class UserRepositoryImpl implements UserRepository {
    * **************************************************************************************************
    */
   async findByNumber(number: string): Promise<UserEntity> {
-    const user = await this.userModel.findOne({ contact_number: number }).exec();
+    const user = await this.userModel
+      .findOne({ contact_number: number })
+      .exec();
     if (!user) throw new BadRequestException('User not found');
     return new UserEntity(
       user._id.toString(),
@@ -63,12 +81,11 @@ export class UserRepositoryImpl implements UserRepository {
       user.favourites,
     );
   }
-  
+
   async updateContactNumber(
     userid: string,
     contact_number: string,
   ): Promise<string> {
-
     const user = await this.userModel.findById(userid);
     if (!user) {
       throw new BadRequestException('User not found');
@@ -153,7 +170,7 @@ export class UserRepositoryImpl implements UserRepository {
    * instance if found; otherwise returns null.
    * **************************************************************************************************
    */
-  async findByEmail(email: string): Promise<UserEntity > {
+  async findByEmail(email: string): Promise<UserEntity> {
     const user = await this.userModel.findOne({ email }).exec();
     if (!user) throw new BadRequestException('user not found');
     return new UserEntity(
@@ -194,7 +211,15 @@ export class UserRepositoryImpl implements UserRepository {
       .findOne({ email: RegisterDto.email })
       .exec();
     if (user) throw new BadRequestException('User already exists');
-    const newUser = new this.userModel(RegisterDto);
+    // Hash the password
+    const saltRounds = 10; // Adjust based on security needs (10 is a good default)
+    const hashedPassword = await bcrypt.hash(RegisterDto.password, saltRounds);
+
+    // Create new user with hashed password
+    const newUser = new this.userModel({
+      ...RegisterDto,
+      password: hashedPassword, // Replace plain password with hashed password
+    });
     return newUser.save();
   }
 

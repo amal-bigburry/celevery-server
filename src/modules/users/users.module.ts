@@ -30,6 +30,7 @@ import { AddToFavouritesUsecase } from './applicationLayer/use-cases/AddToFavour
 import { RemoveMyFavouritesUsecase } from './applicationLayer/use-cases/RemoveMyFavourites.usecase';
 import { CakeModule } from '../cakes/cakes.modules';
 import { UpdateContactNumberUsecase } from './applicationLayer/use-cases/updateContactNumber.usecase';
+import { Update_passwordUsecase } from './applicationLayer/use-cases/Update_password.usecase';
 
 /**
  * ******************************************************************************************************
@@ -71,6 +72,7 @@ import { UpdateContactNumberUsecase } from './applicationLayer/use-cases/updateC
     AddToFavouritesUsecase,
     RemoveMyFavouritesUsecase,
     UpdateContactNumberUsecase,
+    Update_passwordUsecase,
     {
       provide: USER_REPOSITORY,
       useClass: UserRepositoryImpl,

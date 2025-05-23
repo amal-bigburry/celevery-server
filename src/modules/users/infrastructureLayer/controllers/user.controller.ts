@@ -21,6 +21,8 @@ import { AuthRequest } from 'src/middlewares/AuthRequest';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UpdateProfileImageUseCase } from '../../applicationLayer/use-cases/updateProfileImage.usecase';
 import { UpdateContactNumberUsecase } from '../../applicationLayer/use-cases/updateContactNumber.usecase';
+import { AuthGuard } from '@nestjs/passport';
+import { Update_passwordUsecase } from '../../applicationLayer/use-cases/Update_password.usecase';
 /**
  * ******************************************************************************************************
  * AuthController Class
@@ -37,6 +39,7 @@ export class AuthController {
     private readonly getUserDetailUseCase: GetUserDetailUseCase,
     private readonly UpdateProfileImageUseCase : UpdateProfileImageUseCase,
     private readonly UpdateContactNumberUsecase : UpdateContactNumberUsecase,
+    private readonly update_passwordUsecase : Update_passwordUsecase,
   ) {}
   /**
    * **************************************************************************************************
@@ -75,6 +78,22 @@ export class AuthController {
   async register(@Body() RegisterDto: RegisterDto) {
     return this.registerUseCase.execute(RegisterDto);
   }
+
+  @Post('verifyotp')
+  async verifyotp() {
+    return "verified"
+  }
+
+  @Put('password')
+  @UseGuards(JwtAuthGuard)
+  async update_password(@Req() request:AuthRequest, @Body() data:{password:string}) {
+    if(data.password.length < 8){
+      throw new BadRequestException("Invalid password")
+    }
+    let res = await this.update_passwordUsecase.execute(request.user['userId'],data.password)
+    return 'udpated'
+  }
+
   @Put('profileimg')
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(FileInterceptor('file'))
@@ -84,6 +103,7 @@ export class AuthController {
     }
     return await this.UpdateProfileImageUseCase.execute(request.user['userId'],file)
   }
+  
   @Put('contact_number')
   @UseGuards(JwtAuthGuard)
   async update_contact_number(@Req() request: AuthRequest, @Body() data: {contact_number:string}){

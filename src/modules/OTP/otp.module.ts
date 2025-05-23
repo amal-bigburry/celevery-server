@@ -8,9 +8,12 @@
  * Company: BigBurry Hypersystems LLP
  */
 import { Module } from '@nestjs/common';
-import { ConfigModule } from '@nestjs/config';
+import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TwilioService } from './infrastructureLayer/usecases/twilio.otp.usecase';
 import { OtpController } from './infrastructureLayer/controllers/otp.controller';
+import { EmailService } from './infrastructureLayer/usecases/emailService.usecase';
+import { SESClient } from '@aws-sdk/client-ses';
+// import { EmailService } from './infrastructureLayer/usecases/emailService.usecase';
 
 /**
  * Module definition for the Twilio functionality within the application. 
@@ -27,8 +30,9 @@ import { OtpController } from './infrastructureLayer/controllers/otp.controller'
  * Company: BigBurry Hypersystems LLP
  */
 @Module({
+  
   imports: [ConfigModule],  // Importing the ConfigModule to manage configuration and environment variables
-  providers: [TwilioService], // Registering TwilioService as a provider to handle OTP-related services
+  providers: [TwilioService, EmailService, SESClient], // Registering TwilioService as a provider to handle OTP-related services
   controllers: [OtpController], // Registering OtpController to handle HTTP requests related to OTP functionalities
   exports: [TwilioService],    // Exporting TwilioService for use in other modules
 })
