@@ -41,15 +41,22 @@ export class LoginUseCase {
    * Takes LoginDto containing email and password, verifies the credentials against stored user data, and if
    * valid, returns an access token signed with the user's email and ID as payload. Throws an exception on failure.
    * **************************************************************************************************
-   */ async execute(loginDto: LoginDto): Promise<{ access_token: string }> {
-    let user: UserEntity;
+   */ 
+  async execute(loginDto: LoginDto): Promise<{ access_token: string }> {
+    let user: UserEntity | null;
 
     // Check if the input is an email or phone number
     const isEmail = loginDto.emailOrNumber.includes('@');
     if (isEmail) {
       user = await this.userRepo.findByEmail(loginDto.emailOrNumber);
     } else {
-      user = await this.userRepo.findByNumber(loginDto.emailOrNumber);
+      let res = await this.userRepo.findByNumber(loginDto.emailOrNumber);
+      if(res){
+        user = res
+      }
+      else{
+        user = null
+      }
     }
 
     // If user is not found, throw an error

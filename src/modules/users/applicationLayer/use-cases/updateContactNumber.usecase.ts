@@ -11,7 +11,7 @@
  * ******************************************************************************************************
  */
 
-import { Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { UserRepository } from '../repositories/user.repositoty';
 import { TokenDto } from '../../UserDtos/token.dto';
 import { USER_REPOSITORY } from '../tokens/userRepository.token';
@@ -39,6 +39,10 @@ export class UpdateContactNumberUsecase {
    * **************************************************************************************************
    */
   async execute(userid: string, contact_number: string): Promise<string> {
+    let existing = await this.userRepo.findByNumber(contact_number)
+    if(existing){
+      throw new BadRequestException('User Already exist with this number')
+    }
     const user = await this.userRepo.updateContactNumber(userid, contact_number);
     return user;
   }

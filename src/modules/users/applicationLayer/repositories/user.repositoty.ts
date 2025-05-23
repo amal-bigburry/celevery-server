@@ -53,7 +53,7 @@ import { CakeEntity } from 'src/modules/cakes/domainLayer/entities/cake.entity';
  */
 export interface UserRepository {
   findByEmail(email: string): Promise<UserEntity>;
-  findByNumber(number: string): Promise<UserEntity>;
+  findByNumber(number: string): Promise<UserEntity|null>;
   createUser(RegisterDto: RegisterDto): Promise<UserEntity | null>;
   updatefcm(userid: string, token: TokenDto): Promise<string>;
   getfcm(userid: string): Promise<string>;

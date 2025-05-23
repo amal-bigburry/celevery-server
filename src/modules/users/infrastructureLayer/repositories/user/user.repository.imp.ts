@@ -64,22 +64,14 @@ export class UserRepositoryImpl implements UserRepository {
    * instance if found; otherwise throws BadRequestException.
    * **************************************************************************************************
    */
-  async findByNumber(number: string): Promise<UserEntity> {
+  async findByNumber(number: string): Promise<UserEntity | null> {
     const user = await this.userModel
       .findOne({ contact_number: number })
       .exec();
-    if (!user) throw new BadRequestException('User not found');
-    return new UserEntity(
-      user._id.toString(),
-      user.display_name,
-      user.contact_number,
-      user.contact_number_isVerified,
-      user.email,
-      user.password,
-      user.fcm_token,
-      user.profile_url,
-      user.favourites,
-    );
+    if (!user) {
+      return null; // Return null instead of throwing an error
+    }
+    return user;
   }
 
   async updateContactNumber(
