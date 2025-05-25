@@ -14,6 +14,7 @@
  */
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
+import { STORE_STATUS, STORE_WARNINGS } from 'src/common/utils/contants';
 
 /**
  * The `licenseDetails` class represents the schema for storing license-related details of a store. 
@@ -79,6 +80,10 @@ export class Store extends Document {
   store_contact_number: string;
   @Prop({ required: true })
   store_contact_email: string;
+  @Prop({ required: true , default:STORE_STATUS.REQUESTED})
+  store_status: string;
+  @Prop({default:STORE_WARNINGS.REQUESTED, required:true})
+  store_warnings:string;
   @Prop({ required: true, type: licenseDetails })
   store_license_details: licenseDetails;
   @Prop() address: string;

@@ -48,4 +48,6 @@ export class StoreDto {
   log: number;
   license_file_url: string;
   id_proof_file_url: string;
+  store_status:string;
+  store_warining:string;
 }

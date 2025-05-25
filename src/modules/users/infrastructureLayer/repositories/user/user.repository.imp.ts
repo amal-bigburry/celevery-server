@@ -47,8 +47,8 @@ export class UserRepositoryImpl implements UserRepository {
    * Updates the password for the user identified by userid. Throws BadRequestException if user not found.
    * **************************************************************************************************
    */
-  async updatePassword(userid: string, password: string): Promise<string> {
-    const user = await this.userModel.findById(userid);
+  async updatePassword(email: string, password: string): Promise<string> {
+    const user = await this.userModel.findOne({email:email});
     if (!user) {
       throw new BadRequestException('User not found');
     }

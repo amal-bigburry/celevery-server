@@ -23,7 +23,7 @@ import { IGetUserDetailUseCase } from '../../applicationLayer/interfaces/Getuser
 import { GETCAKEDETAILS } from '../../applicationLayer/tokens/getcakedetails.token';
 import { GETUSERDETAILS } from '../../applicationLayer/tokens/getuserdetails.token';
 import { IGetOrderDetailsUseCaese } from '../../applicationLayer/interfaces/IGetOrderDetailsUseCaese.interface';
-import ORDER_STATUS from 'src/common/utils/contants';
+import {ORDER_STATUS} from 'src/common/utils/contants';
 import { GETORDERDETAILS } from '../../applicationLayer/tokens/getOrderDetails.token';
 
 /**

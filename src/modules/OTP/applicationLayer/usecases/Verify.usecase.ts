@@ -11,13 +11,9 @@
  * ******************************************************************************************************
  */
 
-import { Inject, Injectable } from '@nestjs/common';
-import { UserRepository } from '../repositories/user.repositoty';
-import { TokenDto } from '../../UserDtos/token.dto';
-import { USER_REPOSITORY } from '../tokens/userRepository.token';
-import { ResetPasswordDto } from '../../UserDtos/ResetPassword.dto';
-import { OTP_VERIFICATION_SERVICE } from '../tokens/otpVerifyingservice.token';
-import { IOTPVerifyingService } from '../interfaces/IOTPVerifyingService.interface';
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import { REGISTER_OTP_TOKEN } from '../../tokens/ResiterOTP.token';
+import { OTPStorageRepository } from '../repositories/otpStorage.repository';
 
 /**
  * ******************************************************************************************************
@@ -28,11 +24,10 @@ import { IOTPVerifyingService } from '../interfaces/IOTPVerifyingService.interfa
  * ******************************************************************************************************
  */
 @Injectable()
-export class Update_passwordUsecase {
+export class OTPVerifyingService {
   constructor(
-    @Inject(USER_REPOSITORY) private readonly userRepo: UserRepository,
-    @Inject(OTP_VERIFICATION_SERVICE)
-    private readonly OTPVerifyingService: IOTPVerifyingService,
+    @Inject(REGISTER_OTP_TOKEN)
+    private readonly OTPStorageRepository: OTPStorageRepository,
   ) {}
 
   /**
@@ -43,15 +38,14 @@ export class Update_passwordUsecase {
    * and returns a string indicating the outcome of the update operation.
    * **************************************************************************************************
    */
-  async execute(
-    ResetPasswordDto: ResetPasswordDto,
-  ): Promise<boolean> {
-    let isVerified = await this.OTPVerifyingService.verify(
-      ResetPasswordDto.UUID,
-      ResetPasswordDto.OTP,
-    );
-    if (isVerified) {
-      await this.userRepo.updatePassword(ResetPasswordDto.email, ResetPasswordDto.password);
+  async verify(UUID: string, OTP: string): Promise<boolean> {
+    const otp = await this.OTPStorageRepository.get(UUID);
+    const isUsed = await this.OTPStorageRepository.isUsed(UUID)
+    if(isUsed){
+      throw new BadRequestException("Invalid OTP")
+    }
+    if (OTP == otp) {
+      await this.OTPStorageRepository.markAsUsed(UUID)
       return true;
     } else {
       return false;

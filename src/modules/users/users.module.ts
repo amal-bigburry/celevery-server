@@ -31,6 +31,11 @@ import { RemoveMyFavouritesUsecase } from './applicationLayer/use-cases/RemoveMy
 import { CakeModule } from '../cakes/cakes.modules';
 import { UpdateContactNumberUsecase } from './applicationLayer/use-cases/updateContactNumber.usecase';
 import { Update_passwordUsecase } from './applicationLayer/use-cases/Update_password.usecase';
+import { OTPStorageSchema } from '../OTP/applicationLayer/repositories/otpStorage.schema';
+import { REGISTER_OTP_TOKEN } from '../OTP/tokens/ResiterOTP.token';
+import { OTP_VERIFICATION_SERVICE } from './applicationLayer/tokens/otpVerifyingservice.token';
+import { OTPModule } from '../OTP/otp.module';
+import { IOTPVerifyingServiceImp } from './infrastructureLayer/repositories/otp/otpverification.repository.imp';
 
 /**
  * ******************************************************************************************************
@@ -58,6 +63,7 @@ import { Update_passwordUsecase } from './applicationLayer/use-cases/Update_pass
       }),
     }),
     CakeModule,
+    OTPModule,
   ],
   controllers: [AuthController, FcmController],
   providers: [
@@ -76,6 +82,10 @@ import { Update_passwordUsecase } from './applicationLayer/use-cases/Update_pass
     {
       provide: USER_REPOSITORY,
       useClass: UserRepositoryImpl,
+    },
+    {
+      provide: OTP_VERIFICATION_SERVICE,
+      useClass: IOTPVerifyingServiceImp,
     },
   ],
   exports: [

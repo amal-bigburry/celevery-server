@@ -63,5 +63,5 @@ export interface UserRepository {
   removeFavourite(userid: string, cake_id:string): Promise<string>;
   getFavourite(userid: string): Promise<Array<CakeEntity>>;
   updateContactNumber(userid:string, contact_number:string):Promise<string>;
-  updatePassword(userid:string, password:string):Promise<string>;
+  updatePassword(email:string, password:string):Promise<string>;
 }

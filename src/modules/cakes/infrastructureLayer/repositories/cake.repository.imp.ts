@@ -20,6 +20,8 @@ import { ConfigService } from '@nestjs/config';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { IGetStoreUseCase } from '../../applicationLayer/interfaces/getStoreUsecase.interface';
 import { GETSTORE } from '../../applicationLayer/tokens/getstoreusecase.token';
+import { getStoreUsecase } from 'src/modules/stores/applicationLayer/usercases/getStore.usecase';
+import { STORE_STATUS } from 'src/common/utils/contants';
 /**
  * implementation of cake repository
  */
@@ -32,6 +34,7 @@ export class CakeRepositoryImp implements CakeRepository {
     private readonly configService: ConfigService,
     @Inject(GETSTORE)
     private readonly getstoreusecase: IGetStoreUseCase,
+    private readonly getstoreUsecase: getStoreUsecase,
   ) {}
   /**
    * Updates the 'known_for' field of a cake by its ID
@@ -57,9 +60,20 @@ export class CakeRepositoryImp implements CakeRepository {
     lat: number,
   ): Promise<PaginationDto> {
     const cakes = await this.cakeModel.find().exec();
-    if (cakes.length === 0) throw new BadRequestException('No cakes found');
+
+    const openStoreCakes = (
+      await Promise.all(
+        cakes.map(async (cake) => {
+          const store = await this.getstoreUsecase.execute(cake.store_id);
+          return store.store_status === STORE_STATUS.OPEN ? cake : null;
+        }),
+      )
+    ).filter((cake) => cake !== null);
+
+    if (openStoreCakes.length === 0) throw new BadRequestException('No cakes found');
+
     const cakelist = await Promise.all(
-      cakes.map(async (cake) => {
+      openStoreCakes.map(async (cake) => {
         const store = await this.getstoreusecase.execute(cake.store_id);
         const distanceBetweenUserAndCake = getDistanceFromLatLonInKm(
           store?.lat,

@@ -1,12 +1,12 @@
 /**
  * ******************************************************************************************************
  * UpdatefcmUseCase.ts
- * 
- * This injectable class by Bigburry Hypersystems LLP handles the use case for updating the Firebase Cloud Messaging 
- * (FCM) token associated with a user. It uses dependency injection to interact with the UserRepository, 
+ *
+ * This injectable class by Bigburry Hypersystems LLP handles the use case for updating the Firebase Cloud Messaging
+ * (FCM) token associated with a user. It uses dependency injection to interact with the UserRepository,
  * maintaining separation of concerns between business logic and data access.
- * 
- * The execute method takes a user ID and a TokenDto, calls the repository to update the stored FCM token, and 
+ *
+ * The execute method takes a user ID and a TokenDto, calls the repository to update the stored FCM token, and
  * returns a status string indicating the result of the operation.
  * ******************************************************************************************************
  */
@@ -15,12 +15,15 @@ import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { UserRepository } from '../repositories/user.repositoty';
 import { TokenDto } from '../../UserDtos/token.dto';
 import { USER_REPOSITORY } from '../tokens/userRepository.token';
+import { UpdateContactNumberDto } from '../../UserDtos/UpdateContactNumber.dto';
+import { IOTPVerifyingService } from '../interfaces/IOTPVerifyingService.interface';
+import { OTP_VERIFICATION_SERVICE } from '../tokens/otpVerifyingservice.token';
 
 /**
  * ******************************************************************************************************
  * UpdatefcmUseCase Class
- * 
- * Manages the update process of the FCM token for a user within the Bigburry Hypersystems LLP system, ensuring 
+ *
+ * Manages the update process of the FCM token for a user within the Bigburry Hypersystems LLP system, ensuring
  * push notification tokens are current and valid.
  * ******************************************************************************************************
  */
@@ -28,22 +31,38 @@ import { USER_REPOSITORY } from '../tokens/userRepository.token';
 export class UpdateContactNumberUsecase {
   constructor(
     @Inject(USER_REPOSITORY) private readonly userRepo: UserRepository,
+    @Inject(OTP_VERIFICATION_SERVICE)
+    private readonly OTPVerifyingService: IOTPVerifyingService,
   ) {}
 
   /**
    * **************************************************************************************************
    * execute Method
-   * 
-   * Accepts a user ID and a TokenDto representing the new FCM token, updates the repository with this token, 
+   *
+   * Accepts a user ID and a TokenDto representing the new FCM token, updates the repository with this token,
    * and returns a string indicating the outcome of the update operation.
    * **************************************************************************************************
    */
-  async execute(userid: string, contact_number: string): Promise<string> {
-    let existing = await this.userRepo.findByNumber(contact_number)
-    if(existing){
-      throw new BadRequestException('User Already exist with this number')
+  async execute(
+    userid: string,
+    UpdateContactNumberDto: UpdateContactNumberDto,
+  ): Promise<boolean> {
+    let existing = await this.userRepo.findById(userid);
+    if (!existing) {
+      throw new BadRequestException('User not found');
     }
-    const user = await this.userRepo.updateContactNumber(userid, contact_number);
-    return user;
+    let isVerified = await this.OTPVerifyingService.verify(
+      UpdateContactNumberDto.UUID,
+      UpdateContactNumberDto.OTP,
+    );
+    if (isVerified) {
+      const user = await this.userRepo.updateContactNumber(
+        userid,
+        UpdateContactNumberDto.number,
+      );
+      return true;
+    } else {
+      return false;
+    }
   }
 }

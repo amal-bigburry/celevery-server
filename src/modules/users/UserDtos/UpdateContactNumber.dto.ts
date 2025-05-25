@@ -18,29 +18,13 @@ import { IsEmail, IsNotEmpty, IsString, MaxLength, MinLength } from 'class-valid
  * The contact_number field is present but does not have validation decorators applied.
  * ******************************************************************************************************
  */
-export class RegisterDto {
-  @IsEmail()
-  @IsNotEmpty()
-  email: string;
-
-  contact_number: string;
+export class UpdateContactNumberDto {
 
   @IsString()
   @IsNotEmpty()
   @MinLength(8)
-  password: string;
+  number: string;
 
-  @IsString()
-  @IsNotEmpty()
-  display_name: string;
-
-  profile_url:string;
-  favourites:Array<string>;
-  contact_number_isVerified:Boolean;
-
-  @IsString()
-  @IsNotEmpty()
-  fcm_token: string;
   @IsNotEmpty()
   UUID:string;
   @IsNotEmpty()

@@ -1,22 +1,40 @@
 /**
- * Order status options 
+ * Order status options
  * Defines all possible states an order can be in throughout its lifecycle.
  */
-const ORDER_STATUS = {
-    REQUESTED: "REQUESTED", // Order has been placed but not yet processed
-    CANCELLED: "CANCELLED", // Order has been cancelled by user or system
-    WAITINGTOPAY: "WAITINGTOPAY", // Order is waiting for payment confirmation
-    PAID: "PAID", // Payment has been successfully received
-    PREPAIRING: "PREPAIRING", // Order is being prepared
-    PACKED: "PACKED", // Order has been packed and is ready for shipping
-    WAITINGFORPICKUP: "WAITINGFORPICKUP", // Order is awaiting pickup by delivery personnel
-    UNDELIVERED: "UNDELIVERED", // Delivery attempt failed or not completed
-    DELIVERED: "DELIVERED", // Order has been successfully delivered
-    WAITINGTOREFUND: "WAITINGTOREFUND", // Refund process is pending
-    REFUNDED: "REFUNDED" // Refund has been successfully processed
-}
-/**
- * Exporting the order status 
- * Makes ORDER_STATUS object available for use in other modules.
- */
-export default ORDER_STATUS
+export const ORDER_STATUS = {
+  REQUESTED: 'REQUESTED', // Order has been placed but not yet processed
+  CANCELLED: 'CANCELLED', // Order has been cancelled by user or system
+  WAITINGTOPAY: 'WAITINGTOPAY', // Order is waiting for payment confirmation
+  PAID: 'PAID', // Payment has been successfully received
+  PREPAIRING: 'PREPAIRING', // Order is being prepared
+  PACKED: 'PACKED', // Order has been packed and is ready for shipping
+  WAITINGFORPICKUP: 'WAITINGFORPICKUP', // Order is awaiting pickup by delivery personnel
+  UNDELIVERED: 'UNDELIVERED', // Delivery attempt failed or not completed
+  DELIVERED: 'DELIVERED', // Order has been successfully delivered
+  WAITINGTOREFUND: 'WAITINGTOREFUND', // Refund process is pending
+  REFUNDED: 'REFUNDED', // Refund has been successfully processed
+};
+
+export const STORE_STATUS = {
+  REQUESTED: 'REQUESTED',
+  APPROVED: 'REQUESTED',
+  OPEN: 'OPEN',
+  CLOSE: 'CLOSE',
+  SUSPENDED: 'SUSPENDED',
+  PAYMENTPENDING: 'PAYMENTPENDING',
+  REREQUEST: 'REREQUEST',
+};
+
+export const STORE_WARNINGS = {
+  REQUESTED: 'We are reviewing your store. Mostly it takes less that 24 hours.',
+  OPEN: 'Store is Open',
+  CLOSE: 'Store is closed',
+  SUSPENDED: `Your account has been suspended due to a violation of our terms or unusual activity,
+Access to certain features may be restricted.
+If you believe this is a mistake or need assistance, please contact support at 
+support@example.com.
+`,
+  PAYMENTPENDING: 'Your Payment is pending',
+  REREQUEST: 'Your Request has been Rejected',
+};

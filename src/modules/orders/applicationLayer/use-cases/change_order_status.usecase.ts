@@ -15,7 +15,7 @@ import {
 } from '@nestjs/common';
 import { OrderRepository } from '../repositories/order.repositoty';
 import { ChangeOrderStatusDto } from '../../dtos/changeOrderStatus.dto';
-import ORDER_STATUS from 'src/common/utils/contants';
+import {ORDER_STATUS} from 'src/common/utils/contants';
 import { ORDER_REPOSITORY } from '../tokens/orderRepository.token';
 import { INotificationUseCase } from '../interfaces/NotificationUsecase.interface';
 import { IGetCakeDetailsUseCase } from '../interfaces/GetCakeDetailsusecase.interface';

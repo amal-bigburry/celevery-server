@@ -30,6 +30,7 @@ import { GET_ORDERS_OFCAKE } from '../tokens/get_orders_with_cakeid.token';
 import { GetOrdersWithCakeId } from '../interfaces/GetOrdersWithCakeId.interface';
 import { UPDATE_KNOWN_FOR_IN_CAKE } from '../tokens/update_known_for_in_cake.token';
 import { UpdateKnownForOfCakeUseCase } from '../interfaces/UpdateKnownForOfCakeUseCase.interface';
+import { STORE_STATUS } from 'src/common/utils/contants';
 
 /**
  * injectable service file that makes an order request
@@ -75,6 +76,10 @@ export class RequestOrderUseCase {
 
     let store = await this.getstoreUsecase.execute(cake.store_id);
     orderDto.seller_id = store.store_owner_id;
+
+    if(store.store_status != STORE_STATUS.OPEN){
+      throw new BadRequestException('The store is not open')
+    }
 
     let buyer = await this.getuserDetailsUseCase.execute(orderDto.buyer_id);
     if (!buyer) throw new UnauthorizedException('buyer not found');

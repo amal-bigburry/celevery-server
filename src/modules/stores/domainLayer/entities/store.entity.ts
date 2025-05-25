@@ -19,6 +19,8 @@ export class StoreEntity {
     public address: string,
     public lat: number,
     public log: number,
+    public store_status:string,
+    public store_warning:string,
   ) {}
 
   /**

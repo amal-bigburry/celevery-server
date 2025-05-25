@@ -20,12 +20,12 @@ import * as admin from 'firebase-admin';
 import { MqttModule } from './modules/mqtt/mqtt.module';
 import { PaymentModule } from './modules/payments/payments.module';
 import { StoreModule } from './modules/stores/store.module';
-import { TwilioModule } from './modules/OTP/otp.module';
 import { DocumentModule } from './modules/documents/documents.module';
 import { AnalyticsModule } from './modules/analytics/analytics.module';
 import { SellerSupportModule } from './modules/support/support.module';
 import { AdvertismentModule } from './modules/Advertisments/advertisment.module';
 import { FavouritesModule } from './modules/favourites/favourites.module';
+import { OTPModule } from './modules/OTP/otp.module';
 // Initialize Firebase Admin SDK
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
@@ -51,8 +51,6 @@ admin.initializeApp({
     PaymentModule,
     // Store management features
     StoreModule,
-    // OTP and authentication via Twilio
-    TwilioModule,
     // Terms, privacy, and other documents
     DocumentModule,
     // Analytics and reporting
@@ -63,6 +61,7 @@ admin.initializeApp({
     AdvertismentModule,
     // Favourites handler
     FavouritesModule ,
+    OTPModule,
     // Load environment variables globally
     ConfigModule.forRoot({ isGlobal: true }),
     // MongoDB connection (async with env variables)

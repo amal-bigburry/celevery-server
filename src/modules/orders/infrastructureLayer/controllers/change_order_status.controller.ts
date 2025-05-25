@@ -8,7 +8,7 @@ import { Body, Controller, Param, Post, Req, UseGuards } from '@nestjs/common';
 import { ChangeOrderStatusUseCase } from '../../applicationLayer/use-cases/change_order_status.usecase';
 import { ChangeOrderStatusDto } from '../../dtos/changeOrderStatus.dto';
 import { JwtAuthGuard } from 'src/middlewares/jwtauth.middleware';
-import ORDER_STATUS from 'src/common/utils/contants';
+import {ORDER_STATUS} from 'src/common/utils/contants';
 import { AuthRequest } from 'src/middlewares/AuthRequest';
 
 /**

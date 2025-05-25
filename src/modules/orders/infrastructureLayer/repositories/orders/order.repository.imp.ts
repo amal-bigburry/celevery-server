@@ -18,7 +18,7 @@ import { BadRequestException } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
-import ORDER_STATUS from 'src/common/utils/contants';
+import {ORDER_STATUS} from 'src/common/utils/contants';
 import { OrderRepository } from 'src/modules/orders/applicationLayer/repositories/order.repositoty';
 import { Order } from 'src/modules/orders/domainLayer/entities.ts/order.entity';
 import { OrderDto } from 'src/modules/orders/dtos/Order.dto';
