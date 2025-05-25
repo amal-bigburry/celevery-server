@@ -16,7 +16,7 @@ import { OTPVerifyingService } from './applicationLayer/usecases/Verify.usecase'
 import { REGISTER_OTP_TOKEN } from './tokens/ResiterOTP.token';
 import { OTPStorageRepositoryImp } from './infrastructureLayer/implimentations/otpstorage.repository.imp';
 import { MongooseModule } from '@nestjs/mongoose';
-import { OTPStorageSchema } from './applicationLayer/repositories/otpStorage.schema';
+import { OTPStorageSchema } from './infrastructureLayer/models/otpStorage.schema';
 // import { EmailService } from './infrastructureLayer/usecases/emailService.usecase';
 /**
  * Module definition for the Twilio functionality within the application.

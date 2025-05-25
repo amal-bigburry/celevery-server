@@ -8,9 +8,9 @@
  * import the required packages
  */
 import { Inject, Injectable } from '@nestjs/common';
-import { OrderRepository } from '../repositories/order.repositoty';
+import { OrderRepository } from '../interfaces/order.repositoty';
 import { Order } from '../../domainLayer/entities.ts/order.entity';
-import { ORDER_REPOSITORY } from '../tokens/orderRepository.token';
+import { ORDER_REPOSITORY } from '../../tokens/orderRepository.token';
 import { OrderDto } from '../../dtos/Order.dto';
 
 /**

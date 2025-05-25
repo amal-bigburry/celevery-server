@@ -9,16 +9,16 @@
 
 import { forwardRef, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { StoreModel } from './applicationLayer/repositories/store.schema';
+import { StoreModel } from './InfrastructureLayer/models/store.schema';
 import { StoreController } from './InfrastructureLayer/controllers/store.controller';
-import { StoreRepositoryImplimentation } from './InfrastructureLayer/repositories/Store.repository.imp';
+import { StoreRepositoryImplimentation } from './InfrastructureLayer/implimentations/Store.repository.imp';
 import { CreateStoreUsecase } from './applicationLayer/usercases/createStore.usecase';
 import { updateStoreUsecase } from './applicationLayer/usercases/updateStore.usecase';
 import { getStoreUsecase } from './applicationLayer/usercases/getStore.usecase';
 import { CakeModule } from '../cakes/cakes.modules';
-import { CakeSchema } from '../cakes/applicationLayer/repositories/cake.schema';
+import { CakeSchema } from '../cakes/infrastructureLayer/models/cake.schema';
 import { GetAllStoreCakesUsecase } from './applicationLayer/usercases/GetAllStoreCakes.Usecase';
-import { STORE_REPOSITORY } from './applicationLayer/tokens/storeRepository.token';
+import { STORE_REPOSITORY } from './tokens/storeRepository.token';
 import { GetAllStoreUseCase } from './applicationLayer/usercases/getAllStores.usecase';
 import { GetAllStoreInPlatformUsecase } from './applicationLayer/usercases/getAllStoreInPlatform.usecase';
 

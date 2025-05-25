@@ -7,8 +7,8 @@
  * Company: BigBurry Hypersystems LLP
  */
 import { Inject, Injectable } from '@nestjs/common';
-import { PaymentGateway } from '../repository/payment.repository';
-import { PAYMENTTOKEN } from '../tokens/payment.token';
+import { PaymentGateway } from '../interfaces/payment.repository';
+import { PAYMENTTOKEN } from '../../tokens/payment.token';
 
 /**
  * Injectable service responsible for transferring an amount using the payment gateway.

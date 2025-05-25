@@ -12,9 +12,9 @@
  */
 
 import { Inject, Injectable } from '@nestjs/common';
-import { UserRepository } from '../repositories/user.repositoty';
-import { TokenDto } from '../../UserDtos/token.dto';
-import { USER_REPOSITORY } from '../tokens/userRepository.token';
+import { UserRepository } from '../interfaces/user.interface';
+import { TokenDto } from '../../dtos/token.dto';
+import { USER_REPOSITORY } from '../../tokens/userRepository.token';
 
 /**
  * ******************************************************************************************************

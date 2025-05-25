@@ -13,7 +13,7 @@
 
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { REGISTER_OTP_TOKEN } from '../../tokens/ResiterOTP.token';
-import { OTPStorageRepository } from '../repositories/otpStorage.repository';
+import { OTPStorageRepository } from '../interfaces/otpStorage.repository';
 
 /**
  * ******************************************************************************************************

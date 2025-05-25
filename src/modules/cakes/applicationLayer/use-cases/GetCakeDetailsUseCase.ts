@@ -6,9 +6,9 @@
  * Importing necessary packages and dependencies
  */
 import { BadRequestException, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
-import { CakeRepository } from '../repositories/cake.repository';
+import { CakeRepository } from '../interfaces/cake.repository';
 import { CakeEntity } from '../../domainLayer/entities/cake.entity';
-import { CAKE_REPOSITORY } from '../tokens/cakeRepository.token';
+import { CAKE_REPOSITORY } from '../../tokens/cakeRepository.token';
 /**
  * Injectable use case class to get details of a cake by its ID
  */

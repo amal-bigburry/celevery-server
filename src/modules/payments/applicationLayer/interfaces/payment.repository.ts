@@ -8,7 +8,7 @@
  * Company: BigBurry Hypersystems LLP
  */
 import { DtoToGetPaymentSessionId } from 'src/modules/orders/dtos/DtoToGetPaymentSessionId.dto';
-import { DtoToRefund } from '../../Dtos/dtoToRefund.dto';
+import { DtoToRefund } from '../../dtos/dtoToRefund.dto';
 
 /**
  * Interface representing the payment gateway repository.

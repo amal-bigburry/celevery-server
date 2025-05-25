@@ -10,9 +10,9 @@
  * all the cakes stored within a specific store.
  */
 import { Inject, Injectable } from '@nestjs/common';
-import { StoreRepository } from '../repositories/store.repository';
+import { StoreRepository } from '../interfaces/store.interfaces';
 import { CakeDto } from 'src/modules/cakes/dtos/cake.dto';
-import { STORE_REPOSITORY } from '../tokens/storeRepository.token';
+import { STORE_REPOSITORY } from '../../tokens/storeRepository.token';
 
 /** 
  * Bigburry Hypersystems LLP

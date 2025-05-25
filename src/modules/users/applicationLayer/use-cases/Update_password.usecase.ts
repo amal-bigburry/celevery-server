@@ -12,11 +12,11 @@
  */
 
 import { Inject, Injectable } from '@nestjs/common';
-import { UserRepository } from '../repositories/user.repositoty';
-import { TokenDto } from '../../UserDtos/token.dto';
-import { USER_REPOSITORY } from '../tokens/userRepository.token';
-import { ResetPasswordDto } from '../../UserDtos/ResetPassword.dto';
-import { OTP_VERIFICATION_SERVICE } from '../tokens/otpVerifyingservice.token';
+import { UserRepository } from '../interfaces/user.interface';
+import { TokenDto } from '../../dtos/token.dto';
+import { USER_REPOSITORY } from '../../tokens/userRepository.token';
+import { ResetPasswordDto } from '../../dtos/ResetPassword.dto';
+import { OTP_VERIFICATION_SERVICE } from '../../tokens/otpVerifyingservice.token';
 import { IOTPVerifyingService } from '../interfaces/IOTPVerifyingService.interface';
 
 /**

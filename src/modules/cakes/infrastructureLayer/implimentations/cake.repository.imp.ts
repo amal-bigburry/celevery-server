@@ -6,8 +6,6 @@
 /**
  * importing required packages
  */
-import { InjectModel } from '@nestjs/mongoose';
-import { CakeRepository } from '../../applicationLayer/repositories/cake.repository';
 import { Model } from 'mongoose';
 import { CakeEntity } from '../../domainLayer/entities/cake.entity';
 import { CakeDto } from '../../dtos/cake.dto';
@@ -19,9 +17,11 @@ import getDistanceFromLatLonInKm from 'src/common/utils/getDistanceFromLatLonInK
 import { ConfigService } from '@nestjs/config';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { IGetStoreUseCase } from '../../applicationLayer/interfaces/getStoreUsecase.interface';
-import { GETSTORE } from '../../applicationLayer/tokens/getstoreusecase.token';
+import { GETSTORE } from '../../tokens/getstoreusecase.token';
 import { getStoreUsecase } from 'src/modules/stores/applicationLayer/usercases/getStore.usecase';
 import { STORE_STATUS } from 'src/common/utils/contants';
+import { CakeRepository } from '../../applicationLayer/interfaces/cake.repository';
+import { InjectModel } from '@nestjs/mongoose';
 /**
  * implementation of cake repository
  */

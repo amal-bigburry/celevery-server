@@ -6,8 +6,8 @@
  * Importing required packages for updating cake details
  */
 import { Inject, Injectable } from '@nestjs/common';
-import { CakeRepository } from '../repositories/cake.repository';
-import { CAKE_REPOSITORY } from '../tokens/cakeRepository.token';
+import { CakeRepository } from '../interfaces/cake.repository';
+import { CAKE_REPOSITORY } from '../../tokens/cakeRepository.token';
 /**
  * Injectable service class to update the "known for" attribute of a cake
  */

@@ -23,12 +23,12 @@ import { AuthRequest } from 'src/middlewares/AuthRequest';
 import { CreateStoreUsecase } from '../../applicationLayer/usercases/createStore.usecase';
 import { updateStoreUsecase } from '../../applicationLayer/usercases/updateStore.usecase';
 import { getStoreUsecase } from '../../applicationLayer/usercases/getStore.usecase';
-import { StoreDto } from '../../Dtos/store.dto';
+import { StoreDto } from '../../dtos/store.dto';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { GetAllStoreCakesUsecase } from '../../applicationLayer/usercases/GetAllStoreCakes.Usecase';
 import { GetAllStoreUseCase } from '../../applicationLayer/usercases/getAllStores.usecase';
 import { IsNotEmpty } from 'class-validator';
-import { UpdateStoreDto } from '../../Dtos/updateStore.dto';
+import { UpdateStoreDto } from '../../dtos/updateStore.dto';
 
 /**
  * Bigburry Hypersystems LLP - StoreController Definition

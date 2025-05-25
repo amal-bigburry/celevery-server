@@ -4,7 +4,7 @@
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CakeCategoryEntity } from '../../domainLayer/entities/cakecategory.entity';
-import { CakeCategoryRepository } from '../../applicationLayer/repositories/cakecategory.repository';
+import { CakeCategoryRepository } from '../../applicationLayer/interfaces/cakecategory.repository';
 import { CakeCategoryDto } from '../../dtos/cakecategory.dto';
 import {
   BadRequestException,

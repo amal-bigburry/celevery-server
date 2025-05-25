@@ -9,8 +9,8 @@
  * related to deleting a store from the platform.
  */
 import { Inject, Injectable } from '@nestjs/common';
-import { StoreRepository } from '../repositories/store.repository';
-import { STORE_REPOSITORY } from '../tokens/storeRepository.token';
+import { StoreRepository } from '../interfaces/store.interfaces';
+import { STORE_REPOSITORY } from '../../tokens/storeRepository.token';
 
 /** 
  * Bigburry Hypersystems LLP

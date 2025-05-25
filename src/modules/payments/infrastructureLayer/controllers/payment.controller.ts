@@ -15,11 +15,11 @@ import { TransferAmountUsecase } from '../../applicationLayer/use-cases/tranfer.
 import {ORDER_STATUS} from 'src/common/utils/contants';
 import { ChangeOrderStatusDto } from 'src/modules/orders/dtos/changeOrderStatus.dto';
 import { DtoToGetPaymentSessionId } from 'src/modules/orders/dtos/DtoToGetPaymentSessionId.dto';
-import { DtoToRefund } from '../../Dtos/dtoToRefund.dto';
+import { DtoToRefund } from '../../dtos/dtoToRefund.dto';
 import { IChangeOrderStatusUseCase } from '../../applicationLayer/interfaces/IChangeOrderStatusUseCase.interface';
 import { IGetAllPaymentWaitingOrdersUseCase } from '../../applicationLayer/interfaces/IGetAllPaymentWaitingOrdersUseCase.interface';
-import { CHANGEORDERSTATUS } from '../../applicationLayer/tokens/changeorderstatus.token';
-import { GETPAYMENTWAITINGORDERS } from '../../applicationLayer/tokens/getallpaymentwaiting.token';
+import { CHANGEORDERSTATUS } from '../../tokens/changeorderstatus.token';
+import { GETPAYMENTWAITINGORDERS } from '../../tokens/getallpaymentwaiting.token';
 import { AuthRequest } from 'src/middlewares/AuthRequest';
 import { JwtAuthGuard } from 'src/middlewares/jwtauth.middleware';
 

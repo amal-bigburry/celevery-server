@@ -8,9 +8,9 @@
  * Company: BigBurry Hypersystems LLP
  */
 import { Inject, Injectable } from '@nestjs/common';
-import { PaymentGateway } from '../repository/payment.repository';
-import { DtoToRefund } from '../../Dtos/dtoToRefund.dto';
-import { PAYMENTTOKEN } from '../tokens/payment.token';
+import { PaymentGateway } from '../interfaces/payment.repository';
+import { DtoToRefund } from '../../dtos/dtoToRefund.dto';
+import { PAYMENTTOKEN } from '../../tokens/payment.token';
 
 /**
  * Injectable service responsible for processing payment refunds.

@@ -18,7 +18,7 @@ import {
 } from '@nestjs/common';
 import { REGISTER_OTP_TOKEN } from 'src/modules/OTP/tokens/ResiterOTP.token';
 import { Twilio } from 'twilio';
-import { OTPStorageRepository } from '../repositories/otpStorage.repository';
+import { OTPStorageRepository } from '../interfaces/otpStorage.repository';
 import { SendEmailCommand, SESClient } from '@aws-sdk/client-ses';
 import { ConfigService } from '@nestjs/config';
 

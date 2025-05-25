@@ -11,11 +11,11 @@
  * Company: BigBurry Hypersystems LLP
  */
 import { Inject, Injectable } from '@nestjs/common';
-import { PaymentGateway } from '../repository/payment.repository';
+import { PaymentGateway } from '../interfaces/payment.repository';
 import { DtoToGetPaymentSessionId } from 'src/modules/orders/dtos/DtoToGetPaymentSessionId.dto';
-import { PAYMENTTOKEN } from '../tokens/payment.token';
+import { PAYMENTTOKEN } from '../../tokens/payment.token';
 import { IGetOrderDetailsUseCaese } from '../interfaces/IGetOrderDetailsUseCaese.interface';
-import { GETORDERDETAILS } from '../tokens/getOrderDetails.token';
+import { GETORDERDETAILS } from '../../tokens/getOrderDetails.token';
 
 /**
  * Injectable service responsible for creating a payment session ID for an order.

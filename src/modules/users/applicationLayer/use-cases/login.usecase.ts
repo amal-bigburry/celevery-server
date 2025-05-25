@@ -13,10 +13,10 @@
  */
 
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
-import { UserRepository } from '../repositories/user.repositoty';
+import { UserRepository } from '../interfaces/user.interface';
 import { JwtService } from '@nestjs/jwt';
-import { LoginDto } from '../../UserDtos/Login.dto';
-import { USER_REPOSITORY } from '../tokens/userRepository.token';
+import { LoginDto } from '../../dtos/Login.dto';
+import { USER_REPOSITORY } from '../../tokens/userRepository.token';
 import { UserEntity } from '../../domainLayer/entities.ts/user.entity';
 import * as bcrypt from 'bcrypt';
 /**

@@ -17,7 +17,7 @@
  * by using entities as the fundamental data units within repository operations.
  */
 import { CakeEntity } from 'src/modules/cakes/domainLayer/entities/cake.entity';
-import { StoreDto } from 'src/modules/stores/Dtos/store.dto';
+import { StoreDto } from 'src/modules/stores/dtos/store.dto';
 
 /**
  * Interface representing the CakeRepositoryUseCase contract

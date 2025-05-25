@@ -6,9 +6,9 @@
  * Importing Required Packages
  */
 import { Inject, Injectable } from '@nestjs/common';
-import { CakeCategoryRepository } from '../repositories/cakecategory.repository';
 import { CakeCategoryDto } from '../../dtos/cakecategory.dto';
-import { CAKE_CATEGORY_REPOSITORY } from '../tokens/cakeCategoryRepository.token';
+import { CAKE_CATEGORY_REPOSITORY } from '../../tokens/cakeCategoryRepository.token';
+import { CakeCategoryRepository } from '../interfaces/cakecategory.repository';
 /**
  * Returns an injectable service class for creating cake categories
  */

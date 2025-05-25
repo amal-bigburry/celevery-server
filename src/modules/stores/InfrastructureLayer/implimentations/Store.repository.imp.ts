@@ -6,8 +6,8 @@
  * The necessary packages for database interaction, file management, cloud storage integration, and exception handling are imported. Models are injected using NestJS's dependency injection and AWS S3 is configured for media upload functionality.
  */
 import { ConfigService } from '@nestjs/config';
-import { StoreRepository } from '../../applicationLayer/repositories/store.repository';
-import { StoreDto } from '../../Dtos/store.dto';
+import { StoreRepository } from '../../applicationLayer/interfaces/store.interfaces';
+import { StoreDto } from '../../dtos/store.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
@@ -15,7 +15,7 @@ import { extname } from 'path';
 import { randomUUID } from 'crypto';
 import { BadRequestException } from '@nestjs/common';
 import { CakeDto } from 'src/modules/cakes/dtos/cake.dto';
-import { UpdateStoreDto } from '../../Dtos/updateStore.dto';
+import { UpdateStoreDto } from '../../dtos/updateStore.dto';
 import { STORE_STATUS, STORE_WARNINGS } from 'src/common/utils/contants';
 
 /**

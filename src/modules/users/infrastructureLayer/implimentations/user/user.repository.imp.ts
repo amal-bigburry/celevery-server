@@ -13,9 +13,9 @@
 import { InjectModel } from '@nestjs/mongoose';
 import mongoose, { Model } from 'mongoose';
 import { UserEntity } from 'src/modules/users/domainLayer/entities.ts/user.entity';
-import { UserRepository } from 'src/modules/users/applicationLayer/repositories/user.repositoty';
-import { RegisterDto } from 'src/modules/users/UserDtos/Register.dto';
-import { TokenDto } from 'src/modules/users/UserDtos/token.dto';
+import { UserRepository } from 'src/modules/users/applicationLayer/interfaces/user.interface';
+import { RegisterDto } from 'src/modules/users/dtos/Register.dto';
+import { TokenDto } from 'src/modules/users/dtos/token.dto';
 import { BadRequestException } from '@nestjs/common';
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { ConfigService } from '@nestjs/config';

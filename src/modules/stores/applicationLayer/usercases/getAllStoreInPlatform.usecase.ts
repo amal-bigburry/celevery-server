@@ -8,9 +8,9 @@
  * for enabling the GetAllStoreUseCase class to retrieve store-related data for the specified owner.
  */
 import { Inject, Injectable } from '@nestjs/common';
-import { StoreRepository } from '../repositories/store.repository';
-import { STORE_REPOSITORY } from '../tokens/storeRepository.token';
-import { StoreDto } from '../../Dtos/store.dto';
+import { StoreRepository } from '../interfaces/store.interfaces';
+import { STORE_REPOSITORY } from '../../tokens/storeRepository.token';
+import { StoreDto } from '../../dtos/store.dto';
 
 /** 
  * Bigburry Hypersystems LLP

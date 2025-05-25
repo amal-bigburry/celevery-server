@@ -3,7 +3,7 @@
  */
 import { Injectable } from '@nestjs/common';
 import { IGetStoreUseCase } from '../../applicationLayer/interfaces/getStoreUsecase.interface';
-import { StoreDto } from 'src/modules/stores/Dtos/store.dto';
+import { StoreDto } from 'src/modules/stores/dtos/store.dto';
 import { getStoreUsecase } from 'src/modules/stores/applicationLayer/usercases/getStore.usecase';
 
 /**

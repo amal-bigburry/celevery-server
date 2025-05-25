@@ -6,9 +6,9 @@
  * The following imports include necessary decorators and classes from NestJS as well as custom application-level repository interfaces and tokens, which are used for dependency injection binding and inversion of control.
  */
 import { Inject, Injectable } from '@nestjs/common';
-import { StoreRepository } from '../repositories/store.repository';
-import { STORE_REPOSITORY } from '../tokens/storeRepository.token';
-import { UpdateStoreDto } from '../../Dtos/updateStore.dto';
+import { StoreRepository } from '../interfaces/store.interfaces';
+import { STORE_REPOSITORY } from '../../tokens/storeRepository.token';
+import { UpdateStoreDto } from '../../dtos/updateStore.dto';
 
 /**
  * Bigburry Hypersystems LLP - Internal Service Logic

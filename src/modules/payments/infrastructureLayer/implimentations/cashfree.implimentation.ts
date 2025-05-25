@@ -13,18 +13,18 @@
  * Company: BigBurry Hypersystems LLP
  */
 import axios from 'axios';
-import { PaymentGateway } from 'src/modules/payments/applicationLayer/repository/payment.repository';
+import { PaymentGateway } from 'src/modules/payments/applicationLayer/interfaces/payment.repository';
 import { DtoToGetPaymentSessionId } from 'src/modules/orders/dtos/DtoToGetPaymentSessionId.dto';
 import { ConfigService } from '@nestjs/config';
-import { DtoToRefund } from '../../Dtos/dtoToRefund.dto';
+import { DtoToRefund } from '../../dtos/dtoToRefund.dto';
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { IGetCakeDetailsUseCase } from '../../applicationLayer/interfaces/GetCakeDetailsusecase.interface';
 import { IGetUserDetailUseCase } from '../../applicationLayer/interfaces/GetuserDetailsUsecase.interface';
-import { GETCAKEDETAILS } from '../../applicationLayer/tokens/getcakedetails.token';
-import { GETUSERDETAILS } from '../../applicationLayer/tokens/getuserdetails.token';
+import { GETCAKEDETAILS } from '../../tokens/getcakedetails.token';
+import { GETUSERDETAILS } from '../../tokens/getuserdetails.token';
 import { IGetOrderDetailsUseCaese } from '../../applicationLayer/interfaces/IGetOrderDetailsUseCaese.interface';
 import {ORDER_STATUS} from 'src/common/utils/contants';
-import { GETORDERDETAILS } from '../../applicationLayer/tokens/getOrderDetails.token';
+import { GETORDERDETAILS } from '../../tokens/getOrderDetails.token';
 
 /**
  * The `CashFreePaymentGatewayImp` class implements the `PaymentGateway` interface, providing concrete methods 

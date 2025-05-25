@@ -7,8 +7,8 @@
  * importing the required packages
  */
 import { Inject, Injectable } from '@nestjs/common';
-import { USER_REPOSITORY } from '../tokens/userRepository.token';
-import { UserRepository } from '../repositories/user.repositoty';
+import { USER_REPOSITORY } from '../../tokens/userRepository.token';
+import { UserRepository } from '../interfaces/user.interface';
 import { CakeDto } from 'src/modules/cakes/dtos/cake.dto';
 import { CakeEntity } from 'src/modules/cakes/domainLayer/entities/cake.entity';
 

@@ -7,7 +7,7 @@
  */
 import {
   CakeVariant,
-} from '../../applicationLayer/repositories/cake.schema';
+} from '../../infrastructureLayer/models/cake.schema';
 /**
  * Entity class representing the Cake domain model
  */
@@ -19,7 +19,7 @@ export class CakeEntity {
   static id(
     id: any,
   ): (
-    target: typeof import('../../infrastructureLayer/repositories/cake.repository.imp').CakeRepositoryImp,
+    target: typeof import('../../infrastructureLayer/implimentations/cake.repository.imp').CakeRepositoryImp,
     propertyKey: undefined,
     parameterIndex: 0,
   ) => void {

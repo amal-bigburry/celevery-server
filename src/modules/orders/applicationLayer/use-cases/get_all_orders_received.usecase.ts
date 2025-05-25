@@ -8,9 +8,9 @@
  * importing the required packages
  */
 import { Inject, Injectable } from '@nestjs/common';
-import { OrderRepository } from '../repositories/order.repositoty';
+import { OrderRepository } from '../interfaces/order.repositoty';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
-import { ORDER_REPOSITORY } from '../tokens/orderRepository.token';
+import { ORDER_REPOSITORY } from '../../tokens/orderRepository.token';
 
 /**
  * Injectable service file that gets all the received orders of a seller

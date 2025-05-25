@@ -7,8 +7,8 @@
  * importing the required packages
  */
 import { Inject, Injectable } from '@nestjs/common';
-import { DOCUMENT_REPOSITORY } from '../tokens/documentRepository.token';
-import { DocumentRepository } from '../repositories/documentRepository.repository';
+import { DOCUMENT_REPOSITORY } from '../../tokens/documentRepository.token';
+import { DocumentRepository } from '../interfaces/documentRepository.repository';
 /**
  * injectable file
  */

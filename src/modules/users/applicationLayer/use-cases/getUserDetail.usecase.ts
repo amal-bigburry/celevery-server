@@ -13,9 +13,9 @@
  */
 
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
-import { UserRepository } from '../repositories/user.repositoty';
+import { UserRepository } from '../interfaces/user.interface';
 import { UserEntity } from '../../domainLayer/entities.ts/user.entity';
-import { USER_REPOSITORY } from '../tokens/userRepository.token';
+import { USER_REPOSITORY } from '../../tokens/userRepository.token';
 
 /**
  * ******************************************************************************************************

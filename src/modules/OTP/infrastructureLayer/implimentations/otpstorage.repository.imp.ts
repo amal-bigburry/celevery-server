@@ -16,7 +16,7 @@ import { UserEntity } from 'src/modules/users/domainLayer/entities.ts/user.entit
 import { BadRequestException } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import { GetCakeDetailsUseCase } from 'src/modules/cakes/applicationLayer/use-cases/GetCakeDetailsUseCase';
-import { OTPStorageRepository } from '../../applicationLayer/repositories/otpStorage.repository';
+import { OTPStorageRepository } from '../../applicationLayer/interfaces/otpStorage.repository';
 import { OTPStorageEntity } from 'src/modules/OTP/domainLayer/entities/otpStorage.entity';
 /**
  * ******************************************************************************************************

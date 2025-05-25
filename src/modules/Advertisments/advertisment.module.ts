@@ -12,10 +12,8 @@
  */
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { HeroSchema } from './applicationLayer/schemas/Hero.schema';
+import { HeroSchema } from './InfrastructureLayer/models/Hero.schema';
 import { HeroController } from './InfrastructureLayer/controllers/hero.controller';
-import { CAKE_CATEGORY_REPOSITORY } from '../cakes/applicationLayer/tokens/cakeCategoryRepository.token';
-import { CakeRepositoryImp } from '../cakes/infrastructureLayer/repositories/cake.repository.imp';
 import { CreateHerosUseCase } from './applicationLayer/usecases/CreateHeros.usecase';
 import { DeleteHerosUseCase } from './applicationLayer/usecases/DeleteHeros.usecase';
 import { GetHerosUseCase } from './applicationLayer/usecases/GetHeros.usecase';

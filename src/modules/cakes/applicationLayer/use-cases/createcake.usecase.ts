@@ -3,13 +3,13 @@
  * All rights reserved © Bigburry Hypersystems LLP
  */
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
-import { CakeRepository } from '../repositories/cake.repository';
+import { CakeRepository } from '../interfaces/cake.repository';
 import { CakeDto } from '../../dtos/cake.dto';
-import { CAKE_REPOSITORY } from '../tokens/cakeRepository.token';
-import { CAKE_CATEGORY_REPOSITORY } from '../tokens/cakeCategoryRepository.token';
+import { CAKE_REPOSITORY } from '../../tokens/cakeRepository.token';
+import { CAKE_CATEGORY_REPOSITORY } from '../../tokens/cakeCategoryRepository.token';
 import { CakeCategoryRepository } from '../interfaces/cakeCategoryRepository.interface';
 import { IGetStoreUseCase } from '../interfaces/getStoreUsecase.interface';
-import { GETSTORE } from '../tokens/getstoreusecase.token';
+import { GETSTORE } from '../../tokens/getstoreusecase.token';
 /**
  * Injectable use case class responsible for creating a cake entity
  */

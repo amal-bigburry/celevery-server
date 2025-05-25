@@ -9,9 +9,9 @@
  * enabling the getStoreUsecase class to perform the required functionality of retrieving store data.
  */
 import { Inject, Injectable } from '@nestjs/common';
-import { StoreRepository } from '../repositories/store.repository';
-import { StoreDto } from '../../Dtos/store.dto';
-import { STORE_REPOSITORY } from '../tokens/storeRepository.token';
+import { StoreRepository } from '../interfaces/store.interfaces';
+import { StoreDto } from '../../dtos/store.dto';
+import { STORE_REPOSITORY } from '../../tokens/storeRepository.token';
 
 /** 
  * Bigburry Hypersystems LLP

@@ -8,9 +8,9 @@
  */
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { DocumentRepository } from '../../applicationLayer/repositories/documentRepository.repository';
 import { DocumentEntity } from '../../domainLayer/document.entity';
 import { BadRequestException } from '@nestjs/common';
+import { DocumentRepository } from '../../applicationLayer/interfaces/documentRepository.repository';
 /**
  * implementing document repository
  */

@@ -12,8 +12,8 @@
  * Company: BigBurry Hypersystems LLP
  */
 import { CakeDto } from 'src/modules/cakes/dtos/cake.dto';
-import { StoreDto } from '../../Dtos/store.dto';
-import { UpdateStoreDto } from '../../Dtos/updateStore.dto';
+import { StoreDto } from '../../dtos/store.dto';
+import { UpdateStoreDto } from '../../dtos/updateStore.dto';
 
 /**
  * The `StoreRepository` interface defines the operations related to store management. It specifies the expected 

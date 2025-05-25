@@ -24,8 +24,8 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Order } from './domainLayer/entities.ts/order.entity';
-import { OrderSchema } from './applicationLayer/repositories/order.schema';
-import { OrderRepositoryImp } from './infrastructureLayer/repositories/orders/order.repository.imp';
+import { OrderSchema } from './infrastructureLayer/models/order.schema';
+import { OrderRepositoryImp } from './infrastructureLayer/implimentations/orders/order.repository.imp';
 import { GetAllOrdersReceivedUseCase } from './applicationLayer/use-cases/get_all_orders_received.usecase';
 import { GetAllOrdersPlacedUseCase } from './applicationLayer/use-cases/get_all_orders_placed.usecase';
 import { RequestOrderUseCase } from './applicationLayer/use-cases/request_order.usercase';
@@ -35,16 +35,16 @@ import { CakeModule } from '../cakes/cakes.modules';
 import { ChangeOrderStatus } from './infrastructureLayer/controllers/change_order_status.controller';
 import { ChangeOrderStatusUseCase } from './applicationLayer/use-cases/change_order_status.usecase';
 import { StoreModule } from '../stores/store.module';
-import { ORDER_REPOSITORY } from './applicationLayer/tokens/orderRepository.token';
-import { GET_CAKE_DETAILS } from './applicationLayer/tokens/get_cake_details.token';
-import { GET_STORE_DETAILS } from './applicationLayer/tokens/get_store_details.token';
-import { GET_USER_DETAILS } from './applicationLayer/tokens/get_user_details.token';
+import { ORDER_REPOSITORY } from './tokens/orderRepository.token';
+import { GET_CAKE_DETAILS } from './tokens/get_cake_details.token';
+import { GET_STORE_DETAILS } from './tokens/get_store_details.token';
+import { GET_USER_DETAILS } from './tokens/get_user_details.token';
 import { IGetCakeDetailsUseCaseImp } from './infrastructureLayer/ExternalUseCaseImplimentation/GetCakeDetailsUseCase.implimentation';
 import { IGetStoreUseCaseImp } from './infrastructureLayer/ExternalUseCaseImplimentation/GetStoreUseCase.implimentation';
 import { IGetUserDetailsUsecaseImp } from './infrastructureLayer/ExternalUseCaseImplimentation/GetUserDetailsUsecase.implimentations';
-import { NOTIFICATION_USECASE } from './applicationLayer/tokens/notificationusecase.token';
+import { NOTIFICATION_USECASE } from './tokens/notificationusecase.token';
 import { INotificationUseCaseImp } from './infrastructureLayer/ExternalUseCaseImplimentation/NotificationUsecase.implimentations';
-import { MQTTTOKEN } from './applicationLayer/tokens/mqtt.token';
+import { MQTTTOKEN } from './tokens/mqtt.token';
 import { IMqttServiceImp } from './infrastructureLayer/ExternalUseCaseImplimentation/MqttService.implimentations';
 import { NotificationModule } from '../Notifications/notification.module';
 import { MqttModule } from '../mqtt/mqtt.module';
@@ -52,10 +52,10 @@ import { GetOrdersToAnalyse } from './applicationLayer/use-cases/getOrderToAnaly
 import { OrderController } from './infrastructureLayer/controllers/orders.controller';
 import { GetOrderDetailsUseCase } from './applicationLayer/use-cases/get_order_details.usecase';
 import { GetAllPaymentWaitingOrdersUseCase } from './applicationLayer/use-cases/get_all_payment_waiting_orders.usecase';
-import { GET_ORDERS_OFCAKE } from './applicationLayer/tokens/get_orders_with_cakeid.token';
-import { GetOrdersWithCakeIdImp } from './infrastructureLayer/repositories/orders/get_orders_withcakeid.implimentation';
-import { UPDATE_KNOWN_FOR_IN_CAKE } from './applicationLayer/tokens/update_known_for_in_cake.token';
-import { UpdateKnownForOfCakeUseCaseImp } from './infrastructureLayer/repositories/orders/UpdateKnownForOfCakeUseCase.implimentation';
+import { GET_ORDERS_OFCAKE } from './tokens/get_orders_with_cakeid.token';
+import { GetOrdersWithCakeIdImp } from './infrastructureLayer/implimentations/orders/get_orders_withcakeid.implimentation';
+import { UPDATE_KNOWN_FOR_IN_CAKE } from './tokens/update_known_for_in_cake.token';
+import { UpdateKnownForOfCakeUseCaseImp } from './infrastructureLayer/implimentations/orders/UpdateKnownForOfCakeUseCase.implimentation';
 
 @Module({
   /**

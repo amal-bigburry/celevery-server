@@ -8,11 +8,11 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CakeCategoryController } from './infrastructureLayer/controllers/cakecategory.controller';
-import { CakeCategoryRepositoryImp } from './infrastructureLayer/repositories/cakecategory.repository.imp';
-import { CakeCategoryModel } from './applicationLayer/models/cakecategory.model';
+import { CakeCategoryRepositoryImp } from './infrastructureLayer/implimentations/cakecategory.repository.imp';
+import { CakeCategoryModel } from './infrastructureLayer/models/cakecategory.model';
 import { FindCakeCategoryUseCase } from './applicationLayer/use-cases/getallcakecategory.usecase';
 import { CreateCakeCategoryUseCase } from './applicationLayer/use-cases/createcakecategory.usecase';
-import { CAKE_CATEGORY_REPOSITORY } from './applicationLayer/tokens/cakeCategoryRepository.token';
+import { CAKE_CATEGORY_REPOSITORY } from './tokens/cakeCategoryRepository.token';
 import { FindCakeCategoryByIDUseCase } from './applicationLayer/use-cases/findcategorybyid.usecase';
 /**
  * Defines the CakeCategoryModule which organizes controllers, providers, and imports

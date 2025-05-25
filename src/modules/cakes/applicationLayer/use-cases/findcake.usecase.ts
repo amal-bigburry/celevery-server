@@ -6,9 +6,9 @@
  * Importing required packages for the use case
  */
 import { Inject, Injectable } from '@nestjs/common';
-import { CakeRepository } from '../repositories/cake.repository';
+import { CakeRepository } from '../interfaces/cake.repository';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
-import { CAKE_REPOSITORY } from '../tokens/cakeRepository.token';
+import { CAKE_REPOSITORY } from '../../tokens/cakeRepository.token';
 /**
  * Injectable service class responsible for finding cakes with pagination and location filters
  */

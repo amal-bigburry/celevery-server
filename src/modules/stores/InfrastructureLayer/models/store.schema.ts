@@ -89,13 +89,9 @@ export class Store extends Document {
   @Prop() address: string;
   @Prop() lat: number;
   @Prop() log: number;
-
   @Prop({ required: true }) sunday_status: boolean;
-
   @Prop({ required: true }) sunday_open_at: string;
-
   @Prop({ required: true }) sunday_close_at: string;
-
   @Prop({ required: true }) monday_status: boolean;
 
   @Prop({ required: true }) monday_open_at: string;

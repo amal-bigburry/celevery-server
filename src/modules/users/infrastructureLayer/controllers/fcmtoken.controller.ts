@@ -16,7 +16,7 @@ import { JwtAuthGuard } from 'src/middlewares/jwtauth.middleware';
 import { AuthRequest } from 'src/middlewares/AuthRequest';
 import { UpdatefcmUseCase } from '../../applicationLayer/use-cases/updatefcm.usecase';
 import { Getcurrentfcmusecase } from '../../applicationLayer/use-cases/getcurrentfcm.usecase';
-import { TokenDto } from '../../UserDtos/token.dto';
+import { TokenDto } from '../../dtos/token.dto';
 
 /**
  * ******************************************************************************************************
