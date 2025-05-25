@@ -33,7 +33,7 @@ export class User extends Document {
   @Prop({ required: true, unique: true })
   email: string;
 
-  @Prop({ required: true })
+  @Prop()
   password: string;
 
   @Prop({ required: true })
@@ -41,7 +41,7 @@ export class User extends Document {
   @Prop({ default:'' })
   profile_url: string;
 
-  @Prop({ required: true })
+  @Prop()
   fcm_token: string;
 
   @Prop({ type: [Object], default: [] })

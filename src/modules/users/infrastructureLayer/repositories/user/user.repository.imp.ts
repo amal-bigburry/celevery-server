@@ -42,6 +42,37 @@ export class UserRepositoryImpl implements UserRepository {
   ) {}
   /**
    * **************************************************************************************************
+   * createGoogleUser Method
+   *
+   * Creates a new user using Google authentication details. If a user with the given email already exists,
+   * returns a message indicating so. Otherwise, creates a new user with the provided email, profile_url,
+   * and display_name, and returns a success message.
+   * **************************************************************************************************
+   */
+  async createGoogleUser(email: string, profile_url: string, display_name: string): Promise<string> {
+    // Check if user already exists
+    const existingUser = await this.userModel.findOne({ email }).exec();
+    if (existingUser) {
+      throw new BadRequestException('User already exists')
+    }
+
+    // Create new user with Google details (no password)
+    const newUser = new this.userModel({
+      email,
+      profile_url,
+      display_name,
+      password: '', // No password for Google users
+      contact_number: '',
+      contact_number_isVerified: false,
+      fcm_token: '',
+      favourites: [],
+    });
+
+    await newUser.save();
+    return 'Google user created successfully';
+  }
+  /**
+   * **************************************************************************************************
    * updatePassword Method
    *
    * Updates the password for the user identified by userid. Throws BadRequestException if user not found.

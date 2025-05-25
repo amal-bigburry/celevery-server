@@ -36,6 +36,9 @@ import { REGISTER_OTP_TOKEN } from '../OTP/tokens/ResiterOTP.token';
 import { OTP_VERIFICATION_SERVICE } from './applicationLayer/tokens/otpVerifyingservice.token';
 import { OTPModule } from '../OTP/otp.module';
 import { IOTPVerifyingServiceImp } from './infrastructureLayer/repositories/otp/otpverification.repository.imp';
+import { RegisterUsingGoogleUseCase } from './applicationLayer/use-cases/RegisterUsingGoogle.usecase';
+import { LoginUsingGoogleUseCase } from './applicationLayer/use-cases/loginUsingGoogle.usecase';
+import { GoogleLoginStrategy, GoogleRegisterStrategy } from 'src/middlewares/google.strategy';
 
 /**
  * ******************************************************************************************************
@@ -79,6 +82,10 @@ import { IOTPVerifyingServiceImp } from './infrastructureLayer/repositories/otp/
     RemoveMyFavouritesUsecase,
     UpdateContactNumberUsecase,
     Update_passwordUsecase,
+    GoogleLoginStrategy,
+    GoogleRegisterStrategy,
+    RegisterUsingGoogleUseCase,
+    LoginUsingGoogleUseCase,
     {
       provide: USER_REPOSITORY,
       useClass: UserRepositoryImpl,

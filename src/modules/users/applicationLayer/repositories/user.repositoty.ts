@@ -64,4 +64,5 @@ export interface UserRepository {
   getFavourite(userid: string): Promise<Array<CakeEntity>>;
   updateContactNumber(userid:string, contact_number:string):Promise<string>;
   updatePassword(email:string, password:string):Promise<string>;
+  createGoogleUser(email:string, profile_url:string, display_name:string):Promise<string>;
 }

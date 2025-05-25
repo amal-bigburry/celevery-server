@@ -35,6 +35,9 @@ import { UpdateContactNumberUsecase } from '../../applicationLayer/use-cases/upd
 import { Update_passwordUsecase } from '../../applicationLayer/use-cases/Update_password.usecase';
 import { ResetPasswordDto } from '../../UserDtos/ResetPassword.dto';
 import { UpdateContactNumberDto } from '../../UserDtos/UpdateContactNumber.dto';
+import { AuthGuard } from '@nestjs/passport';
+import { RegisterUsingGoogleUseCase } from '../../applicationLayer/use-cases/RegisterUsingGoogle.usecase';
+import { LoginUsingGoogleUseCase } from '../../applicationLayer/use-cases/loginUsingGoogle.usecase';
 /**
  * ******************************************************************************************************
  * AuthController Class
@@ -52,6 +55,8 @@ export class AuthController {
     private readonly UpdateProfileImageUseCase: UpdateProfileImageUseCase,
     private readonly UpdateContactNumberUsecase: UpdateContactNumberUsecase,
     private readonly update_passwordUsecase: Update_passwordUsecase,
+    private readonly registerUsingGoogleUseCase: RegisterUsingGoogleUseCase,
+    private readonly loginUsingGoogleUseCase: LoginUsingGoogleUseCase,
   ) {}
   /**
    * **************************************************************************************************
@@ -64,6 +69,23 @@ export class AuthController {
   @Post('login')
   async login(@Body() loginDto: LoginDto) {
     return this.loginUseCase.execute(loginDto);
+  }
+
+  @Get('login/google')
+  @UseGuards(AuthGuard('login'))
+  async googleAuthLogin(@Req() req) {
+    // initiates the Google OAuth2 login flow
+  }
+
+  @Get('login/google/redirect')
+  @UseGuards(AuthGuard('login'))
+  async googleAuthLoginRedirect(@Req() req) {
+    // return req.user['email']
+    let data = {
+      email: req.user['email']
+    };
+    return await this.loginUsingGoogleUseCase.execute(data); // or redirect, store user in DB, etc.
+    // initiates the Google OAuth2 login flow
   }
   /**
    * **************************************************************************************************
@@ -87,20 +109,32 @@ export class AuthController {
    * **************************************************************************************************
    */
 
-
   @Post('register')
   async register(@Body() RegisterDto: RegisterDto) {
     return this.registerUseCase.execute(RegisterDto);
   }
 
-  @Put('password')
-  async update_password(
-    @Body() ResetPasswordDto: ResetPasswordDto,
-  ) {
+  @Get('register/google')
+  @UseGuards(AuthGuard('register'))
+  async googleAuthregister(@Req() req) {
+    // initiates the Google OAuth2 login flow
+  }
 
-    let res = await this.update_passwordUsecase.execute(
-      ResetPasswordDto,
-    );
+  @Get('register/google/redirect')
+  @UseGuards(AuthGuard('register'))
+  async googleAuthRegisterRedirect(@Req() req) {
+    // return req.user['email']
+    let data = {
+      email: req.user['email'],
+      display_name: req.user['display_name'],
+      profile_url: req.user['picture'],
+    };
+    return await this.registerUsingGoogleUseCase.execute(data); // or redirect, store user in DB, etc.
+  }
+
+  @Put('password')
+  async update_password(@Body() ResetPasswordDto: ResetPasswordDto) {
+    let res = await this.update_passwordUsecase.execute(ResetPasswordDto);
     return res;
   }
 
@@ -128,12 +162,11 @@ export class AuthController {
     @Req() request: AuthRequest,
     @Body() UpdateContactNumberDto: UpdateContactNumberDto,
   ) {
-
-    let res =  await this.UpdateContactNumberUsecase.execute(
+    let res = await this.UpdateContactNumberUsecase.execute(
       request.user['userId'],
       UpdateContactNumberDto,
     );
 
-    return res
+    return res;
   }
 }
