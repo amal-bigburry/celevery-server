@@ -70,7 +70,8 @@ export class CakeRepositoryImp implements CakeRepository {
       )
     ).filter((cake) => cake !== null);
 
-    if (openStoreCakes.length === 0) throw new BadRequestException('No cakes found');
+    if (openStoreCakes.length === 0)
+      throw new BadRequestException('No cakes found');
 
     const cakelist = await Promise.all(
       openStoreCakes.map(async (cake) => {
@@ -141,8 +142,16 @@ export class CakeRepositoryImp implements CakeRepository {
     }
     const cakes = await this.cakeModel.find(filter).exec();
 
+    const openStoreCakes = (
+      await Promise.all(
+        cakes.map(async (cake) => {
+          const store = await this.getstoreUsecase.execute(cake.store_id);
+          return store.store_status === STORE_STATUS.OPEN ? cake : null;
+        }),
+      )
+    ).filter((cake) => cake !== null);
     const cakelist = await Promise.all(
-      cakes.map(async (cake) => {
+      openStoreCakes.map(async (cake) => {
         const store = await this.getstoreusecase.execute(cake.store_id);
         const distanceBetweenUserAndCake = getDistanceFromLatLonInKm(
           store?.lat,
