@@ -84,7 +84,7 @@ export class CashFreePaymentGatewayImp implements PaymentGateway {
     );
     if (order.order_status === ORDER_STATUS.REQUESTED) {
       throw new BadRequestException('The order is not confirm to pay.');
-    } else if (order.order_status === ORDER_STATUS.PAID) {
+    } else if (order.order_status === ORDER_STATUS.ORDERED) {
       throw new BadRequestException('The order is already paid.');
     }
     const orderData = {

@@ -31,7 +31,7 @@ export class ChangeOrderStatus {
     /**
      * setting the new order status to WAITINGTOPAY
      */
-    changeOrderStatusDto.new_status = ORDER_STATUS.WAITINGTOPAY;
+    changeOrderStatusDto.new_status = ORDER_STATUS.WAITING_TO_PAY;
     /**
      * assigning user id from the request
      */
@@ -79,7 +79,7 @@ export class ChangeOrderStatus {
     /**
      * setting the new order status to PREPAIRING
      */
-    changeOrderStatusDto.new_status = ORDER_STATUS.PREPAIRING;
+    changeOrderStatusDto.new_status = ORDER_STATUS.PREPARING;
     /**
      * executing the use case to change order status
      */
@@ -123,7 +123,7 @@ export class ChangeOrderStatus {
     /**
      * setting the new order status to WAITINGFORPICKUP
      */
-    changeOrderStatusDto.new_status = ORDER_STATUS.WAITINGFORPICKUP;
+    changeOrderStatusDto.new_status = ORDER_STATUS.WAITING_FOR_PICKUP;
     /**
      * executing the use case to change order status
      */

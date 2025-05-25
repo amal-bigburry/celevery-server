@@ -5,14 +5,14 @@
 export const ORDER_STATUS = {
   REQUESTED: 'REQUESTED', // Order has been placed but not yet processed
   CANCELLED: 'CANCELLED', // Order has been cancelled by user or system
-  WAITINGTOPAY: 'WAITINGTOPAY', // Order is waiting for payment confirmation
-  PAID: 'PAID', // Payment has been successfully received
-  PREPAIRING: 'PREPAIRING', // Order is being prepared
+  WAITING_TO_PAY: 'WAITING_TO_PAY', // Order is waiting for payment confirmation
+  ORDERED: 'ORDERED', // Payment has been successfully received
+  PREPARING: 'PREPAIRING', // Order is being prepared
   PACKED: 'PACKED', // Order has been packed and is ready for shipping
-  WAITINGFORPICKUP: 'WAITINGFORPICKUP', // Order is awaiting pickup by delivery personnel
+  WAITING_FOR_PICKUP: 'WAITING_FOR_PICKUP', // Order is awaiting pickup by delivery personnel
   UNDELIVERED: 'UNDELIVERED', // Delivery attempt failed or not completed
   DELIVERED: 'DELIVERED', // Order has been successfully delivered
-  WAITINGTOREFUND: 'WAITINGTOREFUND', // Refund process is pending
+  REFUND_INITIATED: 'REFUND_INITIATED', // Refund process is pending
   REFUNDED: 'REFUNDED', // Refund has been successfully processed
 };
 

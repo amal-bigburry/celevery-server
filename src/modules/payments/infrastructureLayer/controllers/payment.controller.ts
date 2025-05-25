@@ -128,19 +128,19 @@ export class PaymentController {
       if (webhook_request_data?.payment?.payment_status == 'SUCCESS') {
         updatedstatus = {
           order_id: validOrder.id,
-          new_status: ORDER_STATUS.PAID,
+          new_status: ORDER_STATUS.ORDERED,
           user_id: validOrder.buyer_id,
         };
       } else if (webhook_request_data.payment.payment_status == 'FAILED') {
         updatedstatus = {
           order_id: validOrder.id,
-          new_status: ORDER_STATUS.WAITINGTOPAY,
+          new_status: ORDER_STATUS.WAITING_TO_PAY,
           user_id: validOrder.buyer_id,
         };
       } else if (webhook_request_data.payment.payment_status == 'USER_DROPPED') {
         updatedstatus = {
           order_id: validOrder.id,
-          new_status: ORDER_STATUS.WAITINGTOPAY,
+          new_status: ORDER_STATUS.WAITING_TO_PAY,
           user_id: validOrder.buyer_id,
         };
       }

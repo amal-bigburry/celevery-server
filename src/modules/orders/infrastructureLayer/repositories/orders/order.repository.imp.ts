@@ -84,7 +84,7 @@ export class OrderRepositoryImp implements OrderRepository {
    */
   async findAllPaymentWaitingOrders(): Promise<OrderDto[]> {
     let paymentWaitingOrders = await this.orderModel.find({
-      order_status: ORDER_STATUS.WAITINGTOPAY,
+      order_status: ORDER_STATUS.WAITING_TO_PAY,
     });
     return paymentWaitingOrders;
   }

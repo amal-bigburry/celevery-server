@@ -127,6 +127,7 @@ export class StoreRepositoryImplimentation implements StoreRepository {
       const idProofFileUrl = `https://${this.configService.get<string>('AWS_BUCKET_NAME')}.s3.${this.configService.get<string>('AWS_REGION')}.amazonaws.com/${idProofS3FileName}`;
 
       let dataToStore = {
+        ...storeDto,
         store_name: storeDto.store_name,
         store_contact_number: storeDto.store_contact_number,
         store_contact_email: storeDto.store_contact_email,
@@ -140,7 +141,7 @@ export class StoreRepositoryImplimentation implements StoreRepository {
         store_owner_id: storeDto.store_owner_id,
         address: storeDto.address,
         lat: storeDto.lat,
-        log: storeDto.log,
+        log: storeDto.log
       };
 
       await this.storeModel.create(dataToStore);
