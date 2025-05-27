@@ -8,11 +8,10 @@
  */
 import { CakeEntity } from 'src/modules/cakes/domainLayer/entities/cake.entity';
 import { FavouritesRepository } from '../../applicationLayer/interfaces/favouritesRepository.interface';
-import { CakeDto } from 'src/modules/cakes/dtos/cake.dto';
-import { AddToFavouritesUsecase } from 'src/modules/users/applicationLayer/use-cases/AddToFavourites.usecase';
+import { Injectable } from '@nestjs/common';
+import { AddToFavouritesUsecase } from 'src/modules/users/applicationLayer/use-cases/AddToFavourites/AddToFavourites.usecase';
 import { GetMyFavouritesUsecase } from 'src/modules/users/applicationLayer/use-cases/GetMyFavourites.usecase';
 import { RemoveMyFavouritesUsecase } from 'src/modules/users/applicationLayer/use-cases/RemoveMyFavourites.usecase';
-import { Injectable } from '@nestjs/common';
 /**
  * implementing document repository
  */

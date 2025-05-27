@@ -13,8 +13,8 @@
  */
 
 import { Inject, Injectable } from '@nestjs/common';
-import { UserRepository } from '../interfaces/user.interface';
-import { USER_REPOSITORY } from '../../tokens/userRepository.token';
+import { USER_REPOSITORY } from 'src/modules/users/tokens/userRepository.token';
+import { UserRepository } from '../../interfaces/user.interface';
 
 /**
  * ******************************************************************************************************

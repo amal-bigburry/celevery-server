@@ -62,8 +62,7 @@ export class FavouritesController {
   @UseGuards(JwtAuthGuard)
   async get_favourites(@Body() cake_id: string, @Req() request: AuthRequest) {
     let res = await this.GetMyFavouritesUsecase.execute(
-      request.user['userId'],
-      cake_id,
+      request.user['userId']
     );
     return res;
   }

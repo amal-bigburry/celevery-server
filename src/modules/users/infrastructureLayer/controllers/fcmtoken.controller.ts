@@ -15,8 +15,8 @@ import { Body, Controller, Get, Put, Req, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/middlewares/jwtauth.middleware';
 import { AuthRequest } from 'src/middlewares/AuthRequest';
 import { UpdatefcmUseCase } from '../../applicationLayer/use-cases/updatefcm.usecase';
-import { Getcurrentfcmusecase } from '../../applicationLayer/use-cases/getcurrentfcm.usecase';
 import { TokenDto } from '../../dtos/token.dto';
+import { Getcurrentfcmusecase } from '../../applicationLayer/use-cases/GetCurrentFcm/getcurrentfcm.usecase';
 
 /**
  * ******************************************************************************************************
@@ -46,7 +46,6 @@ export class FcmController {
   async getfcm(@Req() request: AuthRequest) {
     return this.getcurrentfcmusecase.execute(request.user['userId']);
   }
-
   /**
    * **************************************************************************************************
    * updatefcm Method

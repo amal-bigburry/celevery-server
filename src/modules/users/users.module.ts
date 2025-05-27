@@ -20,13 +20,11 @@ import { JwtStrategy } from 'src/middlewares/jwt.strategy';
 import { LoginUseCase } from './applicationLayer/use-cases/login.usecase';
 import { RegisterUseCase } from './applicationLayer/use-cases/register.usecase';
 import { UpdatefcmUseCase } from './applicationLayer/use-cases/updatefcm.usecase';
-import { Getcurrentfcmusecase } from './applicationLayer/use-cases/getcurrentfcm.usecase';
 import { GetUserDetailUseCase } from './applicationLayer/use-cases/getUserDetail.usecase';
 import { UserRepositoryImpl } from './infrastructureLayer/implimentations/user/user.repository.imp';
 import { USER_REPOSITORY } from './tokens/userRepository.token';
 import { UpdateProfileImageUseCase } from './applicationLayer/use-cases/updateProfileImage.usecase';
 import { GetMyFavouritesUsecase } from './applicationLayer/use-cases/GetMyFavourites.usecase';
-import { AddToFavouritesUsecase } from './applicationLayer/use-cases/AddToFavourites.usecase';
 import { RemoveMyFavouritesUsecase } from './applicationLayer/use-cases/RemoveMyFavourites.usecase';
 import { CakeModule } from '../cakes/cakes.modules';
 import { UpdateContactNumberUsecase } from './applicationLayer/use-cases/updateContactNumber.usecase';
@@ -37,6 +35,8 @@ import { IOTPVerifyingServiceImp } from './infrastructureLayer/implimentations/o
 import { RegisterUsingGoogleUseCase } from './applicationLayer/use-cases/RegisterUsingGoogle.usecase';
 import { LoginUsingGoogleUseCase } from './applicationLayer/use-cases/loginUsingGoogle.usecase';
 import { GoogleLoginStrategy, GoogleRegisterStrategy } from 'src/middlewares/google.strategy';
+import { AddToFavouritesUsecase } from './applicationLayer/use-cases/AddToFavourites/AddToFavourites.usecase';
+import { Getcurrentfcmusecase } from './applicationLayer/use-cases/GetCurrentFcm/getcurrentfcm.usecase';
 
 /**
  * ******************************************************************************************************

@@ -26,6 +26,7 @@ import { SellerSupportModule } from './modules/support/support.module';
 import { AdvertismentModule } from './modules/Advertisments/advertisment.module';
 import { FavouritesModule } from './modules/favourites/favourites.module';
 import { OTPModule } from './modules/OTP/otp.module';
+import { WelcomeController } from './app.controller';
 // Initialize Firebase Admin SDK
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
@@ -73,7 +74,7 @@ admin.initializeApp({
       }),
     }),
   ],
-  controllers: [],
+  controllers: [WelcomeController],
   providers: [],
 })
 export class AppModule {}

@@ -27,7 +27,7 @@ export class GetMyFavouritesUsecase {
    * @returns a string indicating the success status
    * @throws UnauthorizedException if there is an error sending the notification
    */
-  async execute(user_id:string, cake_id:string): Promise<Array<CakeEntity>> {
+  async execute(user_id:string): Promise<Array<CakeEntity>> {
     return await this.favouritesRepository.get(user_id)
   }
 
