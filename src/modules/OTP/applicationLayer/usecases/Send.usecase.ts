@@ -10,6 +10,10 @@
  * Company: BigBurry Hypersystems LLP
  */
 
+// ses-test.ts
+
+// Load the AWS SDK for Node.js
+var AWS = require('aws-sdk');
 import {
   BadGatewayException,
   BadRequestException,
@@ -19,8 +23,9 @@ import {
 import { REGISTER_OTP_TOKEN } from 'src/modules/OTP/tokens/ResiterOTP.token';
 import { Twilio } from 'twilio';
 import { OTPStorageRepository } from '../interfaces/otpStorage.repository';
-import { SendEmailCommand, SESClient } from '@aws-sdk/client-ses';
+// import { SendEmailCommand, SESClient } from '@aws-sdk/client-ses';
 import { ConfigService } from '@nestjs/config';
+import { OTP_TEMPLATES } from 'src/templates/email.template';
 
 @Injectable()
 export class OTPSendingService {
@@ -37,22 +42,12 @@ export class OTPSendingService {
   constructor(
     @Inject(REGISTER_OTP_TOKEN)
     private readonly OTPStorageRepository: OTPStorageRepository,
-    private sesClient: SESClient,
     private configService: ConfigService,
   ) {
     const accountSid = process.env.TWILIO_ACCOUNT_SID!;
     const authToken = process.env.TWILIO_AUTH_TOKEN!;
     this.from = process.env.TWILIO_SERVICE_ID!;
     this.client = new Twilio(accountSid, authToken);
-
-    // Reinitialize SES client with credentials from config
-    this.sesClient = new SESClient({
-      region: this.configService.get<string>('AWS_REGION'),
-      credentials: {
-        accessKeyId: this.configService.get<string>('AWS_ACCESS_KEY')!,
-        secretAccessKey: this.configService.get<string>('AWS_SECRET_KEY')!,
-      },
-    });
   }
 
   /**
@@ -69,34 +64,35 @@ export class OTPSendingService {
 
     const OTP = (Math.floor(Math.random() * 900000) + 100000).toString();
     const WaitingTimeOptions = [1, 3, 5, 8, 10];
-    if (existing) {
-      let UUIDDoc = await this.OTPStorageRepository.getOTPDocOf(UUID);
-      if (UUIDDoc.attempts >= 5) {
-        throw new BadRequestException(
-          'You have Already finished your 5 attempts with this UUID',
-        );
-      }
-      let waitingTimeInMilliSeconds =
-        WaitingTimeOptions[UUIDDoc.attempts] * 60000;
-      let LastRequestTimeInMillisecond = new Date(
-        UUIDDoc.last_request_time.toString(),
-      ).getTime();
+    // console.log(existing)
+    // if (existing) {
+    //   let UUIDDoc = await this.OTPStorageRepository.getOTPDocOf(UUID);
+    //   if (UUIDDoc.attempts >= 5) {
+    //     throw new BadRequestException(
+    //       'You have Already finished your 5 attempts with this UUID',
+    //     );
+    //   }
+    //   let waitingTimeInMilliSeconds =
+    //     WaitingTimeOptions[UUIDDoc.attempts] * 60000;
+    //   let LastRequestTimeInMillisecond = new Date(
+    //     UUIDDoc.last_request_time.toString(),
+    //   ).getTime();
 
-      let NextAttemptAt =
-        waitingTimeInMilliSeconds + LastRequestTimeInMillisecond;
-      // console.log(new Date(NextAttemptAt).toLocaleString());
-      if (NextAttemptAt > Date.now()) {
-        throw new BadRequestException(
-          `please wait ${Math.floor((NextAttemptAt - Date.now()) / 1000)} s for the next try`,
-        );
-      } else {
-        await this.OTPStorageRepository.increaseAttempt(UUID, UUIDDoc.attempts);
-        await this.OTPStorageRepository.updateLastRequestTime(UUID, new Date());
-      }
-    } else {
+    //   let NextAttemptAt =
+    //     waitingTimeInMilliSeconds + LastRequestTimeInMillisecond;
+    //   // console.log(new Date(NextAttemptAt).toLocaleString());
+    //   if (NextAttemptAt > Date.now()) {
+    //     throw new BadRequestException(
+    //       `please wait ${Math.floor((NextAttemptAt - Date.now()) / 1000)} s for the next try`,
+    //     );
+    //   } else {
+    //     await this.OTPStorageRepository.increaseAttempt(UUID, UUIDDoc.attempts);
+    //     await this.OTPStorageRepository.updateLastRequestTime(UUID, new Date());
+    //   }
+    // } else {
       // Store the generated OTP in the repository with the UUID
       await this.OTPStorageRepository.create(UUID, OTP);
-    }
+    // }
 
     if (method === 'sms') {
       // Send OTP via Twilio SMS
@@ -107,25 +103,50 @@ export class OTPSendingService {
       });
     } else if (method === 'email') {
       // Send OTP via AWS SES
-      const params = {
+      // Set the region
+      AWS.config.update({
+        region: this.configService.get<string>('AWS_REGION'),
+        accessKeyId: this.configService.get<string>('AWS_ACCESS_KEY')!,
+        secretAccessKey: this.configService.get<string>('AWS_SECRET_KEY')!,
+      });
+
+      // Create sendEmail params
+      var params = {
         Destination: {
           ToAddresses: [to],
         },
         Message: {
           Body: {
-            Text: {
-              Data: `Your OTP is: ${OTP}`,
+            Html: {
+              Charset: 'UTF-8',
+              Data: OTP_TEMPLATES('t2', OTP),
             },
           },
           Subject: {
-            Data: 'Your OTP Code',
+            Charset: 'UTF-8',
+            Data: 'Celevery Verification',
           },
         },
-        Source: this.configService.get<string>('SES_VERIFIED_SENDER')!,
+        Source: this.configService.get<string>('SES_VERIFIED_SENDER'),
+        ReplyToAddresses: [
+          this.configService.get<string>('SES_VERIFIED_SENDER'),
+          /* more items */
+        ],
       };
 
-      const command = new SendEmailCommand(params);
-      await this.sesClient.send(command);
+      // Create the promise and SES service object
+      var sendPromise = new AWS.SES({ apiVersion: '2010-12-01' })
+        .sendEmail(params)
+        .promise();
+
+      // Handle promise's fulfilled/rejected states
+      sendPromise
+        .then(function (data) {
+          // console.log(data.MessageId);
+        })
+        .catch(function (err) {
+          console.error(err, err.stack);
+        });
     } else {
       throw new BadGatewayException(
         'method not found, Allowed methods sms, email',
