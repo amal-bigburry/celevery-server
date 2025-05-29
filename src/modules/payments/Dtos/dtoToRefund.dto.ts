@@ -21,7 +21,9 @@ export class DtoToRefund {
    */
   @IsNotEmpty()
   @IsString()
-  order_id: string;  // The order ID that corresponds to the order being refunded
+  order_id: string; 
+  
+  user_id: string;  // The order ID that corresponds to the order being refunded
 
   /**
    * The amount to be refunded for the specified order.

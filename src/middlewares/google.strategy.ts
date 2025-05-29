@@ -2,14 +2,15 @@
 import { PassportStrategy } from '@nestjs/passport';
 import { Injectable } from '@nestjs/common';
 import { Strategy, VerifyCallback } from 'passport-google-oauth20';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class GoogleRegisterStrategy extends PassportStrategy(Strategy, 'register') {
-  constructor() {
+  constructor(private readonly configService: ConfigService) {
     super({
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: 'http://localhost:3000/user/register/google/redirect',
+      callbackURL: configService.get<string>('GOOGLE_AUTH_REDIRECTION_URL_FOR_REGISTER'),
       scope: ['email', 'profile'],
     });
   }
@@ -28,11 +29,11 @@ export class GoogleRegisterStrategy extends PassportStrategy(Strategy, 'register
 
 @Injectable()
 export class GoogleLoginStrategy extends PassportStrategy(Strategy, 'login') {
-  constructor() {
+  constructor(private readonly configService: ConfigService) {
     super({
       clientID: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-      callbackURL: 'http://localhost:3000/user/login/google/redirect',
+      callbackURL: configService.get<string>('GOOGLE_AUTH_REDIRECTION_URL_FOR_LOGIN'),
       scope: ['email', 'profile'],
     });
   }

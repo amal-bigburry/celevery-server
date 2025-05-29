@@ -27,6 +27,7 @@ import { AdvertismentModule } from './modules/Advertisments/advertisment.module'
 import { FavouritesModule } from './modules/favourites/favourites.module';
 import { OTPModule } from './modules/OTP/otp.module';
 import { WelcomeController } from './app.controller';
+import { GeneratorModule } from './modules/Generator/generator.module';
 // Initialize Firebase Admin SDK
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount as admin.ServiceAccount),
@@ -63,6 +64,7 @@ admin.initializeApp({
     // Favourites handler
     FavouritesModule ,
     OTPModule,
+    GeneratorModule,
     // Load environment variables globally
     ConfigModule.forRoot({ isGlobal: true }),
     // MongoDB connection (async with env variables)

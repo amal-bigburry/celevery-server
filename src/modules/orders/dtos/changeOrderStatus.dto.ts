@@ -14,11 +14,11 @@ export class ChangeOrderStatusDto {
   @IsString()
   order_id: string;
 
-  @IsNotEmpty()
-  @IsString()
+  // @IsNotEmpty()
+  // @IsString()
   user_id: string;
 
-  @IsNotEmpty()
-  @IsString()
+  // @IsNotEmpty()
+  // @IsString()
   new_status: string;
 }

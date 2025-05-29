@@ -14,6 +14,7 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import * as dotenv from 'dotenv';
+import { EncryptionMiddleware } from './middlewares/AESEncryption';
 
 /**
  * The bootstrap function serves as the asynchronous entry point of the Cake Factory application.
@@ -34,6 +35,7 @@ async function bootstrap() {
     origin: '*', // <-- frontend origin
     // credentials: true,               // <-- allow cookies / auth headers
   });
+  // app.use(new EncryptionMiddleware().use)
 
   app.useGlobalPipes(new ValidationPipe({ whitelist: true, transform: true }));
   await app.listen(process.env.PORT ?? 3000);

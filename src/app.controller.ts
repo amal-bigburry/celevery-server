@@ -15,6 +15,6 @@ export class WelcomeController {
    */
   @Get()
   async welcome() {
-    return "Welcome to the Celevery API's";
+    return "Welcome to the Celevery API's. ";
   }
 }

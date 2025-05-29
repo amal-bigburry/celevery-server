@@ -6,8 +6,8 @@
 import { IsMongoId, IsNotEmpty, IsString } from 'class-validator';
 export class DtoToGetPaymentSessionId {
   @IsMongoId() @IsNotEmpty() order_id: string;
-  @IsNotEmpty() @IsString() payment_tracking_id: string;
-  @IsNotEmpty() @IsString() user_id: string;
-  @IsNotEmpty() @IsString() cake_id: string;
-  @IsNotEmpty() @IsString() variant_id: string;
+  payment_tracking_id: string;
+  user_id: string;
+  cake_id: string;
+  variant_id: string;
 }

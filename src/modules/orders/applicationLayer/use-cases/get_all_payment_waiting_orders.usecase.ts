@@ -27,7 +27,8 @@ export class GetAllPaymentWaitingOrdersUseCase {
    * executable function
    */
   async execute(): Promise<Array<OrderDto>> {
-    const order = await this.OrderRepository.findAllPaymentWaitingOrders();
+    // const order = await this.OrderRepository.findAllPaymentWaitingOrders();
+    const order = await this.OrderRepository.findAll();
     return order;
   }
 }
