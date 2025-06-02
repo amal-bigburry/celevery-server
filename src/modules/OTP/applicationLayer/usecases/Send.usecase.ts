@@ -19,6 +19,7 @@ import {
   BadRequestException,
   Inject,
   Injectable,
+  UnprocessableEntityException,
 } from '@nestjs/common';
 import { REGISTER_OTP_TOKEN } from 'src/modules/OTP/tokens/ResiterOTP.token';
 import { Twilio } from 'twilio';
@@ -64,35 +65,35 @@ export class OTPSendingService {
 
     const OTP = (Math.floor(Math.random() * 900000) + 100000).toString();
     const WaitingTimeOptions = [1, 3, 5, 8, 10];
-    // console.log(existing)
-    // if (existing) {
-    //   let UUIDDoc = await this.OTPStorageRepository.getOTPDocOf(UUID);
-    //   if (UUIDDoc.attempts >= 5) {
-    //     throw new BadRequestException(
-    //       'You have Already finished your 5 attempts with this UUID',
-    //     );
-    //   }
-    //   let waitingTimeInMilliSeconds =
-    //     WaitingTimeOptions[UUIDDoc.attempts] * 60000;
-    //   let LastRequestTimeInMillisecond = new Date(
-    //     UUIDDoc.last_request_time.toString(),
-    //   ).getTime();
+    console.log(existing)
+    if (existing) {
+      let UUIDDoc = await this.OTPStorageRepository.getOTPDocOf(UUID);
+      if (UUIDDoc.attempts >= 5) {
+        throw new BadRequestException(
+          'You have Already finished your 5 attempts with this UUID',
+        );
+      }
+      let waitingTimeInMilliSeconds =
+        WaitingTimeOptions[UUIDDoc.attempts] * 60000;
+      let LastRequestTimeInMillisecond = new Date(
+        UUIDDoc.last_request_time.toString(),
+      ).getTime();
 
-    //   let NextAttemptAt =
-    //     waitingTimeInMilliSeconds + LastRequestTimeInMillisecond;
-    //   // console.log(new Date(NextAttemptAt).toLocaleString());
-    //   if (NextAttemptAt > Date.now()) {
-    //     throw new BadRequestException(
-    //       `please wait ${Math.floor((NextAttemptAt - Date.now()) / 1000)} s for the next try`,
-    //     );
-    //   } else {
-    //     await this.OTPStorageRepository.increaseAttempt(UUID, UUIDDoc.attempts);
-    //     await this.OTPStorageRepository.updateLastRequestTime(UUID, new Date());
-    //   }
-    // } else {
+      let NextAttemptAt =
+        waitingTimeInMilliSeconds + LastRequestTimeInMillisecond;
+      // console.log(new Date(NextAttemptAt).toLocaleString());
+      if (NextAttemptAt > Date.now()) {
+        throw new BadRequestException(
+          `please wait ${Math.floor((NextAttemptAt - Date.now()) / 1000)} s for the next try`,
+        );
+      } else {
+        await this.OTPStorageRepository.increaseAttempt(UUID, UUIDDoc.attempts);
+        await this.OTPStorageRepository.updateLastRequestTime(UUID, new Date());
+      }
+    } else {
       // Store the generated OTP in the repository with the UUID
       await this.OTPStorageRepository.create(UUID, OTP);
-    // }
+    }
 
     if (method === 'sms') {
       // Send OTP via Twilio SMS
@@ -148,7 +149,7 @@ export class OTPSendingService {
           console.error(err, err.stack);
         });
     } else {
-      throw new BadGatewayException(
+      throw new UnprocessableEntityException(
         'method not found, Allowed methods sms, email',
       );
     }

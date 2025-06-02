@@ -29,6 +29,12 @@ import { IGetCakeDetailsUseCaseImp } from '../orders/infrastructureLayer/Externa
 import { StoreModule } from '../stores/store.module';
 import { CakeCategoryModule } from '../cakecategories/cakecategories.module';
 import { UpdateKnownFor } from './applicationLayer/use-cases/UpdateKnownFor.usecase';
+import { AnalyticsModule } from '../analytics/analytics.module';
+import { GET_POPULAR } from './tokens/getpopular.token';
+import { IGetPopularCakesImp } from './infrastructureLayer/ExternalImplimentations/getPopularCakes.implimentations';
+import { OrderModule } from '../orders/orders.module';
+import { GET_TRENDING } from './tokens/gettrending.token';
+import { IGetTrendingCakesImp } from './infrastructureLayer/ExternalImplimentations/getTrendingCakes.impliments';
 /**
  * module declaration
  */
@@ -39,20 +45,18 @@ import { UpdateKnownFor } from './applicationLayer/use-cases/UpdateKnownFor.usec
      */
     MongooseModule.forFeature([
       { name: 'Cakes', schema: CakeSchema },
-      { name: 'CakeCategories', schema: CakeCategoryModel },
-      { name: 'Stores', schema: StoreModel },
+      // { name: 'CakeCategories', schema: CakeCategoryModel },
+      // { name: 'Stores', schema: StoreModel },
     ]),
     /**
      * configuring multer for file uploads
      */
-    MulterModule.register({
-      dest: './uploads',
-    }),
-    /**
-     * importing store and cake category modules
-     */
-    forwardRef(() =>StoreModule),
+    StoreModule,
     CakeCategoryModule,
+    forwardRef(()=>OrderModule),
+    // AnalyticsModule, 
+    // AnalyticsModule,
+    // ,
   ],
   /**
    * registering controller for cake module
@@ -87,6 +91,14 @@ import { UpdateKnownFor } from './applicationLayer/use-cases/UpdateKnownFor.usec
     {
       provide: I_GET_CAKE_DETAILS_USECASE,
       useClass: IGetCakeDetailsUseCaseImp,
+    },
+    {
+      provide: GET_POPULAR,
+      useClass: IGetPopularCakesImp,
+    },
+    {
+      provide: GET_TRENDING,
+      useClass: IGetTrendingCakesImp,
     },
   ],
   /**

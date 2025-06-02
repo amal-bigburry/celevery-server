@@ -6,7 +6,7 @@
 /**
  * importing the required packages
  */
-import { Controller, Post, Body } from '@nestjs/common';
+import { Controller, Post, Body, HttpStatus, HttpCode } from '@nestjs/common';
 import { MqttService } from '../../applicationLayer/usecases/mqtt.usecase';
 import { PopDto } from '../../dtos/pop.dto';
 /**
@@ -18,6 +18,8 @@ export class MqttPublisherController {
   /**
    * post request to send message
    */
+
+  @HttpCode(HttpStatus.CREATED)
   @Post('send')
   async sendMessage(@Body() popDto: PopDto) {
     await this.mqttService.publish(popDto);

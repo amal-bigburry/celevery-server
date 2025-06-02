@@ -7,7 +7,15 @@
  * Importing all the required packages
  * Importing NestJS decorators, use case classes and JWT auth guard middleware
  */
-import { Controller, Get, Param, Query, UseGuards } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  Query,
+  UseGuards,
+} from '@nestjs/common';
 import { GetPopularProductsUseCase } from '../../applicationLayer/usecases/GetPopularProducts.usecase';
 import { GetTrendingProductsUseCase } from '../../applicationLayer/usecases/GetTrendingProducts.usecase';
 import { JwtAuthGuard } from 'src/middlewares/jwtauth.middleware';
@@ -36,6 +44,7 @@ export class AnalyticsController {
    * @param limit - Pagination limit per page, defaults to 10
    * @returns Trending products data as paginated response
    */
+  @HttpCode(HttpStatus.OK)
   @Get('/trending')
   @UseGuards(JwtAuthGuard)
   async get_trending_products(
@@ -52,21 +61,23 @@ export class AnalyticsController {
    * @param limit - Pagination limit per page, defaults to 10
    * @returns Popular products data as paginated response
    */
-  @Get('/popular')
-  @UseGuards(JwtAuthGuard)
-  async get_popular_products(
-    @Query('page') page = 1,
-    @Query('limit') limit = 10,
-  ) {
-    return this.getPopularProducts.execute(page, limit);
-  }
-  @Get('/storelocations')
-  @UseGuards(JwtAuthGuard)
-  async getlocation_ofstores(
-    @Query('page') page = 1,
-    @Query('limit') limit = 10,
-  ) {
-    let res = await this.getStoreLocations.execute(page, limit);
-    return res;
-  }
+  // @HttpCode(HttpStatus.OK)
+  // @Get('/popular')
+  // @UseGuards(JwtAuthGuard)
+  // async get_popular_products(
+  //   @Query('page') page = 1,
+  //   @Query('limit') limit = 10,
+  // ) {
+  //   return this.getPopularProducts.execute();
+  // }
+  // @HttpCode(HttpStatus.OK)
+  // @Get('/storelocations')
+  // @UseGuards(JwtAuthGuard)
+  // async getlocation_ofstores(
+  //   @Query('page') page = 1,
+  //   @Query('limit') limit = 10,
+  // ) {
+  //   let res = await this.getStoreLocations.execute(page, limit);
+  //   return res;
+  // }
 }

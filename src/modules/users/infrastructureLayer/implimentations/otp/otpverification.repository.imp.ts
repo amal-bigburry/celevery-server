@@ -9,22 +9,7 @@
  * encapsulating data access logic and error handling as per application requirements.
  * ******************************************************************************************************
  */
-
-import { InjectModel } from '@nestjs/mongoose';
-import mongoose, { Model } from 'mongoose';
-import { UserEntity } from 'src/modules/users/domainLayer/entities.ts/user.entity';
-import { UserRepository } from 'src/modules/users/applicationLayer/interfaces/user.interface';
-import { RegisterDto } from 'src/modules/users/dtos/Register.dto';
-import { TokenDto } from 'src/modules/users/dtos/token.dto';
-import { BadRequestException, Injectable } from '@nestjs/common';
-import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
-import { ConfigService } from '@nestjs/config';
-import { extname } from 'path';
-import { randomUUID } from 'crypto';
-import { CakeDto } from 'src/modules/cakes/dtos/cake.dto';
-import { GetCakeDetailsUseCase } from 'src/modules/cakes/applicationLayer/use-cases/GetCakeDetailsUseCase';
-import { CakeEntity } from 'src/modules/cakes/domainLayer/entities/cake.entity';
-import * as bcrypt from 'bcrypt';
+import { Injectable } from '@nestjs/common';
 import { IOTPVerifyingService } from 'src/modules/users/applicationLayer/interfaces/IOTPVerifyingService.interface';
 import { OTPVerifyingService } from 'src/modules/OTP/applicationLayer/usecases/Verify.usecase';
 /**
@@ -38,17 +23,8 @@ import { OTPVerifyingService } from 'src/modules/OTP/applicationLayer/usecases/V
  */
 @Injectable()
 export class IOTPVerifyingServiceImp implements IOTPVerifyingService {
-  constructor(
-    private readonly OTPVerifyingService: OTPVerifyingService,
-  ) {}
-    async verify(UUID: string, OTP: string): Promise<boolean> {
-        return await this.OTPVerifyingService.verify(UUID, OTP)
-    }
-  /**
-   * **************************************************************************************************
-   * updatePassword Method
-   *
-   * Updates the password for the user identified by userid. Throws BadRequestException if user not found.
-   * **************************************************************************************************
-   */
+  constructor(private readonly OTPVerifyingService: OTPVerifyingService) {}
+  async verify(UUID: string, OTP: string): Promise<boolean> {
+    return await this.OTPVerifyingService.verify(UUID, OTP);
+  }
 }

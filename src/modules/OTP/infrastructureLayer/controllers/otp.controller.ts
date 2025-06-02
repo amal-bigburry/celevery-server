@@ -1,7 +1,7 @@
 /**
  * Import the required packages
  */
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { OTPSendingService } from '../../applicationLayer/usecases/Send.usecase';
 import { OTPVerifyingService } from '../../applicationLayer/usecases/Verify.usecase';
 
@@ -24,6 +24,7 @@ export class OtpController {
    * @returns A confirmation message once OTP is sent.
    */
   @Post('send') // POST request to send OTP
+  @HttpCode(HttpStatus.CREATED)
   async sendOtp(@Body() data: { to: string, UUID:string, method:string }) {
     // Call the TwilioService to send OTP
     await this.OTPSendingService.send(

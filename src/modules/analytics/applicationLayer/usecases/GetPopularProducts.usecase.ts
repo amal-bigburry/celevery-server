@@ -84,7 +84,7 @@ export class GetPopularProductsUseCase {
    * @param limit Number of items per page for pagination.
    * @returns Promise resolving to PaginationDto containing paginated popular cake data.
    */
-  async execute(page, limit): Promise<PaginationDto> {
+  async execute(openStoreCakes:CakeEntity[]): Promise<CakeEntity[]> {
     /**
      * Fetch orders at analysis level 0 as a starting point.
      */
@@ -103,7 +103,9 @@ export class GetPopularProductsUseCase {
     /**
      * Prepare and return the paginated popular cakes response.
      */
-    return await this.respond(this.occurenceInArray, page, limit);
+    let popularcakes =  await this.respond(this.occurenceInArray);
+    openStoreCakes.filter(availableCake => popularcakes.includes(availableCake) )
+    return openStoreCakes
   }
 
   /**
@@ -119,7 +121,7 @@ export class GetPopularProductsUseCase {
    * @param limit Number of items per page requested.
    * @returns Promise resolving to a PaginationDto with paginated cake data and metadata.
    */
-  async respond(orders, page, limit): Promise<PaginationDto> {
+  async respond(orders): Promise<CakeEntity[]> {
     /**
      * Sort cakes descending by occurrence count to prioritize popular cakes.
      */
@@ -140,31 +142,9 @@ export class GetPopularProductsUseCase {
       ),
     );
     /**
-     * Calculate total number of popular cakes found.
-     */
-    const total = topCakeDetails.length;
-    /**
-     * Compute total number of pages based on the limit per page.
-     */
-    const totalPages = Math.ceil(total / limit);
-    /**
-     * Calculate slice indices for paginating the result set.
-     */
-    const start = (page - 1) * limit;
-    const end = start + limit;
-    /**
-     * Slice the detailed cake data for the current page.
-     */
-    const paginatedData = topCakeDetails.slice(start, end);
-    /**
      * Return the PaginationDto containing paginated popular cake data and metadata.
      */
-    return {
-      data: paginatedData,
-      total,
-      page,
-      limit,
-      totalPages,
-    };
+    return  topCakeDetails
+    
   }
 }

@@ -2,7 +2,7 @@
  * Company License: Bigburry Hypersystems LLP
  * All rights reserved © Bigburry Hypersystems LLP
  */
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { CakeRepository } from '../interfaces/cake.repository';
 import { CakeDto } from '../../dtos/cake.dto';
 import { CAKE_REPOSITORY } from '../../tokens/cakeRepository.token';
@@ -37,7 +37,7 @@ export class CreateCakeUseCase {
    * @param files - Uploaded files representing cake images
    * @returns Promise resolving with created cake object
    */
-  async execute(cakeDto: CakeDto, files, user_id:string): Promise<{ cake: Object }> {
+  async execute(cakeDto: CakeDto, files:Express.Multer.File[], user_id:string): Promise<{ cake: Object }> {
     let cakeCategoryIdsInThisCake = cakeDto.cake_category_ids;
     /**
      * Validate the provided category IDs exist in the system
@@ -47,7 +47,7 @@ export class CreateCakeUseCase {
         const categoryExists =
           await this.cakeCategoryRepository.findCategoryById(cakeCategoryId);
         if (!categoryExists) {
-          throw new BadRequestException(
+          throw new UnauthorizedException(
             `Category with ID ${cakeCategoryId} does not exist`,
           );
         }

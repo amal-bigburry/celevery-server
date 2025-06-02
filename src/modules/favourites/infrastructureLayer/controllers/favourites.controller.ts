@@ -15,6 +15,8 @@ import {
   Get,
   Delete,
   BadRequestException,
+  HttpCode,
+  HttpStatus,
 } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { AuthRequest } from 'src/middlewares/AuthRequest';
@@ -36,6 +38,8 @@ export class FavouritesController {
   /**
    * post request to send message
    */
+
+  @HttpCode(HttpStatus.CREATED)
   @Post()
   @UseGuards(JwtAuthGuard)
   async add_to_favourites(
@@ -58,21 +62,23 @@ export class FavouritesController {
   /**
    * post request to send message
    */
+
+  @HttpCode(HttpStatus.OK)
   @Get()
   @UseGuards(JwtAuthGuard)
   async get_favourites(@Body() cake_id: string, @Req() request: AuthRequest) {
-    let res = await this.GetMyFavouritesUsecase.execute(
-      request.user['userId']
-    );
+    let res = await this.GetMyFavouritesUsecase.execute(request.user['userId']);
     return res;
   }
   /**
    * post request to send message
    */
+
+  @HttpCode(HttpStatus.OK)
   @Delete()
   @UseGuards(JwtAuthGuard)
   async delete_favourites(
-    @Body() cake: {cake_id:string},
+    @Body() cake: { cake_id: string },
     @Req() request: AuthRequest,
   ) {
     let res = await this.RemoveMyFavouritesUsecase.execute(

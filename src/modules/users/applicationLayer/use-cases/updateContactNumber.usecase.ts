@@ -11,7 +11,7 @@
  * ******************************************************************************************************
  */
 
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { UserRepository } from '../interfaces/user.interface';
 import { TokenDto } from '../../dtos/token.dto';
 import { USER_REPOSITORY } from '../../tokens/userRepository.token';
@@ -49,7 +49,7 @@ export class UpdateContactNumberUsecase {
   ): Promise<boolean> {
     let existing = await this.userRepo.findById(userid);
     if (!existing) {
-      throw new BadRequestException('User not found');
+      throw new UnauthorizedException('User not found');
     }
     let isVerified = await this.OTPVerifyingService.verify(
       UpdateContactNumberDto.UUID,

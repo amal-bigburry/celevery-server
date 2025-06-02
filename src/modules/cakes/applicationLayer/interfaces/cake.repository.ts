@@ -20,7 +20,7 @@ export interface CakeRepository {
    * @param lat - Latitude coordinate for location-based filtering
    * @returns A Promise resolving to PaginationDto containing cakes data
    */
-  findAll(page, limit, log, lat): Promise<PaginationDto>;
+  findAll(page:number, limit:number, log:number, lat:number, knownfor:string[], sortby:string, orderby:string): Promise<PaginationDto>;
   /**
    * Finds a cake entity by its unique identifier
    * @param cake_id - The unique ID of the cake
@@ -38,6 +38,9 @@ export interface CakeRepository {
     category_id: string,
     log: number,
     lat: number,
+
+    // known_for: string[],
+    // include: string[],
   ): Promise<CakeEntity[]>;
   /**
    * Creates a new cake record using the provided data transfer object

@@ -29,6 +29,8 @@ import {
   Controller,
   Delete,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   Post,
   Query,
@@ -66,6 +68,8 @@ export class HeroController {
    *
    * Company: Bigburry Hypersystems LLP
    */
+
+  @HttpCode(HttpStatus.OK)
   @Get()
   @UseGuards(JwtAuthGuard)
   async get_heros() {
@@ -82,6 +86,7 @@ export class HeroController {
    *
    * Company: Bigburry Hypersystems LLP
    */
+  @HttpCode(HttpStatus.CREATED)
   @Post()
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(FileInterceptor('file'))
@@ -90,7 +95,9 @@ export class HeroController {
     @UploadedFile() file: Express.Multer.File,
   ) {
     if (!file) {
-      throw new BadRequestException("Please upload the hero image file with key file");
+      throw new BadRequestException(
+        'Please upload the hero image file with key file',
+      );
     }
     let res = await this.createHerosUsecase.execute(HeroDto, file);
     return res;
@@ -104,6 +111,7 @@ export class HeroController {
    *
    * Company: Bigburry Hypersystems LLP
    */
+  @HttpCode(HttpStatus.OK)
   @Delete()
   @UseGuards(JwtAuthGuard)
   async delete_heros(@Query('hero_id') hero_id: string) {

@@ -6,7 +6,14 @@
 /**
  * importing the required packages
  */
-import { Body, Controller, Get, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  UseGuards,
+} from '@nestjs/common';
 import { JwtAuthGuard } from 'src/middlewares/jwtauth.middleware';
 import { GetPrivacyAndPolicyUseCase } from '../../applicationLayer/use-cases/GetPrivacyAndPolicy.usecase';
 import { GetTermsAndConditionsuseCase } from '../../applicationLayer/use-cases/GetTermsAndConditions.usecase';
@@ -22,6 +29,8 @@ export class DocumentsController {
   /**
    * get request to terms and condition endpoint
    */
+
+  @HttpCode(HttpStatus.OK)
   @Get('/termsandconditions')
   @UseGuards(JwtAuthGuard)
   async get_terms_and_conditions() {
@@ -30,6 +39,7 @@ export class DocumentsController {
   /**
    * get request to privacy policy
    */
+  @HttpCode(HttpStatus.OK)
   @Get('/privacypolicy')
   @UseGuards(JwtAuthGuard)
   async get_privacy_policy() {

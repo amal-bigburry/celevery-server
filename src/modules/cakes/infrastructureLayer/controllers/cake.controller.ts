@@ -10,6 +10,8 @@ import {
   Body,
   Controller,
   Get,
+  HttpCode,
+  HttpStatus,
   Param,
   Post,
   Query,
@@ -49,19 +51,23 @@ export class CakeController {
     @Query('limit') limit = 10,
     @Query('log') log = 0,
     @Query('lat') lat = 0,
+    @Query('knownfor') knownfor:string[] = [],
+    @Query('sortby') sortby:string,
+    @Query('orderby') orderby:string,
   ) {
-    return this.findCakeUseCase.execute(page, limit, log, lat);
+    return this.findCakeUseCase.execute(page, limit, log, lat, knownfor, sortby, orderby);
   }
   /**
    * Handles POST requests to create a new cake with image uploads
    */
+  @HttpCode(HttpStatus.CREATED)
   @Post()
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(FilesInterceptor('images', 5))
   async create_cake(
     @UploadedFiles() files: Express.Multer.File[],
     @Body() cakeDto: CakeDto,
-    @Req() request: AuthRequest
+    @Req() request: AuthRequest,
   ) {
     // console.log(cakeDto);
     if (!files || files.length === 0) {
@@ -69,11 +75,17 @@ export class CakeController {
         'At least one image file (images) is required!',
       );
     }
-    return this.createCakeUseCase.execute(cakeDto, files, request.user['userId']);
+    // console.log('files',files)
+    return this.createCakeUseCase.execute(
+      cakeDto,
+      files,
+      request.user['userId'],
+    );
   }
   /**
    * Handles GET requests to search cakes by keyword and category
    */
+  @HttpCode(HttpStatus.OK)
   @Get('search')
   @UseGuards(JwtAuthGuard)
   async searchCakes(
@@ -89,6 +101,7 @@ export class CakeController {
   /**
    * Handles GET requests to fetch similar cakes by cake and variant IDs
    */
+  @HttpCode(HttpStatus.OK)
   @Get('similar_cakes')
   async get_other_sellers(
     @Query('cake_id') cake_id: string,
@@ -102,6 +115,7 @@ export class CakeController {
   /**
    * Handles GET request to fetch details of a specific cake by ID
    */
+  @HttpCode(HttpStatus.OK)
   @Get(':cake_id')
   @UseGuards(JwtAuthGuard)
   async getCakeDetails(@Param('cake_id') cake_id: string) {

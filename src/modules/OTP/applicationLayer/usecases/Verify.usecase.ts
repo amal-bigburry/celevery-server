@@ -11,7 +11,7 @@
  * ******************************************************************************************************
  */
 
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { REGISTER_OTP_TOKEN } from '../../tokens/ResiterOTP.token';
 import { OTPStorageRepository } from '../interfaces/otpStorage.repository';
 
@@ -42,7 +42,7 @@ export class OTPVerifyingService {
     const otp = await this.OTPStorageRepository.get(UUID);
     const isUsed = await this.OTPStorageRepository.isUsed(UUID)
     if(isUsed){
-      throw new BadRequestException("Invalid OTP")
+      throw new UnauthorizedException("Invalid OTP")
     }
     if (OTP == otp) {
       await this.OTPStorageRepository.markAsUsed(UUID)

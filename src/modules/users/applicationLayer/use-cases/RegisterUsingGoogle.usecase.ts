@@ -11,12 +11,13 @@
  * ******************************************************************************************************
  */
 
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, HttpCode, HttpStatus, Inject, Injectable } from '@nestjs/common';
 import { UserRepository } from '../interfaces/user.interface';
 import { RegisterDto } from '../../dtos/Register.dto';
 import { USER_REPOSITORY } from '../../tokens/userRepository.token';
 import { IOTPVerifyingService } from '../interfaces/IOTPVerifyingService.interface';
 import { OTP_VERIFICATION_SERVICE } from '../../tokens/otpVerifyingservice.token';
+import { JwtService } from '@nestjs/jwt';
 
 /**
  * ******************************************************************************************************
@@ -32,6 +33,7 @@ export class RegisterUsingGoogleUseCase {
     @Inject(USER_REPOSITORY) private readonly userRepo: UserRepository,
     @Inject(OTP_VERIFICATION_SERVICE)
     private readonly OTPVerifyingService: IOTPVerifyingService,
+    private jwtService: JwtService,
   ) {}
 
   /**
@@ -42,14 +44,18 @@ export class RegisterUsingGoogleUseCase {
    * returns the created user wrapped in an object. Provides fallback to an empty object if user creation fails.
    * **************************************************************************************************
    */
-  async execute(data: any): Promise<{ user: object }> {
+  @HttpCode(HttpStatus.CREATED)
+  async execute(data: any): Promise<{ access_token: string }> {
     const user = await this.userRepo.createGoogleUser(
       data.email,
       data.profile_url,
       data.display_name,
     );
-    // console.log(data);
-    return data;
+
+    const payload = { email: user.email, sub: user._id };
+    return {
+      access_token: this.jwtService.sign(payload),
+    };
     //   return { user: user ? user : {} };
   }
 }

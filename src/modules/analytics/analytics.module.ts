@@ -13,7 +13,7 @@
  * Provides use cases and repository implementations with dependency injection tokens
  * Registers AnalyticsController for handling routes
  */
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { ConfigModule } from '@nestjs/config';
 import { AnalyticsController } from './infrastructurelLayer/controllers/analytics.controller';
 import { GetPopularProductsUseCase } from './applicationLayer/usecases/GetPopularProducts.usecase';
@@ -31,7 +31,12 @@ import { StoreModule } from '../stores/store.module';
 import { IGetAllStoreInPlatformUsecaseImp } from './infrastructurelLayer/implimentations/IGetAllStoreInPlatform.implimentation';
 import { GETALLSTOREINPLATFORM } from './tokens/Getallstorelocation.token';
 @Module({
-  imports: [ConfigModule, CakeModule, OrderModule, StoreModule],
+  imports: [
+    ConfigModule,
+    forwardRef(()=>CakeModule),
+    OrderModule,
+    StoreModule,
+  ],
   providers: [
     GetPopularProductsUseCase,
     GetTrendingProductsUseCase,
@@ -54,6 +59,6 @@ import { GETALLSTOREINPLATFORM } from './tokens/Getallstorelocation.token';
     },
   ],
   controllers: [AnalyticsController], // Controller handling analytics routes
-  exports: [], // No exports defined for this module
+  exports: [GetPopularProductsUseCase, GetTrendingProductsUseCase,GetStoreLocationsUsecase], // No exports defined for this module
 })
 export class AnalyticsModule {}

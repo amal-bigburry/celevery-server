@@ -15,6 +15,8 @@ import {
   Body,
   Controller,
   Get,
+  HttpCode,
+  HttpStatus,
   Post,
   Put,
   Req,
@@ -66,39 +68,29 @@ export class AuthController {
    * authentication logic to the login use case, returning an access token on success.
    * **************************************************************************************************
    */
+  @HttpCode(HttpStatus.CREATED)
   @Post('login')
   async login(@Body() loginDto: LoginDto) {
     return this.loginUseCase.execute(loginDto);
   }
 
+  @HttpCode(HttpStatus.CREATED)
   @Get('login/google')
   @UseGuards(AuthGuard('login'))
   async googleAuthLogin(@Req() req) {
     // initiates the Google OAuth2 login flow
   }
 
+  @HttpCode(HttpStatus.CREATED)
   @Get('login/google/redirect')
   @UseGuards(AuthGuard('login'))
   async googleAuthLoginRedirect(@Req() req) {
     // return req.user['email']
     let data = {
-      email: req.user['email']
+      email: req.user['email'],
     };
     return await this.loginUsingGoogleUseCase.execute(data); // or redirect, store user in DB, etc.
     // initiates the Google OAuth2 login flow
-  }
-  /**
-   * **************************************************************************************************
-   * getUserDetails Method
-   *
-   * Handles GET requests to 'user' endpoint, protected by JWT guard to ensure only authenticated users can
-   * access their user details. Retrieves user ID from the request and delegates fetching to the appropriate use case.
-   * **************************************************************************************************
-   */
-  @Get()
-  @UseGuards(JwtAuthGuard)
-  async getUserDetails(@Req() request: AuthRequest) {
-    return this.getUserDetailUseCase.execute(request.user['userId']);
   }
   /**
    * **************************************************************************************************
@@ -108,7 +100,7 @@ export class AuthController {
    * delegates creation logic to the register use case, returning the created user information.
    * **************************************************************************************************
    */
-
+  @HttpCode(HttpStatus.CREATED)
   @Post('register')
   async register(@Body() RegisterDto: RegisterDto) {
     return this.registerUseCase.execute(RegisterDto);
@@ -132,12 +124,29 @@ export class AuthController {
     return await this.registerUsingGoogleUseCase.execute(data); // or redirect, store user in DB, etc.
   }
 
+  /**
+   * **************************************************************************************************
+   * getUserDetails Method
+   *
+   * Handles GET requests to 'user' endpoint, protected by JWT guard to ensure only authenticated users can
+   * access their user details. Retrieves user ID from the request and delegates fetching to the appropriate use case.
+   * **************************************************************************************************
+   */
+  @HttpCode(HttpStatus.OK)
+  @Get()
+  @UseGuards(JwtAuthGuard)
+  async getUserDetails(@Req() request: AuthRequest) {
+    return this.getUserDetailUseCase.execute(request.user['userId']);
+  }
+
+  @HttpCode(HttpStatus.OK)
   @Put('password')
   async update_password(@Body() ResetPasswordDto: ResetPasswordDto) {
     let res = await this.update_passwordUsecase.execute(ResetPasswordDto);
     return res;
   }
 
+  @HttpCode(HttpStatus.OK)
   @Put('profileimg')
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(FileInterceptor('file'))
@@ -156,6 +165,7 @@ export class AuthController {
     );
   }
 
+  @HttpCode(HttpStatus.OK)
   @Put('contact_number')
   @UseGuards(JwtAuthGuard)
   async update_contact_number(
@@ -166,7 +176,6 @@ export class AuthController {
       request.user['userId'],
       UpdateContactNumberDto,
     );
-
     return res;
   }
 }

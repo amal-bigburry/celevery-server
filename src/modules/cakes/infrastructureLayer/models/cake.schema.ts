@@ -46,6 +46,7 @@ export class Cake extends Document {
    */
   @Prop({ required: true })
   cake_image_urls: Array<string>;
+  
   /**
    * Indicates what the cake is known for (e.g., birthday) (required)
    */
@@ -55,7 +56,7 @@ export class Cake extends Document {
    * Embedded array of cake variant objects with pricing and preparation details
    */
   @Prop({ type: [CakeVariant], required: true }) // ✅ Correct way to embed nested object
-  cake_varients: CakeVariant[];
+  cake_variants: CakeVariant[];
   /**
    * Identifier for the store this cake belongs to
    */

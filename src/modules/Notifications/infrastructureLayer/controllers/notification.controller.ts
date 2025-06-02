@@ -6,7 +6,14 @@
 /**
  * importing the required packages
  */
-import { Body, Controller, Post, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  HttpCode,
+  HttpStatus,
+  Post,
+  UseGuards,
+} from '@nestjs/common';
 import { JwtAuthGuard } from 'src/middlewares/jwtauth.middleware';
 import { NotificationUseCase } from '../../applicationLayer/usecases/notification.usecase';
 import { NotificationDto } from '../../dtos/notification.dto';
@@ -23,6 +30,8 @@ export class NotificationController {
    * @param notificationDto - DTO containing notification data
    * @returns the result of sending the notification
    */
+
+  @HttpCode(HttpStatus.CREATED)
   @Post()
   @UseGuards(JwtAuthGuard)
   async get_all_orders(@Body() notificationDto: NotificationDto) {

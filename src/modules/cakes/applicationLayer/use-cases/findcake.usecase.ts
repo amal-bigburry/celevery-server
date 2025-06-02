@@ -28,8 +28,8 @@ export class FindCakeUseCase {
    * @param lat - Latitude coordinate for filtering by location
    * @returns Promise resolving to a PaginationDto containing cake results
    */
-  async execute(page, limit, log, lat): Promise<PaginationDto> {
-    const cakes = await this.CakeRepository.findAll(page, limit, log, lat);
+  async execute(page:number, limit:number, log:number, lat:number, knownfor:string[], sortby:string, orderby:string): Promise<PaginationDto> {
+    const cakes = await this.CakeRepository.findAll(page, limit, log, lat, knownfor, sortby, orderby);
     return cakes;
   }
 }

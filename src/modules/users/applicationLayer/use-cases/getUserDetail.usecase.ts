@@ -12,7 +12,7 @@
  * ******************************************************************************************************
  */
 
-import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import { BadRequestException, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { UserRepository } from '../interfaces/user.interface';
 import { UserEntity } from '../../domainLayer/entities.ts/user.entity';
 import { USER_REPOSITORY } from '../../tokens/userRepository.token';
@@ -42,7 +42,7 @@ export class GetUserDetailUseCase {
   async execute(userid: string): Promise<UserEntity> {
     const user = await this.userRepo.findById(userid);
     if (!user) {
-      throw new BadRequestException('Invalid user id');
+      throw new UnauthorizedException('Invalid user id');
     } else {
       return new UserEntity(
         user._id.toString(),

@@ -8,7 +8,17 @@
  *
  * Company: BigBurry Hypersystems LLP
  */
-import { Controller, Post, Body, Inject, UseGuards, Req, BadGatewayException } from '@nestjs/common';
+import {
+  Controller,
+  Post,
+  Body,
+  Inject,
+  UseGuards,
+  Req,
+  BadGatewayException,
+  HttpCode,
+  HttpStatus,
+} from '@nestjs/common';
 import { GetSessionIdUseCase } from '../../applicationLayer/use-cases/getSessionId.UseCase';
 import { RefundUsecase } from '../../applicationLayer/use-cases/refund.usecase';
 import { TransferAmountUsecase } from '../../applicationLayer/use-cases/tranfer.usecase';
@@ -59,6 +69,8 @@ export class PaymentController {
    *
    * Company: BigBurry Hypersystems LLP
    */
+
+  @HttpCode(HttpStatus.CREATED)
   @Post('getsessionid')
   @UseGuards(JwtAuthGuard)
   async getSessionId(
@@ -83,6 +95,8 @@ export class PaymentController {
    *
    * Company: BigBurry Hypersystems LLP
    */
+
+  @HttpCode(HttpStatus.CREATED)
   @Post('refund')
   @UseGuards(JwtAuthGuard)
   async Refundpayment(
@@ -103,6 +117,7 @@ export class PaymentController {
    *
    * Company: BigBurry Hypersystems LLP
    */
+  @HttpCode(HttpStatus.CREATED)
   @Post('transfer')
   async transfer() {
     const status = await this.transferAmountUsecase.execute();
@@ -121,13 +136,14 @@ export class PaymentController {
    *
    * Company: BigBurry Hypersystems LLP
    */
+  @HttpCode(HttpStatus.CREATED)
   @Post('/status_webhook')
   async status_webhook(@Body() body: any) {
     let webhook_request_data = body?.data;
     // find what this request is about
     let order_id: string;
     let allOrders = await this.getAllPaymentWaitingOrdersUseCase.execute();
-    console.log(webhook_request_data?.refund)
+    console.log(webhook_request_data?.refund);
     if (webhook_request_data?.order !== undefined) {
       order_id = webhook_request_data?.order?.order_id;
     } else if (webhook_request_data?.refund != undefined) {
@@ -135,16 +151,14 @@ export class PaymentController {
     }
 
     let validOrder = allOrders.find((order) => order.id === order_id);
-    if(!validOrder){
-      throw new BadGatewayException("This Order is Is a valid order")
+    if (!validOrder) {
+      throw new BadGatewayException('This Order is Is a valid order');
     }
     let updatedstatus: ChangeOrderStatusDto = {
       order_id: '',
       new_status: '',
       user_id: '',
     };
-
-    console.log(validOrder)
     if (validOrder) {
       if (webhook_request_data?.payment?.payment_status == 'SUCCESS') {
         updatedstatus = {

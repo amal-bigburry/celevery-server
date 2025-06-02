@@ -40,7 +40,7 @@ import { GetAllStoreInPlatformUsecase } from './applicationLayer/usercases/getAl
       { name: 'Stores', schema: StoreModel },
       { name: 'Cakes', schema: CakeSchema },
     ]),
-    forwardRef(() => CakeModule),
+    // CakeModule,
   ],
 
   /**

@@ -56,7 +56,7 @@ export class CakeDto {
   @ValidateNested({ each: true })
   @Type(() => CakeVariantDto)
   @IsArray()
-  cake_varients: CakeVariantDto[];
+  cake_variants: CakeVariantDto[];
   /**
    * Description of what the cake is known for
    */

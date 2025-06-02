@@ -6,6 +6,8 @@ import {
   Body,
   Controller,
   Get,
+  HttpCode,
+  HttpStatus,
   Post,
   UploadedFile,
   UseGuards,
@@ -28,6 +30,7 @@ export class CakeCategoryController {
   /**
    * route get request to /cakecategories
    */
+  @HttpCode(HttpStatus.OK)
   @Get()
   @UseGuards(JwtAuthGuard)
   getAllCakes() {
@@ -36,6 +39,7 @@ export class CakeCategoryController {
   /**
    * route post request to /cakecategories
    */
+  @HttpCode(HttpStatus.CREATED)
   @Post()
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(FileInterceptor('file'))

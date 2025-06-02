@@ -12,7 +12,7 @@
  * ******************************************************************************************************
  */
 
-import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
+import { HttpCode, HttpStatus, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { UserRepository } from '../interfaces/user.interface';
 import { JwtService } from '@nestjs/jwt';
 import { LoginDto } from '../../dtos/Login.dto';
@@ -42,6 +42,7 @@ export class LoginUseCase {
    * valid, returns an access token signed with the user's email and ID as payload. Throws an exception on failure.
    * **************************************************************************************************
    */ 
+  @HttpCode(HttpStatus.CREATED)
   async execute(loginDto: LoginDto): Promise<{ access_token: string }> {
     let user: UserEntity | null;
 

@@ -21,7 +21,7 @@
  * - NotificationModule: For handling notifications.
  * - MqttModule: For managing MQTT communication.
  */
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Order } from './domainLayer/entities.ts/order.entity';
 import { OrderSchema } from './infrastructureLayer/models/order.schema';
@@ -56,6 +56,7 @@ import { GET_ORDERS_OFCAKE } from './tokens/get_orders_with_cakeid.token';
 import { GetOrdersWithCakeIdImp } from './infrastructureLayer/implimentations/orders/get_orders_withcakeid.implimentation';
 import { UPDATE_KNOWN_FOR_IN_CAKE } from './tokens/update_known_for_in_cake.token';
 import { UpdateKnownForOfCakeUseCaseImp } from './infrastructureLayer/implimentations/orders/UpdateKnownForOfCakeUseCase.implimentation';
+import { GetAllOrdersUseCase } from './applicationLayer/use-cases/get_all_orders.usecase';
 
 @Module({
   /**
@@ -69,8 +70,9 @@ import { UpdateKnownForOfCakeUseCaseImp } from './infrastructureLayer/implimenta
    */
   imports: [
     MongooseModule.forFeature([{ name: Order.name, schema: OrderSchema }]),
-    UserModule,
-    CakeModule,
+    // UserModule,
+    forwardRef(()=>UserModule),
+    forwardRef(()=>CakeModule),
     StoreModule,
     NotificationModule,
     MqttModule,
@@ -78,7 +80,7 @@ import { UpdateKnownForOfCakeUseCaseImp } from './infrastructureLayer/implimenta
   controllers: [
     /**
      * Controllers responsible for handling HTTP requests for orders.
-     * - OrderController: Manages the basic order-related requests.
+     * - OrderController: Manages the basic order-related requests.f
      * - ChangeOrderStatus: Handles changes in order statuses (e.g., from pending to completed).
      * - RequestOrderController: Allows users to request orders.
      */
@@ -97,7 +99,7 @@ import { UpdateKnownForOfCakeUseCaseImp } from './infrastructureLayer/implimenta
     GetAllOrdersReceivedUseCase,
     GetAllOrdersPlacedUseCase,
     GetOrdersToAnalyse,
-    GetOrderDetailsUseCase,
+    GetOrderDetailsUseCase,GetAllOrdersUseCase,
     GetAllPaymentWaitingOrdersUseCase,
     // GetCakeDetailsUseCase, // Uncomment this line if needed in the future
     // GetUserDetailUseCase, // Uncomment this line if needed in the future
@@ -147,6 +149,7 @@ import { UpdateKnownForOfCakeUseCaseImp } from './infrastructureLayer/implimenta
     ChangeOrderStatusUseCase,
     GetOrdersToAnalyse,
     GetOrderDetailsUseCase,
+    GetAllOrdersUseCase,
     GetAllPaymentWaitingOrdersUseCase,
   ],
 })

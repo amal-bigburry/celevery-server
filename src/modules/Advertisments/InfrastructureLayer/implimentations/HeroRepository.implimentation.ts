@@ -5,13 +5,13 @@
  */
 
 /**
- * @fileoverview This file provides the implementation of the HerosRepository interface, 
- * which is a part of the data access layer and directly communicates with the MongoDB 
- * database through the use of Mongoose models. 
+ * @fileoverview This file provides the implementation of the HerosRepository interface,
+ * which is a part of the data access layer and directly communicates with the MongoDB
+ * database through the use of Mongoose models.
  * It also includes logic to upload hero images to AWS S3 storage using the AWS SDK.
- * The class is decorated with @Injectable() to make it eligible for dependency injection 
+ * The class is decorated with @Injectable() to make it eligible for dependency injection
  * within the NestJS application.
- * This implementation serves as the bridge between the application's core business logic 
+ * This implementation serves as the bridge between the application's core business logic
  * and the external data and storage infrastructure.
  *
  * Company: Bigburry Hypersystems LLP
@@ -26,9 +26,11 @@
  *
  * Company: Bigburry Hypersystems LLP
  */
-import { GetCakeDetailsUseCase } from 'src/modules/cakes/applicationLayer/use-cases/GetCakeDetailsUseCase';
-import { CakeEntity } from 'src/modules/cakes/domainLayer/entities/cake.entity';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import {
+  BadRequestException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { HerosRepository } from '../../applicationLayer/interfaces/HeroRepository.interface';
 import { HeroDto } from '../../dtos/hero.dto';
 import { InjectModel } from '@nestjs/mongoose';
@@ -40,16 +42,15 @@ import { randomUUID } from 'crypto';
 
 /**
  * This class implements the HerosRepository interface and provides a concrete data access mechanism.
- * It contains the logic to persist hero records into MongoDB and to upload associated hero media content 
+ * It contains the logic to persist hero records into MongoDB and to upload associated hero media content
  * to an AWS S3 bucket.
- * The constructor takes in a Mongoose model injected via @InjectModel and a configuration service instance 
+ * The constructor takes in a Mongoose model injected via @InjectModel and a configuration service instance
  * to access environment variables securely.
  *
  * Company: Bigburry Hypersystems LLP
  */
 @Injectable()
 export class HerosRepositoryImp implements HerosRepository {
-
   constructor(
     @InjectModel('HeroRepository')
     private HeroRepositoryModel: Model<HeroDto>,
@@ -65,7 +66,10 @@ export class HerosRepositoryImp implements HerosRepository {
    *
    * Company: Bigburry Hypersystems LLP
    */
-  async uploadImage(heroDto: HeroDto, file: Express.Multer.File): Promise<HeroDto> {
+  async uploadImage(
+    heroDto: HeroDto,
+    file: Express.Multer.File,
+  ): Promise<HeroDto> {
     let s3Url = '';
     try {
       const s3 = new S3Client({
@@ -88,13 +92,17 @@ export class HerosRepositoryImp implements HerosRepository {
         }),
       );
       s3Url = `https://${this.configService.get<string>('AWS_BUCKET_NAME')}.s3.${this.configService.get<string>('AWS_REGION')}.amazonaws.com/${s3FileName}`;
-      
+
       // heroDto.hero_content_url = s3Url;
       // heroDto.hero_content_type = fileExtension;
-      return {...heroDto, hero_content_type: fileExtension, hero_content_url:s3Url};
+      return {
+        ...heroDto,
+        hero_content_type: fileExtension,
+        hero_content_url: s3Url,
+      };
     } catch (error) {
       console.error('S3 Upload Error:', error);
-      throw new BadRequestException('Image Not saved, Aws not Connected');
+      throw new NotFoundException('Image Not saved, Aws not Connected');
     }
   }
 
