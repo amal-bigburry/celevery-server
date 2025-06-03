@@ -37,12 +37,10 @@ import { GETALLSTOREINPLATFORM } from '../../tokens/Getallstorelocation.token';
 @Injectable()
 export class GetStoreLocationsUsecase {
   constructor(
-    @Inject(GETORDERANALYSE)
     private readonly configService: ConfigService,
     @Inject(GETALLSTOREINPLATFORM)
     private readonly GetAllStoreInPlatformUsecase: IGetAllStoreInPlatformUsecase,
   ) {}
-
   async execute(page: number, limit: number) {
     let stores = await this.GetAllStoreInPlatformUsecase.execute();
     let finalstores: {

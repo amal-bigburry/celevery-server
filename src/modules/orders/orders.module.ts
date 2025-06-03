@@ -2,17 +2,17 @@
  * OrderModule is responsible for handling all order-related operations.
  * This includes creating, updating, and retrieving orders, as well as interacting with other modules
  * (like Cake, Store, User, Notification, and MQTT) to provide a comprehensive system for managing orders.
- * 
+ *
  * The module imports various features such as Mongoose (for database connectivity), and integrates with
  * other modules like UserModule, CakeModule, StoreModule, NotificationModule, and MqttModule.
  * It also provides controllers and use cases that are responsible for managing business logic related to orders.
- * 
+ *
  * The OrderModule serves as a crucial part of the system and contains various services that help to:
  * - Create and manage orders.
  * - Retrieve orders placed by buyers and received by sellers.
  * - Change the status of orders.
  * - Handle payment statuses, order analysis, and much more.
- * 
+ *
  * Dependencies:
  * - MongooseModule: For interacting with MongoDB.
  * - UserModule: For user-related operations.
@@ -57,94 +57,69 @@ import { GetOrdersWithCakeIdImp } from './infrastructureLayer/implimentations/or
 import { UPDATE_KNOWN_FOR_IN_CAKE } from './tokens/update_known_for_in_cake.token';
 import { UpdateKnownForOfCakeUseCaseImp } from './infrastructureLayer/implimentations/orders/UpdateKnownForOfCakeUseCase.implimentation';
 import { GetAllOrdersUseCase } from './applicationLayer/use-cases/get_all_orders.usecase';
-
+/**
+ * Imports external modules required for the OrderModule.
+ * - MongooseModule: To connect to MongoDB and handle order documents.
+ * - UserModule: Provides user-related functionality.
+ * - CakeModule: Handles cake-related operations.
+ * - StoreModule: Handles store-related operations.
+ * - NotificationModule: Provides notification services.
+ * - MqttModule: Manages MQTT communication for real-time updates.
+ */
 @Module({
-  /**
-   * Imports external modules required for the OrderModule.
-   * - MongooseModule: To connect to MongoDB and handle order documents.
-   * - UserModule: Provides user-related functionality.
-   * - CakeModule: Handles cake-related operations.
-   * - StoreModule: Handles store-related operations.
-   * - NotificationModule: Provides notification services.
-   * - MqttModule: Manages MQTT communication for real-time updates.
-   */
   imports: [
     MongooseModule.forFeature([{ name: Order.name, schema: OrderSchema }]),
-    // UserModule,
-    forwardRef(()=>UserModule),
-    forwardRef(()=>CakeModule),
+    // Other Dependent Modules
+    forwardRef(() => UserModule),
+    forwardRef(() => CakeModule),
     StoreModule,
     NotificationModule,
     MqttModule,
   ],
-  controllers: [
-    /**
-     * Controllers responsible for handling HTTP requests for orders.
-     * - OrderController: Manages the basic order-related requests.f
-     * - ChangeOrderStatus: Handles changes in order statuses (e.g., from pending to completed).
-     * - RequestOrderController: Allows users to request orders.
-     */
-    OrderController,
-    ChangeOrderStatus,
-  ],
+  controllers: [OrderController, ChangeOrderStatus],
   providers: [
-    /**
-     * Providers responsible for the application's use cases and business logic.
-     * These use cases handle the core functionality such as retrieving orders, changing their statuses,
-     * handling payment statuses, and more.
-     */
     RequestOrderUseCase,
     JwtService,
     ChangeOrderStatusUseCase,
     GetAllOrdersReceivedUseCase,
     GetAllOrdersPlacedUseCase,
     GetOrdersToAnalyse,
-    GetOrderDetailsUseCase,GetAllOrdersUseCase,
+    GetOrderDetailsUseCase,
+    GetAllOrdersUseCase,
     GetAllPaymentWaitingOrdersUseCase,
-    // GetCakeDetailsUseCase, // Uncomment this line if needed in the future
-    // GetUserDetailUseCase, // Uncomment this line if needed in the future
-
-    /**
-     * Repositories and external use case implementations.
-     * Each interface is mapped to a concrete class using dependency injection.
-     */
     {
-      provide: ORDER_REPOSITORY, // Interface to concrete OrderRepository implementation
+      provide: ORDER_REPOSITORY, 
       useClass: OrderRepositoryImp,
     },
     {
-      provide: GET_CAKE_DETAILS, // Interface to concrete GetCakeDetailsUseCase implementation
+      provide: GET_CAKE_DETAILS, 
       useClass: IGetCakeDetailsUseCaseImp,
     },
     {
-      provide: GET_STORE_DETAILS, // Interface to concrete GetStoreUseCase implementation
+      provide: GET_STORE_DETAILS,
       useClass: IGetStoreUseCaseImp,
     },
     {
-      provide: GET_USER_DETAILS, // Interface to concrete GetUserDetailsUsecase implementation
+      provide: GET_USER_DETAILS, 
       useClass: IGetUserDetailsUsecaseImp,
     },
     {
-      provide: NOTIFICATION_USECASE, // Interface to concrete NotificationUseCase implementation
+      provide: NOTIFICATION_USECASE, 
       useClass: INotificationUseCaseImp,
     },
     {
-      provide: GET_ORDERS_OFCAKE, // Interface to concrete GetOrdersWithCakeId implementation
+      provide: GET_ORDERS_OFCAKE,
       useClass: GetOrdersWithCakeIdImp,
     },
     {
-      provide: MQTTTOKEN, // Interface to concrete MqttService implementation
+      provide: MQTTTOKEN, 
       useClass: IMqttServiceImp,
     },
     {
-      provide: UPDATE_KNOWN_FOR_IN_CAKE, // Interface to concrete UpdateKnownForOfCakeUseCase implementation
+      provide: UPDATE_KNOWN_FOR_IN_CAKE, 
       useClass: UpdateKnownForOfCakeUseCaseImp,
     },
   ],
-  /**
-   * Exports selected use cases to be used in other modules or services.
-   * These exports allow other modules to access and utilize order-related functionality.
-   */
   exports: [
     ChangeOrderStatusUseCase,
     GetOrdersToAnalyse,

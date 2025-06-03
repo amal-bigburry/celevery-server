@@ -14,6 +14,7 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
@@ -40,6 +41,10 @@ import { UpdateContactNumberDto } from '../../dtos/UpdateContactNumber.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { RegisterUsingGoogleUseCase } from '../../applicationLayer/use-cases/RegisterUsingGoogle.usecase';
 import { LoginUsingGoogleUseCase } from '../../applicationLayer/use-cases/loginUsingGoogle.usecase';
+import { Types } from 'mongoose';
+import { GetMyFavouritesUsecase } from '../../applicationLayer/use-cases/GetMyFavourites.usecase';
+import { AddToFavouritesUsecase } from '../../applicationLayer/use-cases/AddToFavourites.usecase';
+import { RemoveMyFavouritesUsecase } from '../../applicationLayer/use-cases/RemoveMyFavourites.usecase';
 /**
  * ******************************************************************************************************
  * AuthController Class
@@ -49,7 +54,7 @@ import { LoginUsingGoogleUseCase } from '../../applicationLayer/use-cases/loginU
  * ******************************************************************************************************
  */
 @Controller('user')
-export class AuthController {
+export class UserController {
   constructor(
     private readonly loginUseCase: LoginUseCase,
     private readonly registerUseCase: RegisterUseCase,
@@ -57,8 +62,11 @@ export class AuthController {
     private readonly UpdateProfileImageUseCase: UpdateProfileImageUseCase,
     private readonly UpdateContactNumberUsecase: UpdateContactNumberUsecase,
     private readonly update_passwordUsecase: Update_passwordUsecase,
-    private readonly registerUsingGoogleUseCase: RegisterUsingGoogleUseCase,
     private readonly loginUsingGoogleUseCase: LoginUsingGoogleUseCase,
+    private readonly registerUsingGoogleUseCase: RegisterUsingGoogleUseCase,
+    private readonly GetMyFavouritesUsecase: GetMyFavouritesUsecase,
+    private readonly AddToFavouritesUsecase: AddToFavouritesUsecase,
+    private readonly RemoveMyFavouritesUsecase: RemoveMyFavouritesUsecase,
   ) {}
   /**
    * **************************************************************************************************
@@ -175,6 +183,58 @@ export class AuthController {
     let res = await this.UpdateContactNumberUsecase.execute(
       request.user['userId'],
       UpdateContactNumberDto,
+    );
+    return res;
+  }
+
+  @HttpCode(HttpStatus.CREATED)
+  @Post('favourites')
+  @UseGuards(JwtAuthGuard)
+  async add_to_favourites(
+    @Body() cake_id: { cake_id: string },
+    @Req() request: AuthRequest,
+  ) {
+    if (!cake_id) {
+      throw new BadRequestException('Body needs cake_id');
+    }
+    const isValidObjectId = Types.ObjectId.isValid(cake_id.cake_id);
+    if (!isValidObjectId) {
+      throw new BadRequestException('Invalid MongoDB ObjectId');
+    }
+    await this.AddToFavouritesUsecase.execute(
+      request.user['userId'],
+      cake_id.cake_id,
+    );
+    return 'added';
+  }
+  /**
+   * post request to send message
+   */
+
+  @HttpCode(HttpStatus.OK)
+  @Get('favourites')
+  @UseGuards(JwtAuthGuard)
+  async get_favourites(@Body() cake_id: string, @Req() request: AuthRequest) {
+    let res = await this.GetMyFavouritesUsecase.execute(request.user['userId']);
+    return res;
+  }
+  /**
+   * post request to send message
+   */
+
+  @HttpCode(HttpStatus.OK)
+  @Delete('favourites')
+  @UseGuards(JwtAuthGuard)
+  async delete_favourites(
+    @Body() cake: { cake_id: string },
+    @Req() request: AuthRequest,
+  ) {
+    if (!cake) {
+      throw new BadRequestException('Body needs cake_id');
+    }
+    let res = await this.RemoveMyFavouritesUsecase.execute(
+      request.user['userId'],
+      cake.cake_id,
     );
     return res;
   }

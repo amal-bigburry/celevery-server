@@ -12,7 +12,7 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
-import { AuthController } from './infrastructureLayer/controllers/user.controller';
+import {  UserController } from './infrastructureLayer/controllers/user.controller';
 import { FcmController } from './infrastructureLayer/controllers/fcmtoken.controller';
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserSchema } from './infrastructureLayer/models/user.schema';
@@ -35,8 +35,8 @@ import { IOTPVerifyingServiceImp } from './infrastructureLayer/implimentations/o
 import { RegisterUsingGoogleUseCase } from './applicationLayer/use-cases/RegisterUsingGoogle.usecase';
 import { LoginUsingGoogleUseCase } from './applicationLayer/use-cases/loginUsingGoogle.usecase';
 import { GoogleLoginStrategy, GoogleRegisterStrategy } from 'src/middlewares/google.strategy';
-import { AddToFavouritesUsecase } from './applicationLayer/use-cases/AddToFavourites/AddToFavourites.usecase';
-import { Getcurrentfcmusecase } from './applicationLayer/use-cases/GetCurrentFcm/getcurrentfcm.usecase';
+import { Getcurrentfcmusecase } from './applicationLayer/use-cases/getcurrentfcm.usecase';
+import { AddToFavouritesUsecase } from './applicationLayer/use-cases/AddToFavourites.usecase';
 
 /**
  * ******************************************************************************************************
@@ -63,10 +63,11 @@ import { Getcurrentfcmusecase } from './applicationLayer/use-cases/GetCurrentFcm
         },
       }),
     }),
+    // Other Dependent Modules
     CakeModule,
     OTPModule,
   ],
-  controllers: [AuthController, FcmController],
+  controllers: [UserController, FcmController],
   providers: [
     JwtStrategy,
     LoginUseCase,

@@ -18,33 +18,21 @@ import { FindCakeCategoryByIDUseCase } from './applicationLayer/use-cases/findca
  * Defines the CakeCategoryModule which organizes controllers, providers, and imports
  */
 @Module({
-  /**
-   * Imports Mongoose schema for cake categories
-   */
   imports: [
     MongooseModule.forFeature([
       { name: 'CakeCategories', schema: CakeCategoryModel },
     ]),
   ],
-  /**
-   * Declares the controller responsible for handling cake category HTTP requests
-   */
   controllers: [CakeCategoryController],
-  /**
-   * Provides the use cases and repository implementation for dependency injection
-   */
   providers: [
     CreateCakeCategoryUseCase,
     FindCakeCategoryUseCase,
     FindCakeCategoryByIDUseCase,
     {
-      provide: CAKE_CATEGORY_REPOSITORY, // string token for interface
+      provide: CAKE_CATEGORY_REPOSITORY,
       useClass: CakeCategoryRepositoryImp,
     },
   ],
-  /**
-   * Exports specific use cases for use in other modules
-   */
   exports: [FindCakeCategoryUseCase, FindCakeCategoryByIDUseCase],
 })
 export class CakeCategoryModule {}

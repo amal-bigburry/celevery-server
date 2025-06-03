@@ -9,7 +9,6 @@
 import { Module } from '@nestjs/common';
 import { NotificationController } from './infrastructureLayer/controllers/notification.controller';
 import { NotificationUseCase } from './applicationLayer/usecases/notification.usecase';
-
 /**
  * Module for handling notifications
  */

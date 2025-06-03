@@ -16,5 +16,5 @@ export interface IGetStoreUseCase {
    * @param cakeCategoryId - The unique identifier of the cake category
    * @returns A Promise resolving to the StoreDto associated with the category
    */
-  execute(cakeCategoryId: string): Promise<StoreDto>;
+  execute(store_id: string): Promise<StoreDto>;
 }

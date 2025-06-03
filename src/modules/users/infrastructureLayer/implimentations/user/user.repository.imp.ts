@@ -19,6 +19,7 @@ import { TokenDto } from 'src/modules/users/dtos/token.dto';
 import {
   BadRequestException,
   ConflictException,
+  NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
@@ -128,20 +129,28 @@ export class UserRepositoryImpl implements UserRepository {
    * @param cake_id - string
    * @returns Promise<string>
    */
-  async addFavourite(userid: string, cake_id: string): Promise<string> {
-    let user = await this.userModel.findById(userid);
-    let cake = await this.getCakeDetailsUsecase.execute(cake_id);
-    if (!cake) {
-      throw new BadRequestException('Invalid cake id');
-    }
-    let existing = await user?.favourites.filter((cakeid) => cakeid == cake_id);
-    if (existing) {
-      throw new ConflictException('already exist in your favorites');
-    }
-    user?.favourites?.push(cake_id);
-    user?.save();
-    return 'added';
+async addFavourite(userid: string, cake_id: string): Promise<string> {
+  const user = await this.userModel.findById(userid);
+  if (!user) {
+    throw new NotFoundException('User not found');
   }
+
+  const cake = await this.getCakeDetailsUsecase.execute(cake_id);
+  if (!cake) {
+    throw new BadRequestException('Invalid cake id');
+  }
+
+  const alreadyExists = user.favourites.includes(cake_id);
+  if (alreadyExists) {
+    throw new ConflictException('Already exists in your favourites');
+  }
+
+  user.favourites.push(cake_id);
+  await user.save();
+
+  return 'Cake added to favourites';
+}
+
   /**
    * Removes a cake from user's favourites.
    * @param userid - string

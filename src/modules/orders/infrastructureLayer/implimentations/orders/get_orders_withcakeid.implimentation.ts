@@ -14,7 +14,6 @@
  */
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { CakeDto } from 'src/modules/cakes/dtos/cake.dto';
 import { GetOrdersWithCakeId } from 'src/modules/orders/applicationLayer/interfaces/GetOrdersWithCakeId.interface';
 import { Order } from 'src/modules/orders/domainLayer/entities.ts/order.entity';
 import { OrderDto } from 'src/modules/orders/dtos/Order.dto';

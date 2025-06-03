@@ -4,7 +4,7 @@
  * Unauthorized copying, modification, distribution, or disclosure is prohibited.
  */
 /**
- * importing the required packages 
+ * importing the required packages
  */
 import { forwardRef, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
@@ -13,12 +13,9 @@ import { CakeRepositoryImp } from './infrastructureLayer/implimentations/cake.re
 import { CakeController } from './infrastructureLayer/controllers/cake.controller';
 import { CreateCakeUseCase } from './applicationLayer/use-cases/createcake.usecase';
 import { FindCakeUseCase } from './applicationLayer/use-cases/findcake.usecase';
-import { CakeCategoryModel } from '../cakecategories/infrastructureLayer/models/cakecategory.model';
 import { SearchForCakesUseCase } from './applicationLayer/use-cases/searchcakes.usecase';
-import { MulterModule } from '@nestjs/platform-express';
 import { GetCakeDetailsUseCase } from './applicationLayer/use-cases/GetCakeDetailsUseCase';
 import { GetSimilarCakesUseCase } from './applicationLayer/use-cases/GetSimilarCakes.usecase';
-import { StoreModel } from '../stores/InfrastructureLayer/models/store.schema';
 import { CAKE_REPOSITORY } from './tokens/cakeRepository.token';
 import { CAKE_CATEGORY_REPOSITORY } from './tokens/cakeCategoryRepository.token';
 import { CakecategoryRepositoryImp } from './infrastructureLayer/ExternalImplimentations/CakecategoryRepositoty.implimentations';
@@ -29,42 +26,21 @@ import { IGetCakeDetailsUseCaseImp } from '../orders/infrastructureLayer/Externa
 import { StoreModule } from '../stores/store.module';
 import { CakeCategoryModule } from '../cakecategories/cakecategories.module';
 import { UpdateKnownFor } from './applicationLayer/use-cases/UpdateKnownFor.usecase';
-import { AnalyticsModule } from '../analytics/analytics.module';
-import { GET_POPULAR } from './tokens/getpopular.token';
-import { IGetPopularCakesImp } from './infrastructureLayer/ExternalImplimentations/getPopularCakes.implimentations';
 import { OrderModule } from '../orders/orders.module';
-import { GET_TRENDING } from './tokens/gettrending.token';
-import { IGetTrendingCakesImp } from './infrastructureLayer/ExternalImplimentations/getTrendingCakes.impliments';
+import { GET_ALL_ORDERS } from './tokens/getAllOrder.token';
+import { IGetAllOrdersUseCaseImp } from './infrastructureLayer/ExternalImplimentations/getAllOrders.implimentations';
 /**
  * module declaration
  */
 @Module({
   imports: [
-    /**
-     * registering mongoose models for cakes, cake categories, and stores
-     */
-    MongooseModule.forFeature([
-      { name: 'Cakes', schema: CakeSchema },
-      // { name: 'CakeCategories', schema: CakeCategoryModel },
-      // { name: 'Stores', schema: StoreModel },
-    ]),
-    /**
-     * configuring multer for file uploads
-     */
+    MongooseModule.forFeature([{ name: 'Cakes', schema: CakeSchema }]),
+    // Other Dependent Modules
     StoreModule,
     CakeCategoryModule,
-    forwardRef(()=>OrderModule),
-    // AnalyticsModule, 
-    // AnalyticsModule,
-    // ,
+    forwardRef(() => OrderModule),
   ],
-  /**
-   * registering controller for cake module
-   */
   controllers: [CakeController],
-  /**
-   * providing use cases and repository implementations
-   */
   providers: [
     SearchForCakesUseCase,
     CreateCakeUseCase,
@@ -85,25 +61,14 @@ import { IGetTrendingCakesImp } from './infrastructureLayer/ExternalImplimentati
       useClass: GetStoreUsecaseImp,
     },
     {
-      provide: GETSTORE,
-      useClass: GetStoreUsecaseImp,
+      provide: GET_ALL_ORDERS,
+      useClass: IGetAllOrdersUseCaseImp,
     },
     {
       provide: I_GET_CAKE_DETAILS_USECASE,
       useClass: IGetCakeDetailsUseCaseImp,
     },
-    {
-      provide: GET_POPULAR,
-      useClass: IGetPopularCakesImp,
-    },
-    {
-      provide: GET_TRENDING,
-      useClass: IGetTrendingCakesImp,
-    },
   ],
-  /**
-   * exporting specific use cases for external usage
-   */
   exports: [GetCakeDetailsUseCase, UpdateKnownFor],
 })
 export class CakeModule {}

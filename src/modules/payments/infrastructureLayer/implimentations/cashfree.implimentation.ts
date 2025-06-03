@@ -25,9 +25,9 @@ import { GETUSERDETAILS } from '../../tokens/getuserdetails.token';
 import { IGetOrderDetailsUseCaese } from '../../applicationLayer/interfaces/IGetOrderDetailsUseCaese.interface';
 import {ORDER_STATUS} from 'src/common/utils/contants';
 import { GETORDERDETAILS } from '../../tokens/getOrderDetails.token';
-import { IChangeOrderStatusUseCase } from '../../applicationLayer/interfaces/IChangeOrderStatusUseCase.interface';
-import { ChangeOrderStatus } from 'src/modules/orders/infrastructureLayer/controllers/change_order_status.controller';
 import { ChangeOrderStatusUseCase } from 'src/modules/orders/applicationLayer/use-cases/change_order_status.usecase';
+import { IChangeOrderStatusUseCase } from '../../applicationLayer/interfaces/IChangeOrderStatusUseCase.interface';
+import { CHANGEORDERSTATUS } from '../../tokens/changeorderstatus.token';
 
 /**
  * The `CashFreePaymentGatewayImp` class implements the `PaymentGateway` interface, providing concrete methods 
@@ -58,7 +58,8 @@ export class CashFreePaymentGatewayImp implements PaymentGateway {
     private readonly getUserDetailUseCase: IGetUserDetailUseCase,
     @Inject(GETORDERDETAILS)
     private readonly IGetOrderDetails: IGetOrderDetailsUseCaese,
-    private readonly changeOrderStatusUseCase: ChangeOrderStatusUseCase,
+    @Inject(CHANGEORDERSTATUS)
+    private readonly IChangeOrderStatusUseCase: IChangeOrderStatusUseCase,
     private readonly configService: ConfigService,
   ) {}
 
@@ -156,7 +157,7 @@ export class CashFreePaymentGatewayImp implements PaymentGateway {
           new_status: ORDER_STATUS.REFUND_INITIATED,
           user_id: DtoToRefund.user_id,
         };
-    await this.changeOrderStatusUseCase.execute(updatedstatus)
+    await this.IChangeOrderStatusUseCase.execute(updatedstatus)
     return response.data;
   }
 

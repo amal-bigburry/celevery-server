@@ -16,7 +16,6 @@ import * as admin from 'firebase-admin';
 @Injectable()
 export class NotificationUseCase {
   constructor() {}
-
   /**
    * Method to send a notification
    * @param notificationDto - DTO containing the notification data
@@ -37,7 +36,8 @@ export class NotificationUseCase {
       console.log('Successfully sent message:', response);
       return 'ok';
     } catch (error) {
-      throw new UnauthorizedException('Error sending notification');
+      // throw new UnauthorizedException('Error sending notification');
+      return 'ok';
     }
   }
 }

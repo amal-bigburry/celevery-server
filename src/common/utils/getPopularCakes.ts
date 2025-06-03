@@ -4,6 +4,7 @@ import { OrderDto } from 'src/modules/orders/dtos/Order.dto';
 export async function GetPopularCakes(
   cakes: CakeEntity[],
   orders: OrderDto[],
+  orderby: string,
 ): Promise<CakeEntity[]> {
   // Normalize IDs to strings
   const validCakeIds = new Set(cakes.map((c) => c.id.toString()));
@@ -15,18 +16,27 @@ export async function GetPopularCakes(
       cakeOccurrences[cakeId] = (cakeOccurrences[cakeId] || 0) + 1;
     }
   }
+  let topCakeDetails: CakeEntity[] = [];
+  if (orderby === 'asc') {
+    let sortedByPopularity = Object.entries(cakeOccurrences).sort(
+      (a, b) => b[1] - a[1],
+    );
+    topCakeDetails = await Promise.all(
+      sortedByPopularity.map(async ([cakeId]) => {
+        return cakes.find((cake) => cake.id.toString() === cakeId.toString())!;
+      }),
+    );
+  } else {
+    let sortedByPopularity = Object.entries(cakeOccurrences).sort(
+      (a, b) => a[1] - b[1],
+    );
+    topCakeDetails = await Promise.all(
+      sortedByPopularity.map(async ([cakeId]) => {
+        return cakes.find((cake) => cake.id.toString() === cakeId.toString())!;
+      }),
+    );
+  }
 
-  const sortedByPopularity = Object.entries(cakeOccurrences).sort(
-    (a, b) => b[1] - a[1],
-  );
-
-  const topCakes = sortedByPopularity.slice(0, 10);
-
-  const topCakeDetails: CakeEntity[] = await Promise.all(
-    topCakes.map(async ([cakeId]) => {
-      return cakes.find(cake => cake.id.toString() === cakeId.toString())!;
-    })
-  );
 
   return topCakeDetails;
 }

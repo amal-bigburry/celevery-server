@@ -30,15 +30,15 @@ import { GetPrivacyAndPolicyUseCase } from './applicationLayer/use-cases/GetPriv
     GetTermsAndConditionsuseCase,
     GetPrivacyAndPolicyUseCase,
     {
-      provide: DOCUMENT_REPOSITORY, // ✅ token-based provider
+      provide: DOCUMENT_REPOSITORY,
       useClass: DocumentRepositoryImpl,
     },
     {
-      provide: GET_TC, // ✅ token-based provider
+      provide: GET_TC,
       useClass: DocumentRepositoryImpl,
     },
     {
-      provide: GET_PP, // ✅ token-based provider
+      provide: GET_PP,
       useClass: DocumentRepositoryImpl,
     },
   ],

@@ -1,27 +1,31 @@
 /**
  * Company License: Bigburry Hypersystems LLP
- * 
+ *
  * This file defines the implementation of the OrderRepository interface.
  * The OrderRepositoryImp class provides methods for interacting with the orders collection in the database.
- * These methods are used to perform operations like retrieving orders, creating new orders, 
+ * These methods are used to perform operations like retrieving orders, creating new orders,
  * updating the status of an order, and querying orders based on specific conditions.
- * 
+ *
  * Dependencies:
  * - OrderModel: Mongoose model representing orders in the database.
  * - ORDER_STATUS: Enum or constant representing different order statuses.
  * - PaginationDto: Data Transfer Object (DTO) for handling pagination of order lists.
  * - OrderDto: Data Transfer Object for Order, used to represent order data.
- * 
+ *
  * The class implements methods for filtering, updating, and retrieving orders with different criteria.
  */
-import { BadRequestException } from '@nestjs/common';
+import { BadRequestException, Inject } from '@nestjs/common';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
-import {ORDER_STATUS} from 'src/common/utils/contants';
+import { ORDER_STATUS } from 'src/common/utils/contants';
+import { IGetUserDetailUseCase } from 'src/modules/orders/applicationLayer/interfaces/GetuserDetailsUsecase.interface';
+import { INotificationUseCase } from 'src/modules/orders/applicationLayer/interfaces/NotificationUsecase.interface';
 import { OrderRepository } from 'src/modules/orders/applicationLayer/interfaces/order.repositoty';
 import { Order } from 'src/modules/orders/domainLayer/entities.ts/order.entity';
 import { OrderDto } from 'src/modules/orders/dtos/Order.dto';
+import { GET_USER_DETAILS } from 'src/modules/orders/tokens/get_user_details.token';
+import { NOTIFICATION_USECASE } from 'src/modules/orders/tokens/notificationusecase.token';
 
 /**
  * OrderRepositoryImp implements the OrderRepository interface for interacting with the orders collection.
@@ -30,13 +34,22 @@ import { OrderDto } from 'src/modules/orders/dtos/Order.dto';
 export class OrderRepositoryImp implements OrderRepository {
   /**
    * Constructor to inject the Mongoose Order model.
-   * This model allows querying and manipulating orders in the MongoDB database.
+   * This model allows querying and manipulating orders in the MongoDB database......
+   *
+   *
    */
-  constructor(@InjectModel(Order.name) private orderModel: Model<OrderDto>) {}
+  constructor(
+    @InjectModel(Order.name) private orderModel: Model<OrderDto>,
+    @Inject(NOTIFICATION_USECASE)
+    private readonly notificationUseCase: INotificationUseCase,
+
+    @Inject(GET_USER_DETAILS) // Replace 'any' with the actual type of notificationUseCase
+    private readonly IGetUserDetailUseCase: IGetUserDetailUseCase, // Replace 'any' with the actual type of notificationUseCase
+  ) {}
 
   /**
    * Retrieves orders based on the specified analysis level, filtering by the order's creation date.
-   * 
+   *
    * @param level The level of analysis to filter orders (1, 2, 3, 4, 5, 0).
    * @returns A promise that resolves to an array of orders matching the criteria.
    */
@@ -79,7 +92,7 @@ export class OrderRepositoryImp implements OrderRepository {
 
   /**
    * Fetches orders that are currently waiting for payment.
-   * 
+   *
    * @returns A promise that resolves to an array of orders with the status 'WAITINGTOPAY'.
    */
   async findAllPaymentWaitingOrders(): Promise<OrderDto[]> {
@@ -91,16 +104,16 @@ export class OrderRepositoryImp implements OrderRepository {
 
   /**
    * Retrieves all orders in the database.
-   * 
+   *
    * @returns A promise that resolves to an array of all orders.
    */
   async findAll(): Promise<OrderDto[]> {
-    return await this.orderModel.find().exec();
+    return await this.orderModel.find();
   }
 
   /**
    * Creates a new order in the database.
-   * 
+   *
    * @param order The OrderDto object containing the order data to be saved.
    * @returns A promise that resolves to the newly created order object.
    */
@@ -112,7 +125,7 @@ export class OrderRepositoryImp implements OrderRepository {
 
   /**
    * Retrieves the orders placed by a specific buyer.
-   * 
+   *
    * @param user_id The ID of the buyer.
    * @param page The page number for pagination.
    * @param limit The number of orders to return per page.
@@ -126,7 +139,7 @@ export class OrderRepositoryImp implements OrderRepository {
     const skip = (page - 1) * limit;
     const [data, total] = await Promise.all([
       this.orderModel
-        .find({buyer_id: user_id })
+        .find({ buyer_id: user_id })
         .skip(skip)
         .limit(limit)
         .sort({ createdAt: -1 })
@@ -144,7 +157,7 @@ export class OrderRepositoryImp implements OrderRepository {
 
   /**
    * Retrieves the orders received by a specific seller.
-   * 
+   *
    * @param user_id The ID of the seller.
    * @param page The page number for pagination.
    * @param limit The number of orders to return per page.
@@ -155,7 +168,6 @@ export class OrderRepositoryImp implements OrderRepository {
     page: number = 1,
     limit: number = 1,
   ): Promise<PaginationDto> {
-    
     // console.log(user_id)
     const skip = (page - 1) * limit;
     const filter = { seller_id: user_id };
@@ -179,7 +191,7 @@ export class OrderRepositoryImp implements OrderRepository {
 
   /**
    * Retrieves an order using the order ID.
-   * 
+   *
    * @param order_id The ID of the order to fetch.
    * @returns A promise that resolves to the order object.
    * @throws BadRequestException if the order is not found.
@@ -194,7 +206,7 @@ export class OrderRepositoryImp implements OrderRepository {
 
   /**
    * Changes the status of a specific order.
-   * 
+   *
    * @param order_id The ID of the order to update.
    * @param new_status The new status to set for the order.
    * @returns A promise that resolves to the updated order.
@@ -213,6 +225,27 @@ export class OrderRepositoryImp implements OrderRepository {
     if (!order) {
       throw new BadRequestException('Order not found');
     }
+
+    let seller_id = order.seller_id; // Assuming seller_id is available in the order object
+    let buyer_id = order.buyer_id;
+    let buyer = await this.IGetUserDetailUseCase.execute(buyer_id); // Assuming buyer_id is available in the order object
+    let seller = await this.IGetUserDetailUseCase.execute(seller_id); // Assuming buyer_id is available in the order object
+
+    console.log('Order status of', order_id, 'changed to:', new_status);
+    // Notify buyer about the order status change
+    await this.notificationUseCase.execute({
+      title: 'Order Status Changed',
+      message: 'Your order status has been changed to ' + new_status,
+      token: buyer.fcm_token, // Assuming buyer_token is available in the order object
+    });
+
+    // Notify buyer about the order status change
+    await this.notificationUseCase.execute({
+      title: 'Order Status Changed',
+      message: 'Your order status has been changed to ' + new_status,
+      token: seller.fcm_token, // Assuming buyer_token is available in the order object
+    });
+
     return order;
   }
 }

@@ -8,7 +8,6 @@
  * Company: BigBurry Hypersystems LLP
  */
 import { Module } from '@nestjs/common';
-import { ConfigModule, ConfigService } from '@nestjs/config';
 import { OtpController } from './infrastructureLayer/controllers/otp.controller';
 import { SESClient } from '@aws-sdk/client-ses';
 import { OTPSendingService } from './applicationLayer/usecases/Send.usecase';
@@ -37,8 +36,7 @@ import { OTPStorageSchema } from './infrastructureLayer/models/otpStorage.schema
     MongooseModule.forFeature([
       { name: 'OTPStorage', schema: OTPStorageSchema },
     ]),
-    ConfigModule,
-  ], // Importing the ConfigModule to manage configuration and environment variables
+  ],
   providers: [
     SESClient,
     OTPSendingService,
@@ -47,8 +45,8 @@ import { OTPStorageSchema } from './infrastructureLayer/models/otpStorage.schema
       provide: REGISTER_OTP_TOKEN,
       useClass: OTPStorageRepositoryImp,
     },
-  ], // Registering TwilioService as a provider to handle OTP-related services
-  controllers: [OtpController], // Registering OtpController to handle HTTP requests related to OTP functionalities
-  exports: [OTPSendingService, OTPVerifyingService], // Exporting TwilioService for use in other modules
+  ],
+  controllers: [OtpController],
+  exports: [OTPSendingService, OTPVerifyingService],
 })
 export class OTPModule {}

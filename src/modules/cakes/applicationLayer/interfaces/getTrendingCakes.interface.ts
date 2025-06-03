@@ -15,5 +15,5 @@ export interface IGetTrendingCakes {
    * @param cakeCategoryId - The unique identifier of the cake category
    * @returns A Promise resolving to the StoreDto associated with the category
    */
-  execute(cakes: CakeEntity[]): Promise<CakeEntity[]>;
+  execute(cakes: CakeEntity[], orderby:string): Promise<CakeEntity[]>;
 }

@@ -24,7 +24,6 @@ import { DocumentModule } from './modules/documents/documents.module';
 import { AnalyticsModule } from './modules/analytics/analytics.module';
 import { SellerSupportModule } from './modules/support/support.module';
 import { AdvertismentModule } from './modules/Advertisments/advertisment.module';
-import { FavouritesModule } from './modules/favourites/favourites.module';
 import { OTPModule } from './modules/OTP/otp.module';
 import { WelcomeController } from './app.controller';
 import { GeneratorModule } from './modules/Generator/generator.module';
@@ -62,7 +61,6 @@ admin.initializeApp({
     // Seller support and assistance features
     AdvertismentModule,
     // Favourites handler
-    FavouritesModule ,
     OTPModule,
     GeneratorModule,
     // Load environment variables globally

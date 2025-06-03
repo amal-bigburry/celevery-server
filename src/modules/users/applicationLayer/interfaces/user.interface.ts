@@ -18,7 +18,6 @@
  * ******************************************************************************************************
  */
 
-import { CakeDto } from 'src/modules/cakes/dtos/cake.dto';
 import { UserEntity } from '../../domainLayer/entities.ts/user.entity';
 import { RegisterDto } from '../../dtos/Register.dto';
 import { TokenDto } from '../../dtos/token.dto';

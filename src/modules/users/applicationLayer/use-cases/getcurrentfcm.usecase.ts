@@ -14,7 +14,7 @@
 
 import { Inject, Injectable } from '@nestjs/common';
 import { USER_REPOSITORY } from 'src/modules/users/tokens/userRepository.token';
-import { UserRepository } from '../../interfaces/user.interface';
+import { UserRepository } from '../interfaces/user.interface';
 
 /**
  * ******************************************************************************************************
