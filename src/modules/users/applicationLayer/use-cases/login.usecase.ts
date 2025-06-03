@@ -12,13 +12,13 @@
  * ******************************************************************************************************
  */
 
-import { HttpCode, HttpStatus, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
+import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { UserRepository } from '../interfaces/user.interface';
 import { JwtService } from '@nestjs/jwt';
 import { LoginDto } from '../../dtos/Login.dto';
 import { USER_REPOSITORY } from '../../tokens/userRepository.token';
-import { UserEntity } from '../../domainLayer/entities.ts/user.entity';
 import * as bcrypt from 'bcrypt';
+import { UserEntity } from '../../domainLayer/entities.ts/user.entity';
 /**
  * ******************************************************************************************************
  * LoginUseCase Class
@@ -31,41 +31,29 @@ import * as bcrypt from 'bcrypt';
 export class LoginUseCase {
   constructor(
     @Inject(USER_REPOSITORY) private readonly userRepo: UserRepository,
-    private jwtService: JwtService,
+    private readonly jwtService: JwtService,
   ) {}
-
   /**
    * **************************************************************************************************
    * execute Method
    *
-   * Takes LoginDto containing email and password, verifies the credentials against stored user data, and if
-   * valid, returns an access token signed with the user's email and ID as payload. Throws an exception on failure.
+   * Takes LoginDto containing email or phone number and password, verifies the credentials against stored user data,
+   * and if valid, returns an access token signed with the user's email and ID as payload. Throws UnauthorizedException on failure.
    * **************************************************************************************************
-   */ 
-  @HttpCode(HttpStatus.CREATED)
+   */
   async execute(loginDto: LoginDto): Promise<{ access_token: string }> {
-    let user: UserEntity | null;
-
-    // Check if the input is an email or phone number
+    let user: UserEntity | null = null;
+    // Determine if the input is email or contact number
     const isEmail = loginDto.emailOrNumber.includes('@');
     if (isEmail) {
       user = await this.userRepo.findByEmail(loginDto.emailOrNumber);
     } else {
-      let res = await this.userRepo.findByNumber(loginDto.emailOrNumber);
-      if(res){
-        user = res
-      }
-      else{
-        user = null
-      }
+      user = await this.userRepo.findByNumber(loginDto.emailOrNumber);
     }
-
-    // If user is not found, throw an error
     if (!user) {
       throw new UnauthorizedException('Invalid credentials');
     }
-
-    // Compare the provided password with the stored hashed password
+    // Validate password
     const isPasswordValid = await bcrypt.compare(
       loginDto.password,
       user.password,
@@ -73,8 +61,7 @@ export class LoginUseCase {
     if (!isPasswordValid) {
       throw new UnauthorizedException('Invalid credentials');
     }
-
-    // Generate JWT token
+    // Generate JWT token with email and user ID as payload
     const payload = { email: user.email, sub: user._id };
     return {
       access_token: this.jwtService.sign(payload),

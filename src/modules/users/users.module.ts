@@ -8,7 +8,6 @@
  * JWT secrets and expiry times ensuring security and flexibility.
  * ******************************************************************************************************
  */
-
 import { forwardRef, Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { JwtModule } from '@nestjs/jwt';
@@ -28,7 +27,6 @@ import { GetMyFavouritesUsecase } from './applicationLayer/use-cases/GetMyFavour
 import { RemoveMyFavouritesUsecase } from './applicationLayer/use-cases/RemoveMyFavourites.usecase';
 import { CakeModule } from '../cakes/cakes.modules';
 import { UpdateContactNumberUsecase } from './applicationLayer/use-cases/updateContactNumber.usecase';
-import { Update_passwordUsecase } from './applicationLayer/use-cases/Update_password.usecase';
 import { OTP_VERIFICATION_SERVICE } from './tokens/otpVerifyingservice.token';
 import { OTPModule } from '../OTP/otp.module';
 import { IOTPVerifyingServiceImp } from './infrastructureLayer/implimentations/otp/otpverification.repository.imp';
@@ -37,7 +35,7 @@ import { LoginUsingGoogleUseCase } from './applicationLayer/use-cases/loginUsing
 import { GoogleLoginStrategy, GoogleRegisterStrategy } from 'src/middlewares/google.strategy';
 import { Getcurrentfcmusecase } from './applicationLayer/use-cases/getcurrentfcm.usecase';
 import { AddToFavouritesUsecase } from './applicationLayer/use-cases/AddToFavourites.usecase';
-
+import { UpdatePasswordUsecase } from './applicationLayer/use-cases/Update_password.usecase';
 /**
  * ******************************************************************************************************
  * UserModule Class
@@ -80,7 +78,7 @@ import { AddToFavouritesUsecase } from './applicationLayer/use-cases/AddToFavour
     AddToFavouritesUsecase,
     RemoveMyFavouritesUsecase,
     UpdateContactNumberUsecase,
-    Update_passwordUsecase,
+    UpdatePasswordUsecase,
     GoogleLoginStrategy,
     GoogleRegisterStrategy,
     RegisterUsingGoogleUseCase,

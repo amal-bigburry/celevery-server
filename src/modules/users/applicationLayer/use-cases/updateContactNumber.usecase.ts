@@ -11,9 +11,8 @@
  * ******************************************************************************************************
  */
 
-import { BadRequestException, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
+import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { UserRepository } from '../interfaces/user.interface';
-import { TokenDto } from '../../dtos/token.dto';
 import { USER_REPOSITORY } from '../../tokens/userRepository.token';
 import { UpdateContactNumberDto } from '../../dtos/UpdateContactNumber.dto';
 import { IOTPVerifyingService } from '../interfaces/IOTPVerifyingService.interface';

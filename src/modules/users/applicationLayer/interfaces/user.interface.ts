@@ -65,3 +65,7 @@ export interface UserRepository {
   updatePassword(email:string, password:string):Promise<string>;
   createGoogleUser(email:string, profile_url:string, display_name:string):Promise<UserEntity>;
 }
+
+export interface IOTPVerifyingService {
+  verify(UUID: string, OTP:string): Promise<boolean>;
+}

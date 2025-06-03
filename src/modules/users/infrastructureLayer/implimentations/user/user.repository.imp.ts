@@ -51,6 +51,14 @@ export class UserRepositoryImpl implements UserRepository {
    * @param display_name - string
    * @returns Promise<UserEntity>
    */
+  /**
+   * Creates a new user account using Google authentication details.
+   * @param email - The email address from Google.
+   * @param profile_url - URL to the user's Google profile picture.
+   * @param display_name - Display name from the Google account.
+   * @returns The newly created user.
+   * @throws ConflictException if the user already exists.
+   */
   async createGoogleUser(
     email: string,
     profile_url: string,
@@ -74,10 +82,11 @@ export class UserRepositoryImpl implements UserRepository {
     return newUser;
   }
   /**
-   * Updates a user's password.
-   * @param email - string
-   * @param password - string
-   * @returns Promise<string>
+   * Updates the password for a user identified by email.
+   * @param email - The user's email address.
+   * @param password - The new password to set.
+   * @returns A success message upon successful update.
+   * @throws UnauthorizedException if the user is not found.
    */
   async updatePassword(email: string, password: string): Promise<string> {
     const user = await this.userModel.findOne({ email: email });
@@ -89,24 +98,19 @@ export class UserRepositoryImpl implements UserRepository {
     return 'Password updated successfully';
   }
   /**
-   * Finds user by contact number.
-   * @param number - string
-   * @returns Promise<UserEntity | null>
+   * Finds a user by their contact number.
+   * @param number - The user's contact number.
+   * @returns The user entity if found, otherwise null.
    */
   async findByNumber(number: string): Promise<UserEntity | null> {
-    const user = await this.userModel
-      .findOne({ contact_number: number })
-      .exec();
-    if (!user) {
-      return null;
-    }
-    return user;
+    return this.userModel.findOne({ contact_number: number }).exec();
   }
   /**
-   * Updates a user's contact number.
-   * @param userid - string
-   * @param contact_number - string
-   * @returns Promise<string>
+   * Updates a user's contact number and resets verification status.
+   * @param userid - The user's unique ID.
+   * @param contact_number - The new contact number to set.
+   * @returns A success message after updating.
+   * @throws BadRequestException if the user is not found.
    */
   async updateContactNumber(
     userid: string,
@@ -116,80 +120,61 @@ export class UserRepositoryImpl implements UserRepository {
     if (!user) {
       throw new BadRequestException('User not found');
     }
-    user.set({
-      contact_number,
-      contact_number_isVerified: false,
-    });
+    user.set({ contact_number, contact_number_isVerified: false });
     await user.save();
     return 'Contact number updated';
   }
-  /**
-   * Adds a cake to user's favourites.
-   * @param userid - string
-   * @param cake_id - string
-   * @returns Promise<string>
-   */
-async addFavourite(userid: string, cake_id: string): Promise<string> {
-  const user = await this.userModel.findById(userid);
-  if (!user) {
-    throw new NotFoundException('User not found');
+  /** Adds a cake to the user's list of favourites.
+   * @param userid - The ID of the user.
+   * @param cake_id - The ID of the cake to be added.
+   * @returns A success message upon addition.
+   * @throws NotFoundException if the user does not exist.
+   * @throws BadRequestException if the cake ID is invalid.
+   * @throws ConflictException if the cake is already in the user's favourites. */
+  async addFavourite(userid: string, cake_id: string): Promise<string> {
+    const user = await this.userModel.findById(userid);
+    if (!user) {
+      throw new NotFoundException('User not found');
+    }
+    const cake = await this.getCakeDetailsUsecase.execute(cake_id);
+    if (!cake) {
+      throw new BadRequestException('Invalid cake id');
+    }
+    if (user.favourites.includes(cake_id)) {
+      throw new ConflictException('Already exists in your favourites');
+    }
+    user.favourites.push(cake_id);
+    await user.save();
+    return 'Cake added to favourites';
   }
-
-  const cake = await this.getCakeDetailsUsecase.execute(cake_id);
-  if (!cake) {
-    throw new BadRequestException('Invalid cake id');
-  }
-
-  const alreadyExists = user.favourites.includes(cake_id);
-  if (alreadyExists) {
-    throw new ConflictException('Already exists in your favourites');
-  }
-
-  user.favourites.push(cake_id);
-  await user.save();
-
-  return 'Cake added to favourites';
-}
-
-  /**
-   * Removes a cake from user's favourites.
-   * @param userid - string
-   * @param cake_id - string
-   * @returns Promise<string>
-   */
+  /** Removes a cake from the user's favourites.
+   * @param userid - The user ID.
+   * @param cake_id - The cake ID to remove.
+   * @returns A success message.
+   * @throws BadRequestException if user not found. */
   async removeFavourite(userid: string, cake_id: string): Promise<string> {
-    let user = await this.userModel.findById(userid);
+    const user = await this.userModel.findById(userid);
     if (!user) {
       throw new BadRequestException('user id not found');
     }
-    let favourites = user?.favourites;
-    let indexOfcakeid = favourites?.indexOf(cake_id, 0);
-    if (indexOfcakeid >= 0) {
-      favourites?.splice(indexOfcakeid, 1);
+    const index = user.favourites.indexOf(cake_id);
+    if (index >= 0) {
+      user.favourites.splice(index, 1);
     }
-    user.favourites = favourites;
-    user.save();
+    await user.save();
     return 'removed';
   }
-  /**
-   * Retrieves user's favourite cakes.
-   * @param userid - string
-   * @returns Promise<CakeEntity[]>
-   */
+
   async getFavourite(userid: string): Promise<CakeEntity[]> {
     const user = await this.userModel.findById(userid).lean();
-    if (!user || !Array.isArray(user.favourites)) return [];
-    const cake_ids = user.favourites;
+    if (!user?.favourites?.length) return [];
     const cakes = await Promise.all(
-      cake_ids.map(async (cake_id) => {
-        try {
-          const cake = await this.getCakeDetailsUsecase.execute(cake_id);
-          return cake || null;
-        } catch (err) {
+      user.favourites.map((cake_id) =>
+        this.getCakeDetailsUsecase.execute(cake_id).catch((err) => {
           console.error(`Error fetching cake with ID ${cake_id}:`, err);
           return null;
-        }
-      }),
+        }),
+      ),
     );
     return cakes.filter((cake): cake is CakeEntity => cake !== null);
   }
@@ -200,11 +185,11 @@ async addFavourite(userid: string, cake_id: string): Promise<string> {
    * @returns Promise<string>
    */
   async updateProfileImage(userid: string, file: any): Promise<string> {
-    let url = await this.uploadImage(file);
-    let user = await this.userModel.findById(userid);
+    const url = await this.uploadImage(file);
+    const user = await this.userModel.findById(userid);
     if (user) {
       user.profile_url = url;
-      user.save();
+      await user.save();
     }
     return 'updated';
   }
@@ -212,6 +197,7 @@ async addFavourite(userid: string, cake_id: string): Promise<string> {
    * Finds user by email.
    * @param email - string
    * @returns Promise<UserEntity>
+   * @throws BadRequestException if user not found
    */
   async findByEmail(email: string): Promise<UserEntity> {
     const user = await this.userModel.findOne({ email }).exec();
@@ -234,13 +220,14 @@ async addFavourite(userid: string, cake_id: string): Promise<string> {
    * @returns Promise<UserEntity | null>
    */
   async findById(userid: string): Promise<UserEntity | null> {
-    const user = this.userModel.findById(userid).exec();
+    const user = await this.userModel.findById(userid).exec();
     return user;
   }
   /**
    * Creates a new user with registration data.
    * @param RegisterDto - RegisterDto
    * @returns Promise<UserEntity>
+   * @throws ConflictException if user already exists
    */
   async createUser(RegisterDto: RegisterDto): Promise<UserEntity> {
     const user = await this.userModel
@@ -262,7 +249,9 @@ async addFavourite(userid: string, cake_id: string): Promise<string> {
    * @returns Promise<string>
    */
   async updatefcm(userid: string, token: TokenDto): Promise<string> {
-    let user = await this.userModel.findByIdAndUpdate(userid, token).exec();
+    const user = await this.userModel
+      .findByIdAndUpdate(userid, { fcm_token: token.fcm_token })
+      .exec();
     if (!user) return '';
     return 'ok';
   }

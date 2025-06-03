@@ -31,6 +31,7 @@ import { GetOrdersWithCakeId } from '../interfaces/GetOrdersWithCakeId.interface
 import { UPDATE_KNOWN_FOR_IN_CAKE } from '../../tokens/update_known_for_in_cake.token';
 import { UpdateKnownForOfCakeUseCase } from '../interfaces/UpdateKnownForOfCakeUseCase.interface';
 import { STORE_STATUS } from 'src/common/utils/contants';
+import { PopDto } from 'src/modules/mqtt/dtos/pop.dto';
 
 /**
  * injectable service file that makes an order request
@@ -77,12 +78,15 @@ export class RequestOrderUseCase {
     let store = await this.getstoreUsecase.execute(cake.store_id);
     orderDto.seller_id = store.store_owner_id;
 
-    if(store.store_status != STORE_STATUS.OPEN){
-      throw new BadRequestException('The store is not open')
+    if (store.store_status != STORE_STATUS.OPEN) {
+      throw new BadRequestException('The store is not open');
     }
 
     let buyer = await this.getuserDetailsUseCase.execute(orderDto.buyer_id);
     if (!buyer) throw new UnauthorizedException('buyer not found');
+
+    let seller = await this.getuserDetailsUseCase.execute(orderDto.seller_id);
+    if (!seller) throw new UnauthorizedException('seller not found');
 
     // if (!cake?.cake_variants?.length)
     //   throw new BadRequestException('invalid varient id');
@@ -94,30 +98,16 @@ export class RequestOrderUseCase {
       orderDto.cake_id,
     );
 
-    // await this.notificationUseCase.execute({
-    //   title: 'New Order Received',
-    //   message: `New order received from ${buyer.email} for ${cake.cake_name} of variant with weight of ${cake.cake_variants[orderDto.cake_variant_id].weight} kg, price of ${cake.cake_variants[orderDto.cake_variant_id].cake_price} and quantity of ${orderDto.quantity}. Customer Needs it before ${orderDto.need_before}`,
-    //   token: cake_seller.fcm_token,
-    // });
-    // /**
-    //  * sends push notification to the buyer
-    //  */
-    // await this.notificationUseCase.execute({
-    //   title: 'Order Placed - Requested',
-    //   message: `Cake Model - ${cake.cake_name} of variant with weight of ${cake.cake_variants[orderDto.cake_variant_id].weight} kg, price of ${cake.cake_variants[orderDto.cake_variant_id].cake_price} and quantity of ${orderDto.quantity}. Needs it before ${orderDto.need_before}`,
-    //   token: buyer.fcm_token,
-    // });
-    // /**
-    //  * send a trigger to sellers app to show the pop up and alert the buyer about the order
-    //  */
-    // let data: PopDto = {
-    //   topic: store.store_owner_id,
-    //   message: `New order received from ${buyer.email} for ${cake.cake_name} of variant with weight of ${cake.cake_variants[orderDto.cake_variant_id].weight} kg, price of ${cake.cake_variants[orderDto.cake_variant_id].cake_price} and quantity of ${orderDto.quantity}. Customer Needs it before ${orderDto.need_before}`,
-    // };
-    // await this.mqttService.publish(data);
-    /**
-     * return the order
-     */
+    let variant = cake.cake_variants.find(
+      (v) => v._id === orderDto.cake_variant_id,
+    );
+
+    
+    let data: PopDto = {
+      topic: store.store_owner_id,
+      message: `New order received from ${buyer.email} for ${cake.cake_name} of variant with weight of ${variant?.weight} kg, price of ${variant?.cake_price} and quantity of ${orderDto.quantity}. Customer Needs it before ${orderDto.need_before}`,
+    };
+    await this.mqttService.publish(data);
 
     this.knownfor_occurences = [];
     AllordersWithTheCurrentCake.forEach((order) => {

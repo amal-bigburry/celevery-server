@@ -7,25 +7,16 @@ import { Document } from 'mongoose';
 /**
  * Schema representing the CakeVariant embedded document
  */
-@Schema({timestamps:true})
+@Schema({ _id: false })
 export class CakeVariant {
-  /**
-   * Preparation time in minutes for this cake variant
-   */
+  @Prop({ type: String, required: true })
+  _id: string;
   @Prop() preparation_time: number;
-  /**
-   * Weight of the cake variant
-   */
   @Prop() weight: number;
-  /**
-   * Maximum retail price of the cake variant
-   */
   @Prop() cake_mrp: number;
-  /**
-   * Selling price of the cake variant
-   */
   @Prop() cake_price: number;
 }
+
 /**
  * Main schema for Cake document in the database
  */

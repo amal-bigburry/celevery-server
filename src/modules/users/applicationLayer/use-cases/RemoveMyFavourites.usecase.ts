@@ -9,26 +9,22 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { USER_REPOSITORY } from '../../tokens/userRepository.token';
 import { UserRepository } from '../interfaces/user.interface';
-
 /**
- * Service to handle sending notifications
+ * Usecase to handle removing a cake from user's favourites
  */
 @Injectable()
-export class RemoveMyFavouritesUsecase
- {
-
+export class RemoveMyFavouritesUsecase {
   constructor(
-      @Inject(USER_REPOSITORY)
-      private readonly UserRepository: UserRepository) {}
-
+    @Inject(USER_REPOSITORY)
+    private readonly UserRepository: UserRepository,
+  ) {}
   /**
-   * Method to send a notification
-   * @param notificationDto - DTO containing the notification data
-   * @returns a string indicating the success status
-   * @throws UnauthorizedException if there is an error sending the notification
+   * Removes a cake from the user's favourites list.
+   * @param user_id - The ID of the user
+   * @param cake_id - The ID of the cake to remove from favourites
+   * @returns A string indicating the success status
    */
-  async execute(user_id:string, cake_id:string): Promise<string> {
-    return await this.UserRepository.removeFavourite(user_id, cake_id)
+  async execute(user_id: string, cake_id: string): Promise<string> {
+    return await this.UserRepository.removeFavourite(user_id, cake_id);
   }
-
-  }
+}

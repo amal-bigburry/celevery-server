@@ -7,7 +7,7 @@
  * email format, and the password field is a non-empty string, ensuring basic input validation before processing.
  * ******************************************************************************************************
  */
-import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsString } from 'class-validator';
 /**
  * ******************************************************************************************************
  * LoginDto Class
@@ -19,7 +19,6 @@ import { IsEmail, IsNotEmpty, IsString } from 'class-validator';
 export class LoginDto {
   @IsNotEmpty()
   emailOrNumber: string;
-
   @IsString()
   @IsNotEmpty()
   password: string;

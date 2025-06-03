@@ -10,13 +10,16 @@
  * - MqttPublisherController: Handles the publishing of messages to the MQTT broker.
  * - IMqttService: Interface that defines the contract for MQTT messaging services.
  */
+import { MqttService } from 'src/modules/mqtt/applicationLayer/usecases/mqtt.usecase';
 import { IMqttService } from '../../applicationLayer/interfaces/MqttService.interface';
-import { MqttPublisherController } from 'src/modules/mqtt/infrastructureLayer/controllers/publish.controller';
+import { PopDto } from 'src/modules/mqtt/dtos/pop.dto';
+import { Inject, Injectable } from '@nestjs/common';
 
 /**
  * IMqttServiceImp class implements the IMqttService interface.
  * It provides an implementation for publishing messages via MQTT using the MqttPublisherController.
  */
+@Injectable()
 export class IMqttServiceImp implements IMqttService {
 
   /**
@@ -24,7 +27,8 @@ export class IMqttServiceImp implements IMqttService {
    * This controller is responsible for the logic of sending messages to the MQTT broker.
    */
   constructor(
-    private readonly mqttPublisherController: MqttPublisherController,
+    // @Inject(MQTTTOKEN)
+    private readonly mqttService: MqttService,
   ) {}
 
   /**
@@ -33,11 +37,9 @@ export class IMqttServiceImp implements IMqttService {
    * @param data The data to be sent as a message to the MQTT broker.
    * @returns A promise that resolves to a string, typically an acknowledgment or status message.
    */
-  async publish(data: any): Promise<string> {
-    /**
-     * Calls the sendMessage method of MqttPublisherController to send the provided data to the MQTT broker.
-     * It returns a string response indicating the status or acknowledgment of the message being sent.
-     */
-    return await this.mqttPublisherController.sendMessage(data);
+  async publish(data: PopDto): Promise<string> {
+    await this.mqttService.publish(data);
+    console.log('Message published:', data);
+    return 'Message published';
   }
 }

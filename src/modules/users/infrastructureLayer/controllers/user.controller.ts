@@ -35,7 +35,6 @@ import { AuthRequest } from 'src/middlewares/AuthRequest';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UpdateProfileImageUseCase } from '../../applicationLayer/use-cases/updateProfileImage.usecase';
 import { UpdateContactNumberUsecase } from '../../applicationLayer/use-cases/updateContactNumber.usecase';
-import { Update_passwordUsecase } from '../../applicationLayer/use-cases/Update_password.usecase';
 import { ResetPasswordDto } from '../../dtos/ResetPassword.dto';
 import { UpdateContactNumberDto } from '../../dtos/UpdateContactNumber.dto';
 import { AuthGuard } from '@nestjs/passport';
@@ -45,6 +44,7 @@ import { Types } from 'mongoose';
 import { GetMyFavouritesUsecase } from '../../applicationLayer/use-cases/GetMyFavourites.usecase';
 import { AddToFavouritesUsecase } from '../../applicationLayer/use-cases/AddToFavourites.usecase';
 import { RemoveMyFavouritesUsecase } from '../../applicationLayer/use-cases/RemoveMyFavourites.usecase';
+import { UpdatePasswordUsecase } from '../../applicationLayer/use-cases/Update_password.usecase';
 /**
  * ******************************************************************************************************
  * AuthController Class
@@ -61,7 +61,7 @@ export class UserController {
     private readonly getUserDetailUseCase: GetUserDetailUseCase,
     private readonly UpdateProfileImageUseCase: UpdateProfileImageUseCase,
     private readonly UpdateContactNumberUsecase: UpdateContactNumberUsecase,
-    private readonly update_passwordUsecase: Update_passwordUsecase,
+    private readonly update_passwordUsecase: UpdatePasswordUsecase,
     private readonly loginUsingGoogleUseCase: LoginUsingGoogleUseCase,
     private readonly registerUsingGoogleUseCase: RegisterUsingGoogleUseCase,
     private readonly GetMyFavouritesUsecase: GetMyFavouritesUsecase,
@@ -69,76 +69,60 @@ export class UserController {
     private readonly RemoveMyFavouritesUsecase: RemoveMyFavouritesUsecase,
   ) {}
   /**
-   * **************************************************************************************************
-   * login Method
-   *
-   * Handles POST requests to 'user/login', accepts login credentials in LoginDto format, and delegates
-   * authentication logic to the login use case, returning an access token on success.
-   * **************************************************************************************************
+   * Handles POST 'user/login', accepts LoginDto, delegates to loginUseCase, returns access token on success.
    */
   @HttpCode(HttpStatus.CREATED)
   @Post('login')
   async login(@Body() loginDto: LoginDto) {
     return this.loginUseCase.execute(loginDto);
   }
-
+  /**
+   * Initiates Google OAuth2 login flow.
+   */
   @HttpCode(HttpStatus.CREATED)
   @Get('login/google')
   @UseGuards(AuthGuard('login'))
-  async googleAuthLogin(@Req() req) {
-    // initiates the Google OAuth2 login flow
-  }
-
+  async googleAuthLogin(@Req() req) {}
+  /**
+   * Handles Google OAuth2 login redirect, retrieves user email, and logs in via Google use case.
+   */
   @HttpCode(HttpStatus.CREATED)
   @Get('login/google/redirect')
   @UseGuards(AuthGuard('login'))
   async googleAuthLoginRedirect(@Req() req) {
-    // return req.user['email']
-    let data = {
-      email: req.user['email'],
-    };
-    return await this.loginUsingGoogleUseCase.execute(data); // or redirect, store user in DB, etc.
-    // initiates the Google OAuth2 login flow
+    let data = { email: req.user['email'] };
+    return await this.loginUsingGoogleUseCase.execute(data);
   }
   /**
-   * **************************************************************************************************
-   * register Method
-   *
-   * Handles POST requests to 'user/register', accepts user registration details in RegisterDto format, and
-   * delegates creation logic to the register use case, returning the created user information.
-   * **************************************************************************************************
+   * Handles user registration by accepting RegisterDto and delegating to register use case.
    */
   @HttpCode(HttpStatus.CREATED)
   @Post('register')
   async register(@Body() RegisterDto: RegisterDto) {
     return this.registerUseCase.execute(RegisterDto);
   }
-
+  /**
+   * Initiates Google OAuth2 registration flow.
+   */
   @Get('register/google')
   @UseGuards(AuthGuard('register'))
   async googleAuthregister(@Req() req) {
     // initiates the Google OAuth2 login flow
-  }
-
+  } /**
+   * Handles Google OAuth2 registration redirect, extracts user info, and registers via Google use case.
+   */
   @Get('register/google/redirect')
   @UseGuards(AuthGuard('register'))
   async googleAuthRegisterRedirect(@Req() req) {
-    // return req.user['email']
     let data = {
       email: req.user['email'],
       display_name: req.user['display_name'],
       profile_url: req.user['picture'],
     };
-    return await this.registerUsingGoogleUseCase.execute(data); // or redirect, store user in DB, etc.
+    return await this.registerUsingGoogleUseCase.execute(data);
   }
-
   /**
-   * **************************************************************************************************
-   * getUserDetails Method
-   *
-   * Handles GET requests to 'user' endpoint, protected by JWT guard to ensure only authenticated users can
-   * access their user details. Retrieves user ID from the request and delegates fetching to the appropriate use case.
-   * **************************************************************************************************
+   * Retrieves authenticated user details using JWT guard for authorization.
    */
   @HttpCode(HttpStatus.OK)
   @Get()
@@ -146,14 +130,25 @@ export class UserController {
   async getUserDetails(@Req() request: AuthRequest) {
     return this.getUserDetailUseCase.execute(request.user['userId']);
   }
-
+  /**
+   * Updates the user's password.
+   * @param ResetPasswordDto - Data Transfer Object containing email and new password.
+   * @returns Result message after password update.
+   */
   @HttpCode(HttpStatus.OK)
   @Put('password')
   async update_password(@Body() ResetPasswordDto: ResetPasswordDto) {
     let res = await this.update_passwordUsecase.execute(ResetPasswordDto);
     return res;
   }
-
+  /**
+   * Updates the user's profile image.
+   * Protected route requiring JWT authentication.
+   * Accepts an uploaded file with key 'file' and updates the user's profile image URL.
+   * @param file - Uploaded profile image file.
+   * @param request - Authenticated request containing user info.
+   * @returns Result message after profile image update.
+   */
   @HttpCode(HttpStatus.OK)
   @Put('profileimg')
   @UseGuards(JwtAuthGuard)
@@ -172,7 +167,14 @@ export class UserController {
       file,
     );
   }
-
+  /**
+   * Updates the user's contact number.
+   * Protected route requiring JWT authentication.
+   * Accepts new contact number data and updates it for the authenticated user.
+   * @param request - Authenticated request containing user info.
+   * @param UpdateContactNumberDto - DTO containing the new contact number.
+   * @returns Result message after updating contact number.
+   */
   @HttpCode(HttpStatus.OK)
   @Put('contact_number')
   @UseGuards(JwtAuthGuard)
@@ -186,7 +188,14 @@ export class UserController {
     );
     return res;
   }
-
+  /**
+   * Adds a cake to the authenticated user's favourites list.
+   * Protected route requiring JWT authentication.
+   * Validates the presence and validity of cake_id before adding.
+   * @param cake_id - Object containing the cake's MongoDB ObjectId.
+   * @param request - Authenticated request containing user info.
+   * @returns Success message upon adding the cake.
+   */
   @HttpCode(HttpStatus.CREATED)
   @Post('favourites')
   @UseGuards(JwtAuthGuard)
@@ -208,20 +217,27 @@ export class UserController {
     return 'added';
   }
   /**
-   * post request to send message
+   * Retrieves the authenticated user's favourite cakes.
+   * Protected route requiring JWT authentication.
+   * @param request - Authenticated request containing user info.
+   * @returns Array of favourite cakes.
    */
-
   @HttpCode(HttpStatus.OK)
   @Get('favourites')
   @UseGuards(JwtAuthGuard)
-  async get_favourites(@Body() cake_id: string, @Req() request: AuthRequest) {
-    let res = await this.GetMyFavouritesUsecase.execute(request.user['userId']);
+  async get_favourites(@Req() request: AuthRequest) {
+    const res = await this.GetMyFavouritesUsecase.execute(
+      request.user['userId'],
+    );
     return res;
   }
   /**
-   * post request to send message
+   * Deletes a cake from the authenticated user's favourites.
+   * Protected route requiring JWT authentication.
+   * @param cake - Object containing cake_id to remove.
+   * @param request - Authenticated request containing user info.
+   * @returns Result of the removal operation.
    */
-
   @HttpCode(HttpStatus.OK)
   @Delete('favourites')
   @UseGuards(JwtAuthGuard)
@@ -229,10 +245,10 @@ export class UserController {
     @Body() cake: { cake_id: string },
     @Req() request: AuthRequest,
   ) {
-    if (!cake) {
+    if (!cake || !cake.cake_id) {
       throw new BadRequestException('Body needs cake_id');
     }
-    let res = await this.RemoveMyFavouritesUsecase.execute(
+    const res = await this.RemoveMyFavouritesUsecase.execute(
       request.user['userId'],
       cake.cake_id,
     );

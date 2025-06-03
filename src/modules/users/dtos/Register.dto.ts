@@ -22,22 +22,17 @@ export class RegisterDto {
   @IsEmail()
   @IsNotEmpty()
   email: string;
-
   contact_number: string;
-
   @IsString()
   @IsNotEmpty()
   @MinLength(8)
   password: string;
-
   @IsString()
   @IsNotEmpty()
   display_name: string;
-
   profile_url:string;
   favourites:Array<string>;
   contact_number_isVerified:Boolean;
-
   @IsString()
   @IsNotEmpty()
   fcm_token: string;

@@ -4,31 +4,27 @@
  * Unauthorized copying, modification, distribution, or disclosure is prohibited.
  */
 /**
- * importing the required packages
+ * Importing required packages
  */
 import { Inject, Injectable } from '@nestjs/common';
 import { USER_REPOSITORY } from '../../tokens/userRepository.token';
 import { UserRepository } from '../interfaces/user.interface';
-import { CakeDto } from 'src/modules/cakes/dtos/cake.dto';
 import { CakeEntity } from 'src/modules/cakes/domainLayer/entities/cake.entity';
-
 /**
- * Service to handle sending notifications
+ * Service use case to fetch user's favourite cakes
  */
 @Injectable()
 export class GetMyFavouritesUsecase {
   constructor(
     @Inject(USER_REPOSITORY)
-    private readonly UserRepository: UserRepository,
+    private readonly userRepository: UserRepository,
   ) {}
-
   /**
-   * Method to send a notification
-   * @param notificationDto - DTO containing the notification data
-   * @returns a string indicating the success status
-   * @throws UnauthorizedException if there is an error sending the notification
+   * Executes the use case to retrieve all favourite cakes for the specified user.
+   * @param userId - The ID of the user whose favourites are to be fetched
+   * @returns Promise resolving to an array of CakeEntity objects
    */
-  async execute(user_id: string): Promise<Array<CakeEntity>> {
-    return await this.UserRepository.getFavourite(user_id);
+  async execute(userId: string): Promise<CakeEntity[]> {
+    return await this.userRepository.getFavourite(userId);
   }
 }

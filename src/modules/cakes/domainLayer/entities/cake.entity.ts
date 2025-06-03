@@ -5,26 +5,20 @@
 /**
  * Importing required CakeVariant type from schema file
  */
-import {
-  CakeVariant,
-} from '../../infrastructureLayer/models/cake.schema';
 /**
  * Entity class representing the Cake domain model
  */
+export class CakeVariant {
+  constructor(
+    public _id: string,
+    public preparation_time: number,
+    public weight: number,
+    public cake_mrp: number,
+    public cake_price: number,
+  ) {}
+}
+
 export class CakeEntity {
-  /**
-   * Placeholder static method (not implemented)
-   * @param id - identifier parameter
-   */
-  static id(
-    id: any,
-  ): (
-    target: typeof import('../../infrastructureLayer/implimentations/cake.repository.imp').CakeRepositoryImp,
-    propertyKey: undefined,
-    parameterIndex: 0,
-  ) => void {
-    throw new Error('Method not implemented.');
-  }
   /**
    * Constructor to initialize CakeEntity with all relevant properties
    * @param id - unique identifier of the cake

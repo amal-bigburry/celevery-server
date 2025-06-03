@@ -3,6 +3,9 @@
  * This source code is confidential and intended only for internal use.
  * Unauthorized copying, modification, distribution, or disclosure is prohibited.
  */
+
+import { PopDto } from "src/modules/mqtt/dtos/pop.dto";
+
 /**
  * Interface for the MQTT service
  */
@@ -13,5 +16,5 @@ export interface IMqttService {
    * @param data - The data to be published
    * @returns Promise indicating the status of the publish action
    */
-  publish(data): Promise<string>;
+  publish(data:PopDto): Promise<string>;
 }
