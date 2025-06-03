@@ -231,7 +231,7 @@ export class OrderRepositoryImp implements OrderRepository {
     let buyer = await this.IGetUserDetailUseCase.execute(buyer_id); // Assuming buyer_id is available in the order object
     let seller = await this.IGetUserDetailUseCase.execute(seller_id); // Assuming buyer_id is available in the order object
 
-    console.log('Order status of', order_id, 'changed to:', new_status);
+    // console.log('Order status of', order_id, 'changed to:', new_status);
     // Notify buyer about the order status change
     await this.notificationUseCase.execute({
       title: 'Order Status Changed',

@@ -39,7 +39,7 @@ export class IMqttServiceImp implements IMqttService {
    */
   async publish(data: PopDto): Promise<string> {
     await this.mqttService.publish(data);
-    console.log('Message published:', data);
+    // console.log('Message published:', data);
     return 'Message published';
   }
 }

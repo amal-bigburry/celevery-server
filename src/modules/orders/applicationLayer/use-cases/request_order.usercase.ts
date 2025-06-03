@@ -72,24 +72,28 @@ export class RequestOrderUseCase {
    * executable file
    */
   async execute(orderDto: OrderDto): Promise<{ order: Object }> {
+    // get the cake details from the cakeid
     let cake = await this.getCakeDetailsUseCase.execute(orderDto.cake_id);
+    // Validate if the cake exists
     if (!cake) throw new UnauthorizedException('Cake not found');
-
+    // get the store details from the order
     let store = await this.getstoreUsecase.execute(cake.store_id);
     orderDto.seller_id = store.store_owner_id;
-
+    // confirms that the store is open
     if (store.store_status != STORE_STATUS.OPEN) {
       throw new BadRequestException('The store is not open');
     }
-
+    // Validate if the cake variant exists
+    if (!cake.cake_variants.some(
+      (variant) => variant._id === orderDto.cake_variant_id,
+    )) {
+      throw new BadRequestException('Cake variant not found');
+    }
     let buyer = await this.getuserDetailsUseCase.execute(orderDto.buyer_id);
     if (!buyer) throw new UnauthorizedException('buyer not found');
 
     let seller = await this.getuserDetailsUseCase.execute(orderDto.seller_id);
     if (!seller) throw new UnauthorizedException('seller not found');
-
-    // if (!cake?.cake_variants?.length)
-    //   throw new BadRequestException('invalid varient id');
 
     orderDto.payment_tracking_id = '';
     let order = await this.OrderRepository.create(orderDto);
@@ -102,11 +106,21 @@ export class RequestOrderUseCase {
       (v) => v._id === orderDto.cake_variant_id,
     );
 
-    
     let data: PopDto = {
       topic: store.store_owner_id,
       message: `New order received from ${buyer.email} for ${cake.cake_name} of variant with weight of ${variant?.weight} kg, price of ${variant?.cake_price} and quantity of ${orderDto.quantity}. Customer Needs it before ${orderDto.need_before}`,
     };
+    await this.notificationUseCase.execute({
+      title: 'Order Status Changed',
+      message: `New order received from ${buyer.email} for ${cake.cake_name} of variant with weight of ${variant?.weight} kg, price of ${variant?.cake_price} and quantity of ${orderDto.quantity}. Customer Needs it before ${orderDto.need_before}`,
+      token: buyer.fcm_token, // Assuming buyer_token is available in the order object
+    });
+    // Notify buyer about the order status change
+    await this.notificationUseCase.execute({
+      title: 'Order Status Changed',
+      message: `New order received from ${buyer.email} for ${cake.cake_name} of variant with weight of ${variant?.weight} kg, price of ${variant?.cake_price} and quantity of ${orderDto.quantity}. Customer Needs it before ${orderDto.need_before}`,
+      token: seller.fcm_token, // Assuming buyer_token is available in the order object
+    });
     await this.mqttService.publish(data);
 
     this.knownfor_occurences = [];
