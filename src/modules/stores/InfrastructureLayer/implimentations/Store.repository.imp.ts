@@ -7,21 +7,21 @@
  */
 import { ConfigService } from '@nestjs/config';
 import { StoreRepository } from '../../applicationLayer/interfaces/store.interfaces';
-import { StoreDto } from '../../dtos/store.dto';
+import { StoreDto } from '../../../../common/dtos/store.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { PutObjectCommand, S3Client } from '@aws-sdk/client-s3';
 import { extname } from 'path';
 import { randomUUID } from 'crypto';
-import { BadRequestException } from '@nestjs/common';
-import { CakeDto } from 'src/modules/cakes/dtos/cake.dto';
-import { UpdateStoreDto } from '../../dtos/updateStore.dto';
-import { STORE_STATUS, STORE_WARNINGS } from 'src/common/utils/contants';
-
+import { BadRequestException, Inject, Injectable } from '@nestjs/common';
+import { UpdateStoreDto } from '../../../../common/dtos/updateStore.dto';
+import { CakeDto } from '../../../../common/dtos/cake.dto';
+import axios from 'axios';
 /**
  * Bigburry Hypersystems LLP - StoreRepositoryImplimentation Class
  * Implements the methods required by the StoreRepository interface. This class handles storage and retrieval of store data, updating field values, fetching store-related cakes, and managing file uploads via AWS S3. All data manipulation is abstracted through Mongoose models, while error handling is performed with NestJS utilities.
  */
+@Injectable()
 export class StoreRepositoryImplimentation implements StoreRepository {
   private readonly s3: S3Client;
 
@@ -61,8 +61,9 @@ export class StoreRepositoryImplimentation implements StoreRepository {
    * Bigburry Hypersystems LLP - Method: deleteStore
    * Placeholder method for deleting a store entity from the platform. This method is currently not implemented and will throw an exception if invoked.
    */
-  async deleteStore(): Promise<string> {
-    throw new Error('Method not implemented.');
+  async deleteStore(store_id: string): Promise<string> {
+    await this.storeModel.findByIdAndDelete(store_id);
+    return 'deleted';
   }
 
   /**
@@ -89,7 +90,7 @@ export class StoreRepositoryImplimentation implements StoreRepository {
       store.save();
       return 'updated';
     }
-    throw new BadRequestException('updation failed because store not found.')
+    throw new BadRequestException('updation failed because store not found.');
   }
 
   /**
@@ -98,6 +99,7 @@ export class StoreRepositoryImplimentation implements StoreRepository {
    */
   async createStore(
     storeDto: StoreDto,
+    vendor_details: object,
     licenseFile: Express.Multer.File,
     idProofFile: Express.Multer.File,
   ): Promise<string> {
@@ -124,8 +126,8 @@ export class StoreRepositoryImplimentation implements StoreRepository {
           ContentType: idProofFile.mimetype,
         }),
       );
-      const idProofFileUrl = `https://${this.configService.get<string>('AWS_BUCKET_NAME')}.s3.${this.configService.get<string>('AWS_REGION')}.amazonaws.com/${idProofS3FileName}`;
-
+      const kyc_document_url = `https://${this.configService.get<string>('AWS_BUCKET_NAME')}.s3.${this.configService.get<string>('AWS_REGION')}.amazonaws.com/${idProofS3FileName}`;
+      storeDto.kyc_document_url = kyc_document_url;
       let dataToStore = {
         ...storeDto,
         store_name: storeDto.store_name,
@@ -136,15 +138,73 @@ export class StoreRepositoryImplimentation implements StoreRepository {
           license_number: storeDto.license_number,
           licensed_country: storeDto.licensed_country,
           license_file_url: licenseFileUrl,
-          id_proof_file_url: idProofFileUrl,
+          kyc_document_url: kyc_document_url,
+          kyc_document_number: storeDto.kyc_document_number,
+          kyc_document_type: storeDto.kyc_document_type,
         },
         store_owner_id: storeDto.store_owner_id,
         address: storeDto.address,
         lat: storeDto.lat,
-        log: storeDto.log
+        log: storeDto.log,
       };
+      // let store:{store_license_details: {kyc_document_url: string}, _id: string} = {};
+      let store = await this.storeModel.create(dataToStore);
+      vendor_details = {
+        ...vendor_details,
+        vendor_id: store._id,
+      };
+      // console.log(store);
+      // submit vendor creation form
+      try {
+        // let vendor_details: object = {};
+        const vendor = await axios.post(
+          this.configService.get<string>('CASHFREE_API_URL') +
+            `/easy-split/vendors`,
+          vendor_details,
+          {
+            headers: {
+              'Content-Type': 'application/json',
+              'x-api-version': '2025-01-01',
+              'x-client-id': `${this.configService.get<string>('CASHFREE_KEY_ID')}`,
+              'x-client-secret': `${this.configService.get<string>('CASHFREE_SECRET_KEY')}`,
+            },
+          },
+        );
+        console.log('vendor created, uploading docs ');
+        // console.log('vendor created', response.data);
+        // upload vendor docs
+        // Fetch the file from URL
+        // const fileResponse = await fetch(storeDto.kyc_document_url);
+        // const fileBlob = await fileResponse.blob();
 
-      await this.storeModel.create(dataToStore);
+        // const formData = new FormData();
+        // formData.append('doc_type', storeDto.kyc_document_type);
+        // formData.append('doc_value', storeDto.kyc_document_number);
+        // formData.append('file', fileBlob, 'document.pdf'); // Add filename
+
+        // const updatedVendor = await axios.post(
+        //   this.configService.get<string>('CASHFREE_API_URL') +
+        //     `/easy-split/vendor-docs/${store._id}`,
+        //   formData,
+        //   {
+        //     headers: {
+        //       'x-api-version': '2025-01-01',
+        //       'x-client-id': this.configService.get<string>('CASHFREE_KEY_ID'),
+        //       'x-client-secret': this.configService.get<string>(
+        //         'CASHFREE_SECRET_KEY',
+        //       ),
+        //     },
+        //   },
+        // );
+        // console.log('vendor updated', updatedVendor.data);
+        // console.log('vendor created', response.data);
+      } catch (error) {
+        if (axios.isAxiosError(error)) {
+          console.error('API Error:', error.response?.data || error.message);
+        } else {
+          console.error('Unexpected Error:', error);
+        }
+      }
       return 'ok';
     } catch (error) {
       console.error('Error creating store:', error);

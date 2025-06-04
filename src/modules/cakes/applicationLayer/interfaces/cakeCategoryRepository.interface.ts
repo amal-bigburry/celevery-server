@@ -5,7 +5,7 @@
 /**
  * Importing required packages
  */
-import { CakeCategoryDto } from 'src/modules/cakecategories/dtos/cakecategory.dto';
+import { CakeCategoryDto } from 'src/common/dtos/cakecategory.dto';
 /**
  * Interface defining the Cake Category Repository contract
  */

@@ -8,7 +8,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { CakeCategoryRepository } from '../interfaces/cakecategory.repository';
 import { CAKE_CATEGORY_REPOSITORY } from '../../tokens/cakeCategoryRepository.token';
-import { CakeCategoryDto } from '../../dtos/cakecategory.dto';
+import { CakeCategoryDto } from '../../../../common/dtos/cakecategory.dto';
 /**
  * Injectable service class for finding cake categories by ID
  */

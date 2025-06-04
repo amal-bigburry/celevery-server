@@ -10,9 +10,9 @@
  * 
  * Company: BigBurry Hypersystems LLP
  */
-import { Inject, Injectable } from '@nestjs/common';
+import { forwardRef, Inject, Injectable } from '@nestjs/common';
 import { PaymentGateway } from '../interfaces/payment.repository';
-import { DtoToGetPaymentSessionId } from 'src/modules/orders/dtos/DtoToGetPaymentSessionId.dto';
+import { DtoToGetPaymentSessionId } from 'src/common/dtos/DtoToGetPaymentSessionId.dto';
 import { PAYMENTTOKEN } from '../../tokens/payment.token';
 import { IGetOrderDetailsUseCaese } from '../interfaces/IGetOrderDetailsUseCaese.interface';
 import { GETORDERDETAILS } from '../../tokens/getOrderDetails.token';

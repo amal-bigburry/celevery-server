@@ -21,18 +21,17 @@ import {
 } from '@nestjs/common';
 import { GetSessionIdUseCase } from '../../applicationLayer/use-cases/getSessionId.UseCase';
 import { RefundUsecase } from '../../applicationLayer/use-cases/refund.usecase';
-import { TransferAmountUsecase } from '../../applicationLayer/use-cases/tranfer.usecase';
 import { ORDER_STATUS } from 'src/common/utils/contants';
-import { ChangeOrderStatusDto } from 'src/modules/orders/dtos/changeOrderStatus.dto';
-import { DtoToGetPaymentSessionId } from 'src/modules/orders/dtos/DtoToGetPaymentSessionId.dto';
-import { DtoToRefund } from '../../dtos/dtoToRefund.dto';
+import { ChangeOrderStatusDto } from 'src/common/dtos/changeOrderStatus.dto';
+import { DtoToGetPaymentSessionId } from 'src/common/dtos/DtoToGetPaymentSessionId.dto';
+import { DtoToRefund } from '../../../../common/dtos/dtoToRefund.dto';
 import { IChangeOrderStatusUseCase } from '../../applicationLayer/interfaces/IChangeOrderStatusUseCase.interface';
 import { IGetAllPaymentWaitingOrdersUseCase } from '../../applicationLayer/interfaces/IGetAllPaymentWaitingOrdersUseCase.interface';
 import { CHANGEORDERSTATUS } from '../../tokens/changeorderstatus.token';
 import { GETPAYMENTWAITINGORDERS } from '../../tokens/getallpaymentwaiting.token';
 import { AuthRequest } from 'src/middlewares/AuthRequest';
 import { JwtAuthGuard } from 'src/middlewares/jwtauth.middleware';
-import { OrderDto } from 'src/modules/orders/dtos/Order.dto';
+import { OrderDto } from 'src/common/dtos/Order.dto';
 
 /**
  * PaymentController is responsible for handling payment-related operations in the system.
@@ -46,7 +45,6 @@ import { OrderDto } from 'src/modules/orders/dtos/Order.dto';
 export class PaymentController {
   constructor(
     private readonly refundPaymentUseCase: RefundUsecase,
-    private readonly transferAmountUsecase: TransferAmountUsecase,
     @Inject(CHANGEORDERSTATUS)
     private readonly changeOrderStatusUseCase: IChangeOrderStatusUseCase,
     private readonly getSessionIdUseCase: GetSessionIdUseCase,
@@ -107,23 +105,6 @@ export class PaymentController {
     const status = await this.refundPaymentUseCase.execute(DtoToRefund);
     return status;
   }
-
-  /**
-   * This POST route `/payments/transfer` is responsible for triggering the transfer of amounts, such as splitting payments
-   * between various participants or accounts. It interacts with the `TransferAmountUsecase` service to initiate the transfer process.
-   * The method returns the status of the transfer operation after execution.
-   *
-   * @returns Returns a status indicating the result of the transfer operation.
-   *
-   * Company: BigBurry Hypersystems LLP
-   */
-  @HttpCode(HttpStatus.CREATED)
-  @Post('transfer')
-  async transfer() {
-    const status = await this.transferAmountUsecase.execute();
-    return status;
-  }
-
   /**
    * This POST route `/payments/status_webhook` handles payment status updates sent via webhooks from the payment gateway.
    * Upon receiving the webhook data, the controller processes the payment status and updates the corresponding order status accordingly.

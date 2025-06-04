@@ -14,14 +14,14 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { OrderRepository } from '../interfaces/order.repositoty';
-import { ChangeOrderStatusDto } from '../../dtos/changeOrderStatus.dto';
+import { ChangeOrderStatusDto } from '../../../../common/dtos/changeOrderStatus.dto';
 import {ORDER_STATUS} from 'src/common/utils/contants';
 import { ORDER_REPOSITORY } from '../../tokens/orderRepository.token';
 import { INotificationUseCase } from '../interfaces/NotificationUsecase.interface';
 import { IGetCakeDetailsUseCase } from '../interfaces/GetCakeDetailsusecase.interface';
 import { IGetStoreUsecase } from '../interfaces/GetStoreusecase.interface';
 import { IGetUserDetailUseCase } from '../interfaces/GetuserDetailsUsecase.interface';
-import { OrderDto } from '../../dtos/Order.dto';
+import { OrderDto } from '../../../../common/dtos/Order.dto';
 import { GET_CAKE_DETAILS } from '../../tokens/get_cake_details.token';
 import { NOTIFICATION_USECASE } from '../../tokens/notificationusecase.token';
 import { GET_USER_DETAILS } from '../../tokens/get_user_details.token';

@@ -8,7 +8,7 @@
  * through various lifecycle stages of a support interaction.
  */
 
-import { MesssageSendDto } from "../../dtos/MesssageSend.dto";
+import { MesssageSendDto } from "../../../../common/dtos/MesssageSend.dto";
 
 /**
  * ISellerRepository Interface

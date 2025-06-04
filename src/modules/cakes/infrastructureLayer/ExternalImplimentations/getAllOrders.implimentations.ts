@@ -4,7 +4,7 @@
 import { Injectable } from '@nestjs/common';
 import { IGetAllOrdersUseCase } from '../../applicationLayer/interfaces/getallorders.interface';
 import { GetAllOrdersUseCase } from 'src/modules/orders/applicationLayer/use-cases/get_all_orders.usecase';
-import { OrderDto } from 'src/modules/orders/dtos/Order.dto';
+import { OrderDto } from 'src/common/dtos/Order.dto';
 
 /**
  * Injectable implementation class for the IGetStoreUseCase interface.

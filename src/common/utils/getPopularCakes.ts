@@ -1,5 +1,5 @@
 import { CakeEntity } from 'src/modules/cakes/domainLayer/entities/cake.entity';
-import { OrderDto } from 'src/modules/orders/dtos/Order.dto';
+import { OrderDto } from 'src/common/dtos/Order.dto';
 
 export async function GetPopularCakes(
   cakes: CakeEntity[],

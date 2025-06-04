@@ -16,7 +16,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { GetOrdersWithCakeId } from 'src/modules/orders/applicationLayer/interfaces/GetOrdersWithCakeId.interface';
 import { Order } from 'src/modules/orders/domainLayer/entities.ts/order.entity';
-import { OrderDto } from 'src/modules/orders/dtos/Order.dto';
+import { OrderDto } from 'src/common/dtos/Order.dto';
 
 /**
  * GetOrdersWithCakeIdImp class implements the GetOrdersWithCakeId interface.

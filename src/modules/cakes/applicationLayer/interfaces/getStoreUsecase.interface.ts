@@ -5,8 +5,8 @@
 /**
  * Importing required packages
  */
-import { CakeCategoryDto } from 'src/modules/cakecategories/dtos/cakecategory.dto';
-import { StoreDto } from 'src/modules/stores/dtos/store.dto';
+import { CakeCategoryDto } from 'src/common/dtos/cakecategory.dto';
+import { StoreDto } from 'src/common/dtos/store.dto';
 /**
  * Interface defining the contract for getting a store by cake category ID
  */

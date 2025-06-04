@@ -20,7 +20,7 @@ import { GetAllOrdersPlacedUseCase } from '../../applicationLayer/use-cases/get_
 import { JwtAuthGuard } from 'src/middlewares/jwtauth.middleware';
 import { AuthRequest } from 'src/middlewares/AuthRequest';
 import { GetAllOrdersReceivedUseCase } from '../../applicationLayer/use-cases/get_all_orders_received.usecase';
-import { OrderDto } from '../../dtos/Order.dto';
+import { OrderDto } from '../../../../common/dtos/Order.dto';
 import { ORDER_STATUS } from 'src/common/utils/contants';
 import { RequestOrderUseCase } from '../../applicationLayer/use-cases/request_order.usercase';
 

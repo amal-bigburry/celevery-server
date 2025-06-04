@@ -25,10 +25,8 @@ import { USER_REPOSITORY } from './tokens/userRepository.token';
 import { UpdateProfileImageUseCase } from './applicationLayer/use-cases/updateProfileImage.usecase';
 import { GetMyFavouritesUsecase } from './applicationLayer/use-cases/GetMyFavourites.usecase';
 import { RemoveMyFavouritesUsecase } from './applicationLayer/use-cases/RemoveMyFavourites.usecase';
-import { CakeModule } from '../cakes/cakes.modules';
 import { UpdateContactNumberUsecase } from './applicationLayer/use-cases/updateContactNumber.usecase';
 import { OTP_VERIFICATION_SERVICE } from './tokens/otpVerifyingservice.token';
-import { OTPModule } from '../OTP/otp.module';
 import { IOTPVerifyingServiceImp } from './infrastructureLayer/implimentations/otp/otpverification.repository.imp';
 import { RegisterUsingGoogleUseCase } from './applicationLayer/use-cases/RegisterUsingGoogle.usecase';
 import { LoginUsingGoogleUseCase } from './applicationLayer/use-cases/loginUsingGoogle.usecase';
@@ -36,6 +34,9 @@ import { GoogleLoginStrategy, GoogleRegisterStrategy } from 'src/middlewares/goo
 import { Getcurrentfcmusecase } from './applicationLayer/use-cases/getcurrentfcm.usecase';
 import { AddToFavouritesUsecase } from './applicationLayer/use-cases/AddToFavourites.usecase';
 import { UpdatePasswordUsecase } from './applicationLayer/use-cases/Update_password.usecase';
+// External Modules
+import { OTPModule } from '../OTP/otp.module';
+import { CakeModule } from '../cakes/cakes.modules';
 /**
  * ******************************************************************************************************
  * UserModule Class

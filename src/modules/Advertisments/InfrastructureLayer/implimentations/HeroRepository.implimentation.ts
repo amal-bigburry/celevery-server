@@ -32,7 +32,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { HerosRepository } from '../../applicationLayer/interfaces/HeroRepository.interface';
-import { HeroDto } from '../../dtos/hero.dto';
+import { HeroDto } from '../../../../common/dtos/hero.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { ConfigService } from '@nestjs/config';

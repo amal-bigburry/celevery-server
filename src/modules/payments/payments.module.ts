@@ -13,10 +13,9 @@
  *
  * Company: BigBurry Hypersystems LLP
  */
-import { Module } from '@nestjs/common';
+import { forwardRef, Module } from '@nestjs/common';
 import { PaymentController } from './infrastructureLayer/controllers/payment.controller';
 import { RefundUsecase } from './applicationLayer/use-cases/refund.usecase';
-import { TransferAmountUsecase } from './applicationLayer/use-cases/tranfer.usecase';
 import { CashFreePaymentGatewayImp } from './infrastructureLayer/implimentations/cashfree.implimentation';
 import { GetSessionIdUseCase } from './applicationLayer/use-cases/getSessionId.UseCase';
 import { PAYMENTTOKEN } from './tokens/payment.token';
@@ -62,15 +61,14 @@ import { UserModule } from '../users/users.module';
 @Module({
   imports: [
     // Other Dependent Modules
-    OrderModule,
-    CakeModule,
-    UserModule,
+    forwardRef(() => OrderModule),
+    forwardRef(() => CakeModule),
+    forwardRef(() => UserModule),
   ],
   controllers: [PaymentController],
   providers: [
     GetSessionIdUseCase,
     RefundUsecase,
-    TransferAmountUsecase,
     {
       provide: PAYMENTTOKEN,
       useClass: CashFreePaymentGatewayImp,
@@ -95,6 +93,10 @@ import { UserModule } from '../users/users.module';
       provide: GETORDERDETAILS,
       useClass: IGetOrderDetailsUseCaeseImp,
     },
+  ],
+  exports: [
+    GetSessionIdUseCase,
+    RefundUsecase,
   ],
 })
 export class PaymentModule {}

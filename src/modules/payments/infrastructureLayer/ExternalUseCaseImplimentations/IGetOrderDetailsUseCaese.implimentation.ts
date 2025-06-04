@@ -10,7 +10,7 @@
  * 
  * Company: BigBurry Hypersystems LLP
  */
-import { OrderDto } from 'src/modules/orders/dtos/Order.dto';
+import { OrderDto } from 'src/common/dtos/Order.dto';
 import { IGetOrderDetailsUseCaese } from '../../applicationLayer/interfaces/IGetOrderDetailsUseCaese.interface';
 import { GetOrderDetailsUseCase } from 'src/modules/orders/applicationLayer/use-cases/get_order_details.usecase';
 import { Injectable } from '@nestjs/common';

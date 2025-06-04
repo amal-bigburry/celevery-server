@@ -5,7 +5,7 @@
 /**
  * Importing Required Packages
  */
-import { CakeCategoryDto } from '../../dtos/cakecategory.dto';
+import { CakeCategoryDto } from '../../../../common/dtos/cakecategory.dto';
 /**
  * Returns interface of cakecategory repository
  */

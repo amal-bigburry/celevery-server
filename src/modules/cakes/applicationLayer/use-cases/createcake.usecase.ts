@@ -4,7 +4,7 @@
  */
 import { BadRequestException, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { CakeRepository } from '../interfaces/cake.repository';
-import { CakeDto } from '../../dtos/cake.dto';
+import { CakeDto } from '../../../../common/dtos/cake.dto';
 import { CAKE_REPOSITORY } from '../../tokens/cakeRepository.token';
 import { CAKE_CATEGORY_REPOSITORY } from '../../tokens/cakeCategoryRepository.token';
 import { CakeCategoryRepository } from '../interfaces/cakeCategoryRepository.interface';

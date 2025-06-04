@@ -40,7 +40,7 @@ import { AuthRequest } from 'src/middlewares/AuthRequest';
  * These include creating support IDs, adding messages, fetching messages, and retrieving all support IDs for buyers.
  */
 import { CreateSupportIDforBuyerUsecase } from '../../applicationLayer/usecases/CreateSupportIDforBuyer.usecase';
-import { MesssageSendDto } from '../../dtos/MesssageSend.dto';
+import { MesssageSendDto } from '../../../../common/dtos/MesssageSend.dto';
 import { AddMessageToBuyerSupportUsecase } from '../../applicationLayer/usecases/AddMessageToBuyerSupport.usecase';
 import { FetchMessageFromBuyerSupportUsecase } from '../../applicationLayer/usecases/FetchMessageFromBuyerSupport.usecase';
 import { FetchAllSupportIdsForBuyerUseCase } from '../../applicationLayer/usecases/FetchAllSupportIdsForBuyer.usecase';

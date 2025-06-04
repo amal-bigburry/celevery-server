@@ -29,6 +29,7 @@ import { UpdateKnownFor } from './applicationLayer/use-cases/UpdateKnownFor.usec
 import { OrderModule } from '../orders/orders.module';
 import { GET_ALL_ORDERS } from './tokens/getAllOrder.token';
 import { IGetAllOrdersUseCaseImp } from './infrastructureLayer/ExternalImplimentations/getAllOrders.implimentations';
+import { GetCakesInStoreUsecase } from './applicationLayer/use-cases/getCakesInStore.usecase';
 /**
  * module declaration
  */
@@ -47,6 +48,7 @@ import { IGetAllOrdersUseCaseImp } from './infrastructureLayer/ExternalImpliment
     FindCakeUseCase,
     UpdateKnownFor,
     GetCakeDetailsUseCase,
+    GetCakesInStoreUsecase,
     GetSimilarCakesUseCase,
     {
       provide: CAKE_REPOSITORY,

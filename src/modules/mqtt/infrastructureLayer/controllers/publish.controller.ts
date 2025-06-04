@@ -8,7 +8,7 @@
  */
 import { Controller, Post, Body, HttpStatus, HttpCode } from '@nestjs/common';
 import { MqttService } from '../../applicationLayer/usecases/mqtt.usecase';
-import { PopDto } from '../../dtos/pop.dto';
+import { PopDto } from '../../../../common/dtos/pop.dto';
 /**
  * controller to handle the pop request
  */

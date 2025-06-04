@@ -14,11 +14,12 @@ import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { UserEntity } from 'src/modules/users/domainLayer/entities.ts/user.entity';
 import { UserRepository } from 'src/modules/users/applicationLayer/interfaces/user.interface';
-import { RegisterDto } from 'src/modules/users/dtos/Register.dto';
-import { TokenDto } from 'src/modules/users/dtos/token.dto';
+import { RegisterDto } from 'src/common/dtos/Register.dto';
+import { TokenDto } from 'src/common/dtos/token.dto';
 import {
   BadRequestException,
   ConflictException,
+  Injectable,
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
@@ -38,6 +39,7 @@ import * as bcrypt from 'bcrypt';
  * database documents and domain entities, including error management for duplicate users.
  * ******************************************************************************************************
  */
+@Injectable()
 export class UserRepositoryImpl implements UserRepository {
   constructor(
     @InjectModel('Users') private userModel: Model<UserEntity>,

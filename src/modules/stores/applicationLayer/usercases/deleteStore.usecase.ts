@@ -36,8 +36,8 @@ export class DeleteStoreUsecase {
    * It is important to ensure that this method is used cautiously, as store deletion 
    * may have significant implications on the platform's data integrity.
    */
-  async execute(): Promise<string> {
-    const order = await this.Store.deleteStore();
+  async execute(store_id:string): Promise<string> {
+    const order = await this.Store.deleteStore(store_id);
     return order;
   }
 }

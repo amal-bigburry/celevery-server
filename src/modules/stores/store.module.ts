@@ -19,6 +19,7 @@ import { GetAllStoreCakesUsecase } from './applicationLayer/usercases/GetAllStor
 import { STORE_REPOSITORY } from './tokens/storeRepository.token';
 import { GetAllStoreUseCase } from './applicationLayer/usercases/getAllStores.usecase';
 import { GetAllStoreInPlatformUsecase } from './applicationLayer/usercases/getAllStoreInPlatform.usecase';
+import { DeleteStoreUsecase } from './applicationLayer/usercases/deleteStore.usecase';
 /**
  * Bigburry Hypersystems LLP - StoreModule Definition
  *
@@ -32,6 +33,7 @@ import { GetAllStoreInPlatformUsecase } from './applicationLayer/usercases/getAl
       { name: 'Stores', schema: StoreModel },
       { name: 'Cakes', schema: CakeSchema },
     ]),
+    // forwardRef(() => PaymentModule),
   ],
   controllers: [StoreController],
   providers: [
@@ -39,8 +41,10 @@ import { GetAllStoreInPlatformUsecase } from './applicationLayer/usercases/getAl
     updateStoreUsecase,
     GetAllStoreCakesUsecase,
     GetAllStoreUseCase,
+    DeleteStoreUsecase,
     getStoreUsecase,
     GetAllStoreInPlatformUsecase,
+
     {
       provide: STORE_REPOSITORY,
       useClass: StoreRepositoryImplimentation,

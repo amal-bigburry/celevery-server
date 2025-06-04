@@ -8,7 +8,7 @@
  */
 import { Model } from 'mongoose';
 import { CakeEntity } from '../../domainLayer/entities/cake.entity';
-import { CakeDto } from '../../dtos/cake.dto';
+import { CakeDto } from '../../../../common/dtos/cake.dto';
 import { extname } from 'path';
 import { randomUUID } from 'crypto';
 import { S3Client, PutObjectCommand } from '@aws-sdk/client-s3';
@@ -34,6 +34,13 @@ export class CakeRepositoryImp implements CakeRepository {
     @Inject(GETSTORE)
     private readonly getstoreUsecase: IGetStoreUseCase,
   ) {}
+  /**
+   * Finds all cakes belonging to a specific store by store_id
+   * Returns an array of CakeEntity objects
+   */
+  async findCakeByStoreId(store_id: string): Promise<CakeEntity[]> {
+    return await this.cakeModel.find({ store_id }).exec();
+  }
   /**
    * Updates the 'known_for' field of a cake by its ID
    * Throws exception if cake not found

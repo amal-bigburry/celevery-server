@@ -4,7 +4,7 @@
 import { Injectable } from '@nestjs/common';
 import { CakeCategoryRepository } from '../../applicationLayer/interfaces/cakeCategoryRepository.interface';
 import { FindCakeCategoryByIDUseCase } from 'src/modules/cakecategories/applicationLayer/use-cases/findcategorybyid.usecase';
-import { CakeCategoryDto } from 'src/modules/cakecategories/dtos/cakecategory.dto';
+import { CakeCategoryDto } from 'src/common/dtos/cakecategory.dto';
 
 /**
  * Injectable implementation of the CakeCategoryRepository interface.

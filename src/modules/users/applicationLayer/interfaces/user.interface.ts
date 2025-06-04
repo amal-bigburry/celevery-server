@@ -19,8 +19,8 @@
  */
 
 import { UserEntity } from '../../domainLayer/entities.ts/user.entity';
-import { RegisterDto } from '../../dtos/Register.dto';
-import { TokenDto } from '../../dtos/token.dto';
+import { RegisterDto } from '../../../../common/dtos/Register.dto';
+import { TokenDto } from '../../../../common/dtos/token.dto';
 import { CakeEntity } from 'src/modules/cakes/domainLayer/entities/cake.entity';
 
 /**

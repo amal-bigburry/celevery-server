@@ -42,7 +42,7 @@ import { AuthRequest } from 'src/middlewares/AuthRequest';
 import { CreateSupportIDforSellerUsecase } from '../../applicationLayer/usecases/CreateSupportIDforSeller.usecase';
 import { FetchMessageFromSellerSupportUsecase } from '../../applicationLayer/usecases/FetchMessageFromSellerSupport.usecase';
 import { AddMessageToSellerSupportUsecase } from '../../applicationLayer/usecases/AddMessageToSellerSupport.usecase';
-import { MesssageSendDto } from '../../dtos/MesssageSend.dto';
+import { MesssageSendDto } from '../../../../common/dtos/MesssageSend.dto';
 import { FetchAllSupportIdsForSellerUseCase } from '../../applicationLayer/usecases/FetchAllSupportIdsForSeller.usecase';
 
 /**

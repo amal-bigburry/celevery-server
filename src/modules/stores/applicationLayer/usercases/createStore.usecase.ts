@@ -13,7 +13,7 @@
  */
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import { StoreRepository } from '../interfaces/store.interfaces';
-import { StoreDto } from '../../dtos/store.dto';
+import { StoreDto } from '../../../../common/dtos/store.dto';
 import { STORE_REPOSITORY } from '../../tokens/storeRepository.token';
 
 /**
@@ -47,8 +47,9 @@ export class CreateStoreUsecase {
    */
   async execute(
     storeDto: StoreDto,
+    vendor_details:object,
     license_file: Express.Multer.File,
-    id_proof_file: Express.Multer.File,
+    kyc_document: Express.Multer.File,
   ): Promise<string> {
     let stores: StoreDto[] = await this.Store.getAllStoreInPlatform();
     let store = stores.find((s) => s.store_name === storeDto.store_name);
@@ -57,8 +58,9 @@ export class CreateStoreUsecase {
     }
     const order = await this.Store.createStore(
       storeDto,
+      vendor_details,
       license_file,
-      id_proof_file,
+      kyc_document,
     );
     return 'ok';
   }

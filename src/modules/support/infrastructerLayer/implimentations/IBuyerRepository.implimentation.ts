@@ -8,9 +8,9 @@
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { BuyerSupportEntity } from '../../domainLayer/entities/buyer.support.entity';
-import { MesssageSendDto } from '../../dtos/MesssageSend.dto';
+import { MesssageSendDto } from '../../../../common/dtos/MesssageSend.dto';
 import { IBuyerRepository } from '../../applicationLayer/interfaces/IBuyerRepository.interface';
-import { BadRequestException } from '@nestjs/common';
+import { BadRequestException, Injectable } from '@nestjs/common';
 
 /** 
  * Company: Bigburry Hypersystems LLP
@@ -20,6 +20,7 @@ import { BadRequestException } from '@nestjs/common';
  * It uses dependency injection to receive the Mongoose model for buyerSupport collection.
  * Each method performs CRUD operations related to buyer support data while handling errors gracefully.
  */
+@Injectable()
 export class IBuyerRepositoryImp implements IBuyerRepository {
 
 /** 

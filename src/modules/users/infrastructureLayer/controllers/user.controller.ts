@@ -25,8 +25,8 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { LoginDto } from '../../dtos/Login.dto';
-import { RegisterDto } from '../../dtos/Register.dto';
+import { LoginDto } from '../../../../common/dtos/Login.dto';
+import { RegisterDto } from '../../../../common/dtos/Register.dto';
 import { LoginUseCase } from '../../applicationLayer/use-cases/login.usecase';
 import { RegisterUseCase } from '../../applicationLayer/use-cases/register.usecase';
 import { GetUserDetailUseCase } from '../../applicationLayer/use-cases/getUserDetail.usecase';
@@ -35,8 +35,8 @@ import { AuthRequest } from 'src/middlewares/AuthRequest';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UpdateProfileImageUseCase } from '../../applicationLayer/use-cases/updateProfileImage.usecase';
 import { UpdateContactNumberUsecase } from '../../applicationLayer/use-cases/updateContactNumber.usecase';
-import { ResetPasswordDto } from '../../dtos/ResetPassword.dto';
-import { UpdateContactNumberDto } from '../../dtos/UpdateContactNumber.dto';
+import { ResetPasswordDto } from '../../../../common/dtos/ResetPassword.dto';
+import { UpdateContactNumberDto } from '../../../../common/dtos/UpdateContactNumber.dto';
 import { AuthGuard } from '@nestjs/passport';
 import { RegisterUsingGoogleUseCase } from '../../applicationLayer/use-cases/RegisterUsingGoogle.usecase';
 import { LoginUsingGoogleUseCase } from '../../applicationLayer/use-cases/loginUsingGoogle.usecase';

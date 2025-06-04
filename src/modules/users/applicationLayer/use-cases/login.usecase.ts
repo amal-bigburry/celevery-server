@@ -15,7 +15,7 @@
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { UserRepository } from '../interfaces/user.interface';
 import { JwtService } from '@nestjs/jwt';
-import { LoginDto } from '../../dtos/Login.dto';
+import { LoginDto } from '../../../../common/dtos/Login.dto';
 import { USER_REPOSITORY } from '../../tokens/userRepository.token';
 import * as bcrypt from 'bcrypt';
 import { UserEntity } from '../../domainLayer/entities.ts/user.entity';

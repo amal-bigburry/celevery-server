@@ -15,7 +15,7 @@
  * OrderDto serves as a Data Transfer Object encapsulating order-related information,
  * enabling abstraction from internal entity representations.
  */
-import { OrderDto } from 'src/modules/orders/dtos/Order.dto';
+import { OrderDto } from 'src/common/dtos/Order.dto';
 
 /**
  * Interface defining the contract for the Order Repository

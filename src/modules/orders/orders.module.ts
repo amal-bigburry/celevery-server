@@ -70,7 +70,7 @@ import { GetAllOrdersUseCase } from './applicationLayer/use-cases/get_all_orders
   imports: [
     MongooseModule.forFeature([{ name: Order.name, schema: OrderSchema }]),
     // Other Dependent Modules
-    forwardRef(() => UserModule),
+    forwardRef(()=>UserModule),
     forwardRef(() => CakeModule),
     StoreModule,
     NotificationModule,
@@ -88,11 +88,11 @@ import { GetAllOrdersUseCase } from './applicationLayer/use-cases/get_all_orders
     GetAllOrdersUseCase,
     GetAllPaymentWaitingOrdersUseCase,
     {
-      provide: ORDER_REPOSITORY, 
+      provide: ORDER_REPOSITORY,
       useClass: OrderRepositoryImp,
     },
     {
-      provide: GET_CAKE_DETAILS, 
+      provide: GET_CAKE_DETAILS,
       useClass: IGetCakeDetailsUseCaseImp,
     },
     {
@@ -100,11 +100,11 @@ import { GetAllOrdersUseCase } from './applicationLayer/use-cases/get_all_orders
       useClass: IGetStoreUseCaseImp,
     },
     {
-      provide: GET_USER_DETAILS, 
+      provide: GET_USER_DETAILS,
       useClass: IGetUserDetailsUsecaseImp,
     },
     {
-      provide: NOTIFICATION_USECASE, 
+      provide: NOTIFICATION_USECASE,
       useClass: INotificationUseCaseImp,
     },
     {
@@ -112,11 +112,11 @@ import { GetAllOrdersUseCase } from './applicationLayer/use-cases/get_all_orders
       useClass: GetOrdersWithCakeIdImp,
     },
     {
-      provide: MQTTTOKEN, 
+      provide: MQTTTOKEN,
       useClass: IMqttServiceImp,
     },
     {
-      provide: UPDATE_KNOWN_FOR_IN_CAKE, 
+      provide: UPDATE_KNOWN_FOR_IN_CAKE,
       useClass: UpdateKnownForOfCakeUseCaseImp,
     },
   ],

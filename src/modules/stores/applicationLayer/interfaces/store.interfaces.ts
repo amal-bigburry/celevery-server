@@ -11,9 +11,9 @@
  * 
  * Company: BigBurry Hypersystems LLP
  */
-import { CakeDto } from 'src/modules/cakes/dtos/cake.dto';
-import { StoreDto } from '../../dtos/store.dto';
-import { UpdateStoreDto } from '../../dtos/updateStore.dto';
+import { CakeDto } from 'src/common/dtos/cake.dto';
+import { StoreDto } from '../../../../common/dtos/store.dto';
+import { UpdateStoreDto } from '../../../../common/dtos/updateStore.dto';
 
 /**
  * The `StoreRepository` interface defines the operations related to store management. It specifies the expected 
@@ -42,12 +42,13 @@ import { UpdateStoreDto } from '../../dtos/updateStore.dto';
 export interface StoreRepository {
   createStore(
     storeDto: StoreDto,
+    vendor_details:object,
     license_file: Express.Multer.File,
-    idProofFile: Express.Multer.File,
+    kyc_document: Express.Multer.File,
   ): Promise<string>;
   getStore(store_id: string): Promise<StoreDto>;
   updateStore(UpdateStoreDto:UpdateStoreDto): Promise<string>;
-  deleteStore(): Promise<string>;
+  deleteStore(store_id:string): Promise<string>;
   getAllStores(store_owner_id: string): Promise<Array<StoreDto>>;
   getAllStoreInPlatform(): Promise<Array<StoreDto>>;
   getAllStoreCakes(store_id: string): Promise<Array<CakeDto>>;

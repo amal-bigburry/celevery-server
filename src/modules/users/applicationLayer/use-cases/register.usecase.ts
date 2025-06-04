@@ -12,7 +12,7 @@
  */
 import { UnauthorizedException, Inject, Injectable } from '@nestjs/common';
 import { UserRepository } from '../interfaces/user.interface';
-import { RegisterDto } from '../../dtos/Register.dto';
+import { RegisterDto } from '../../../../common/dtos/Register.dto';
 import { USER_REPOSITORY } from '../../tokens/userRepository.token';
 import { IOTPVerifyingService } from '../interfaces/IOTPVerifyingService.interface';
 import { OTP_VERIFICATION_SERVICE } from '../../tokens/otpVerifyingservice.token';

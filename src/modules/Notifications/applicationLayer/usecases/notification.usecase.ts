@@ -7,7 +7,7 @@
  * importing the required packages
  */
 import { Injectable, UnauthorizedException } from '@nestjs/common';
-import { NotificationDto } from '../../dtos/notification.dto';
+import { NotificationDto } from '../../../../common/dtos/notification.dto';
 import * as admin from 'firebase-admin';
 
 /**

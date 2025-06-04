@@ -22,13 +22,14 @@ import {
 } from '@nestjs/common';
 import { FindCakeUseCase } from '../../applicationLayer/use-cases/findcake.usecase';
 import { CreateCakeUseCase } from '../../applicationLayer/use-cases/createcake.usecase';
-import { CakeDto } from '../../dtos/cake.dto';
+import { CakeDto } from '../../../../common/dtos/cake.dto';
 import { JwtAuthGuard } from 'src/middlewares/jwtauth.middleware';
 import { SearchForCakesUseCase } from '../../applicationLayer/use-cases/searchcakes.usecase';
 import { FilesInterceptor } from '@nestjs/platform-express';
 import { GetCakeDetailsUseCase } from '../../applicationLayer/use-cases/GetCakeDetailsUseCase';
 import { GetSimilarCakesUseCase } from '../../applicationLayer/use-cases/GetSimilarCakes.usecase';
 import { AuthRequest } from 'src/middlewares/AuthRequest';
+import { GetCakesInStoreUsecase } from '../../applicationLayer/use-cases/getCakesInStore.usecase';
 /**
  * Controller handling HTTP requests related to cakes
  */
@@ -40,6 +41,7 @@ export class CakeController {
     private readonly searchForCakesUseCase: SearchForCakesUseCase,
     private readonly getCakeDetailsUseCase: GetCakeDetailsUseCase,
     private readonly getSimilarCakesUseCase: GetSimilarCakesUseCase,
+    private readonly getCakesInStoreUsecase: GetCakesInStoreUsecase,
   ) {}
   /**
    * Handles GET requests to fetch cakes with pagination and location filters
@@ -97,6 +99,15 @@ export class CakeController {
     @Query('lat') lat = 0,
   ) {
     return this.searchForCakesUseCase.execute(keyword, category_id, log, lat);
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Get('cakesinstore')
+  @UseGuards(JwtAuthGuard)
+  async storecakes(
+    @Query('store_id') store_id: string,
+  ) {
+    return this.getCakesInStoreUsecase.execute(store_id);
   }
   /**
    * Handles GET requests to fetch similar cakes by cake and variant IDs

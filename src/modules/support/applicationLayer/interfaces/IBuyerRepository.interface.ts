@@ -8,7 +8,7 @@
  * communication workflows for authenticated buyers.
  */
 
-import { MesssageSendDto } from "../../dtos/MesssageSend.dto";
+import { MesssageSendDto } from "../../../../common/dtos/MesssageSend.dto";
 
 /**
  * IBuyerRepository Interface

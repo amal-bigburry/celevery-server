@@ -12,7 +12,7 @@
  */
 import { IGetAllPaymentWaitingOrdersUseCase } from '../../applicationLayer/interfaces/IGetAllPaymentWaitingOrdersUseCase.interface';
 import { GetAllPaymentWaitingOrdersUseCase } from 'src/modules/orders/applicationLayer/use-cases/get_all_payment_waiting_orders.usecase';
-import { OrderDto } from 'src/modules/orders/dtos/Order.dto';
+import { OrderDto } from 'src/common/dtos/Order.dto';
 import { Injectable } from '@nestjs/common';
 
 /**

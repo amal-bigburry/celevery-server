@@ -5,7 +5,7 @@
 /**
  * Importing required packages
  */
-import { OrderDto } from 'src/modules/orders/dtos/Order.dto';
+import { OrderDto } from 'src/common/dtos/Order.dto';
 import { CakeEntity } from '../../domainLayer/entities/cake.entity';
 /**
  * Interface defining the contract for getting a store by cake category ID

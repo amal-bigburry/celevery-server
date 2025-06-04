@@ -12,7 +12,7 @@
 import { Injectable } from '@nestjs/common';
 import { IChangeOrderStatusUseCase } from '../../applicationLayer/interfaces/IChangeOrderStatusUseCase.interface';
 import { ChangeOrderStatusUseCase } from 'src/modules/orders/applicationLayer/use-cases/change_order_status.usecase';
-import { OrderDto } from 'src/modules/orders/dtos/Order.dto';
+import { OrderDto } from '../../../../common/dtos/Order.dto';
 
 /**
  * The `IChangeOrderStatusUseCaseImp` class provides the concrete implementation of the `IChangeOrderStatusUseCase` interface,

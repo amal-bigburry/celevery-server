@@ -17,7 +17,7 @@ import { IGetCakeDetailsUseCase } from 'src/modules/orders/applicationLayer/inte
 import { GETORDERANALYSE } from '../../tokens/GetOrdersToAnalyse.token';
 import { CakeEntity } from 'src/modules/cakes/domainLayer/entities/cake.entity';
 import { CAKEREPOSITORY } from '../../tokens/cake_Repository.token';
-import { OrderDto } from 'src/modules/orders/dtos/Order.dto';
+import { OrderDto } from 'src/common/dtos/Order.dto';
 import { ConfigService } from '@nestjs/config';
 import { IGetAllStoreInPlatformUsecase } from '../interfaces/IGetAllStoreInPlatformUsecase.interface';
 import { GETALLSTOREINPLATFORM } from '../../tokens/Getallstorelocation.token';

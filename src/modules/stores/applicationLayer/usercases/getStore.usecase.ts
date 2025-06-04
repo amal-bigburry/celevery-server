@@ -10,7 +10,7 @@
  */
 import { Inject, Injectable } from '@nestjs/common';
 import { StoreRepository } from '../interfaces/store.interfaces';
-import { StoreDto } from '../../dtos/store.dto';
+import { StoreDto } from '../../../../common/dtos/store.dto';
 import { STORE_REPOSITORY } from '../../tokens/storeRepository.token';
 
 /** 

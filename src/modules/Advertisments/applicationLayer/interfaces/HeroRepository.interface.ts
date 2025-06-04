@@ -14,7 +14,7 @@
  *
  * Company: BigBurry HyperSystems LLP
  */
-import { HeroDto } from '../../dtos/hero.dto';
+import { HeroDto } from '../../../../common/dtos/hero.dto';
 
 /**
  * The HerosRepository interface defines the structural blueprint for interacting with hero data storage mechanisms.

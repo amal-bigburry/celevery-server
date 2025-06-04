@@ -11,8 +11,8 @@
  */
 import { Inject, Injectable } from '@nestjs/common';
 import { StoreRepository } from '../interfaces/store.interfaces';
-import { CakeDto } from 'src/modules/cakes/dtos/cake.dto';
 import { STORE_REPOSITORY } from '../../tokens/storeRepository.token';
+import { CakeDto } from '../../../../common/dtos/cake.dto';
 
 /** 
  * Bigburry Hypersystems LLP

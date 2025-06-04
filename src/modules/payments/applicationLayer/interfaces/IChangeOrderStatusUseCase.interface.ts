@@ -5,7 +5,7 @@
  * 
  * Company: BigBurry Hypersystems LLP
  */
-import { OrderDto } from 'src/modules/orders/dtos/Order.dto';
+import { OrderDto } from 'src/common/dtos/Order.dto';
 
 /**
  * Interface for the use case responsible for changing the status of an order.

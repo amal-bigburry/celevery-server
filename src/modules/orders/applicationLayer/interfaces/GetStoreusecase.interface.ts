@@ -6,7 +6,7 @@
 /**
  * importing the required packages
  */
-import { StoreDto } from "src/modules/stores/dtos/store.dto";
+import { StoreDto } from "src/common/dtos/store.dto";
 
 /**
  * Interface for the use case of getting store details by its ID

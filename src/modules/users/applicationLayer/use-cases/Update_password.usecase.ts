@@ -12,7 +12,7 @@
  */
 import { Inject, Injectable } from '@nestjs/common';
 import { UserRepository } from '../interfaces/user.interface';
-import { ResetPasswordDto } from '../../dtos/ResetPassword.dto';
+import { ResetPasswordDto } from '../../../../common/dtos/ResetPassword.dto';
 import { USER_REPOSITORY } from '../../tokens/userRepository.token';
 import { OTP_VERIFICATION_SERVICE } from '../../tokens/otpVerifyingservice.token';
 import { IOTPVerifyingService } from '../interfaces/IOTPVerifyingService.interface';

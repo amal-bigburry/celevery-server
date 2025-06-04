@@ -14,7 +14,7 @@
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { UserRepository } from '../interfaces/user.interface';
 import { USER_REPOSITORY } from '../../tokens/userRepository.token';
-import { UpdateContactNumberDto } from '../../dtos/UpdateContactNumber.dto';
+import { UpdateContactNumberDto } from '../../../../common/dtos/UpdateContactNumber.dto';
 import { IOTPVerifyingService } from '../interfaces/IOTPVerifyingService.interface';
 import { OTP_VERIFICATION_SERVICE } from '../../tokens/otpVerifyingservice.token';
 

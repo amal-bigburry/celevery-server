@@ -9,7 +9,7 @@
  */
 import { Inject, Injectable } from '@nestjs/common';
 import { PaymentGateway } from '../interfaces/payment.repository';
-import { DtoToRefund } from '../../dtos/dtoToRefund.dto';
+import { DtoToRefund } from '../../../../common/dtos/dtoToRefund.dto';
 import { PAYMENTTOKEN } from '../../tokens/payment.token';
 
 /**

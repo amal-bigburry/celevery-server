@@ -7,8 +7,9 @@
  * 
  * Company: BigBurry Hypersystems LLP
  */
-import { DtoToGetPaymentSessionId } from 'src/modules/orders/dtos/DtoToGetPaymentSessionId.dto';
-import { DtoToRefund } from '../../dtos/dtoToRefund.dto';
+import { DtoToGetPaymentSessionId } from 'src/common/dtos/DtoToGetPaymentSessionId.dto';
+import { DtoToRefund } from '../../../../common/dtos/dtoToRefund.dto';
+import { VendorDto } from '../../../../common/dtos/vendor.dto';
 
 /**
  * Interface representing the payment gateway repository.
@@ -38,6 +39,4 @@ export interface PaymentGateway {
   ): Promise<Object>;
 
   refundPayment(DtoToRefund: DtoToRefund): Promise<string>;  // Method to process a refund using the provided DTO
-
-  splitpayment(): Promise<string>;  // Method to handle split payments and return the result as a string
 }

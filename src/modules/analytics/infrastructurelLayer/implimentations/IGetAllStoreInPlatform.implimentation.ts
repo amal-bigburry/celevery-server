@@ -9,7 +9,7 @@
  */
 import { Injectable } from '@nestjs/common';
 import { IGetAllStoreInPlatformUsecase } from '../../applicationLayer/interfaces/IGetAllStoreInPlatformUsecase.interface';
-import { StoreDto } from 'src/modules/stores/dtos/store.dto';
+import { StoreDto } from 'src/common/dtos/store.dto';
 import { GetAllStoreInPlatformUsecase } from 'src/modules/stores/applicationLayer/usercases/getAllStoreInPlatform.usecase';
 /**
  * An injectable implementation of IGetOrdersToAnalyse interface

@@ -43,11 +43,11 @@ export class licenseDetails extends Document {
   @Prop()
   licensed_country: string;
   @Prop()
-  id_proof_name: string;
+  kyc_document_type: string;
   @Prop()
-  id_proof_number: string;
+  kyc_document_number: string;
   @Prop()
-  id_proof_file_url: string;
+  kyc_document_url: string;
 }
 
 /**
@@ -76,6 +76,8 @@ export class Store extends Document {
   store_owner_id: string;
   @Prop({ required: true, unique: true })
   store_name: string;
+  @Prop({ required: true, unique: true })
+  store_description:string;
   @Prop({ required: true })
   store_contact_number: string;
   @Prop({ required: true })

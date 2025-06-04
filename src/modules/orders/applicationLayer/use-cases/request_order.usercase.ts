@@ -13,7 +13,7 @@ import {
   Injectable,
   UnauthorizedException,
 } from '@nestjs/common';
-import { OrderDto } from '../../dtos/Order.dto';
+import { OrderDto } from '../../../../common/dtos/Order.dto';
 import { OrderRepository } from '../interfaces/order.repositoty';
 import { ORDER_REPOSITORY } from '../../tokens/orderRepository.token';
 import { INotificationUseCase } from '../interfaces/NotificationUsecase.interface';
@@ -31,7 +31,8 @@ import { GetOrdersWithCakeId } from '../interfaces/GetOrdersWithCakeId.interface
 import { UPDATE_KNOWN_FOR_IN_CAKE } from '../../tokens/update_known_for_in_cake.token';
 import { UpdateKnownForOfCakeUseCase } from '../interfaces/UpdateKnownForOfCakeUseCase.interface';
 import { STORE_STATUS } from 'src/common/utils/contants';
-import { PopDto } from 'src/modules/mqtt/dtos/pop.dto';
+import { PopDto } from 'src/common/dtos/pop.dto';
+import mongoose from 'mongoose';
 
 /**
  * injectable service file that makes an order request

@@ -6,7 +6,7 @@
  * Importing Required Packages
  */
 import { Inject, Injectable } from '@nestjs/common';
-import { CakeCategoryDto } from '../../dtos/cakecategory.dto';
+import { CakeCategoryDto } from '../../../../common/dtos/cakecategory.dto';
 import { CAKE_CATEGORY_REPOSITORY } from '../../tokens/cakeCategoryRepository.token';
 import { CakeCategoryRepository } from '../interfaces/cakecategory.repository';
 /**

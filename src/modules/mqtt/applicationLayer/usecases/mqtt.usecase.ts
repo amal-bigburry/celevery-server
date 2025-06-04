@@ -12,7 +12,7 @@ import {
   Transport,
   ClientProxy,
 } from '@nestjs/microservices';
-import { PopDto } from '../../dtos/pop.dto';
+import { PopDto } from '../../../../common/dtos/pop.dto';
 import { ConfigService } from '@nestjs/config';
 /**
  * Injectable service file to implement mqttservice

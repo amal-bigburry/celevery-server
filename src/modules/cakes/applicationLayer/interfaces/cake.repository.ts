@@ -7,7 +7,7 @@
  */
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { CakeEntity } from '../../domainLayer/entities/cake.entity';
-import { CakeDto } from '../../dtos/cake.dto';
+import { CakeDto } from '../../../../common/dtos/cake.dto';
 /**
  * Interface defining the Cake Repository contract
  */
@@ -33,6 +33,7 @@ export interface CakeRepository {
    * @param category_id - Category identifier to filter cakes
    * @returns A Promise resolving to an array of CakeEntity matching the criteria
    */
+  findCakeByStoreId(store_id: string): Promise<CakeEntity[]>;
   find(
     keyword: string,
     category_id: string,

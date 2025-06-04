@@ -10,8 +10,8 @@
  */
 import { GetCakeDetailsUseCase } from 'src/modules/cakes/applicationLayer/use-cases/GetCakeDetailsUseCase';
 import { IGetCakeDetailsUseCase } from '../../applicationLayer/interfaces/GetCakeDetailsusecase.interface';
-import { CakeEntity } from 'src/modules/cakes/domainLayer/entities/cake.entity';
 import { Injectable } from '@nestjs/common';
+import { CakeEntity } from '../../domainLayer/entities/cake.entity';
 
 /**
  * This class `IGetCakeDetailsUseCaseImp` implements the interface `IGetCakeDetailsUseCase` and provides the actual

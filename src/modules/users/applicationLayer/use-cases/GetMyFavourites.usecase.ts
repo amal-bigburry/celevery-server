@@ -9,7 +9,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { USER_REPOSITORY } from '../../tokens/userRepository.token';
 import { UserRepository } from '../interfaces/user.interface';
-import { CakeEntity } from 'src/modules/cakes/domainLayer/entities/cake.entity';
+import { CakeEntity } from '../../domainLayer/entities.ts/cake.entity';
 /**
  * Service use case to fetch user's favourite cakes
  */

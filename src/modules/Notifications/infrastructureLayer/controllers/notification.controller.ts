@@ -16,7 +16,7 @@ import {
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/middlewares/jwtauth.middleware';
 import { NotificationUseCase } from '../../applicationLayer/usecases/notification.usecase';
-import { NotificationDto } from '../../dtos/notification.dto';
+import { NotificationDto } from '../../../../common/dtos/notification.dto';
 
 /**
  * Controller to handle notification-related routes

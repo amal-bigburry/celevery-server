@@ -6,7 +6,7 @@
 /**
  * importing the required packages
  */
-import { OrderDto } from "../../dtos/Order.dto";
+import { OrderDto } from "../../../../common/dtos/Order.dto";
 
 /**
  * Interface for retrieving orders associated with a specific cake ID

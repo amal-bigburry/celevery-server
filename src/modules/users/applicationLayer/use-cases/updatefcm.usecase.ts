@@ -13,7 +13,7 @@
 
 import { Inject, Injectable } from '@nestjs/common';
 import { UserRepository } from '../interfaces/user.interface';
-import { TokenDto } from '../../dtos/token.dto';
+import { TokenDto } from '../../../../common/dtos/token.dto';
 import { USER_REPOSITORY } from '../../tokens/userRepository.token';
 
 /**

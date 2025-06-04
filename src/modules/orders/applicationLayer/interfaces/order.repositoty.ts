@@ -7,7 +7,7 @@
  * Import the required packages
  */
 import { Order } from '../../domainLayer/entities.ts/order.entity';
-import { OrderDto } from '../../dtos/Order.dto';
+import { OrderDto } from '../../../../common/dtos/Order.dto';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
 
 /**

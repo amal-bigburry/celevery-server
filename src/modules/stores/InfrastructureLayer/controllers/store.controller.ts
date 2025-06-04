@@ -9,6 +9,7 @@ import {
   BadRequestException,
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
@@ -25,12 +26,13 @@ import { AuthRequest } from 'src/middlewares/AuthRequest';
 import { CreateStoreUsecase } from '../../applicationLayer/usercases/createStore.usecase';
 import { updateStoreUsecase } from '../../applicationLayer/usercases/updateStore.usecase';
 import { getStoreUsecase } from '../../applicationLayer/usercases/getStore.usecase';
-import { StoreDto } from '../../dtos/store.dto';
+import { StoreDto } from '../../../../common/dtos/store.dto';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { GetAllStoreCakesUsecase } from '../../applicationLayer/usercases/GetAllStoreCakes.Usecase';
 import { GetAllStoreUseCase } from '../../applicationLayer/usercases/getAllStores.usecase';
-import { IsNotEmpty } from 'class-validator';
-import { UpdateStoreDto } from '../../dtos/updateStore.dto';
+import { UpdateStoreDto } from '../../../../common/dtos/updateStore.dto';
+import { preferred_payment_method } from 'src/common/utils/preferredPaymentMethod';
+import { DeleteStoreUsecase } from '../../applicationLayer/usercases/deleteStore.usecase';
 
 /**
  * Bigburry Hypersystems LLP - StoreController Definition
@@ -44,6 +46,7 @@ export class StoreController {
     private readonly getStoreUsecase: getStoreUsecase,
     private readonly getAllStoreUsecase: GetAllStoreUseCase,
     private readonly getAllStoreCakesUsecase: GetAllStoreCakesUsecase,
+    private readonly DeleteStoreUsecase: DeleteStoreUsecase,
   ) {}
 
   /**
@@ -110,33 +113,95 @@ export class StoreController {
   @UseInterceptors(
     FileFieldsInterceptor([
       { name: 'license_file', maxCount: 1 },
-      { name: 'id_proof_file', maxCount: 1 },
+      { name: 'kyc_document', maxCount: 1 },
     ]),
   )
-  /**
-   * Bigburry Hypersystems LLP - Method: createStore
-   * This function implements the logic required for registering a new store entity in the system. It first verifies that both expected files are uploaded, and if not, throws a BadRequestException. It then constructs a call to the CreateStoreUsecase with the data DTO and file payloads.
-   */
-  @HttpCode(HttpStatus.CREATED)
   async createStore(
     @Req() request: AuthRequest,
     @Body() storeDto: StoreDto,
     @UploadedFiles()
     files: {
       license_file?: Express.Multer.File[];
-      id_proof_file?: Express.Multer.File[];
+      kyc_document?: Express.Multer.File[];
     },
   ) {
-    if (!files.license_file?.length || !files.id_proof_file?.length) {
-      throw new BadRequestException('Upload id_proof_file and license_file');
+    if (!files.license_file?.length || !files.kyc_document?.length) {
+      throw new BadRequestException('Upload license_file and kyc_document');
     }
     storeDto.store_owner_id = request.user['userId'];
     const licenseFile = files.license_file[0];
-    const idProofFile = files.id_proof_file[0];
+    const kyc_document = files.kyc_document[0];
+    let vendor_details: object = {};
+
+    // console.log(storeDto)
+
+    if (storeDto.preferred_payment_method == preferred_payment_method.BANK) {
+      
+      vendor_details = {
+        status: 'ACTIVE',
+        name: storeDto.bank_account_holder_name,
+        email: storeDto.store_contact_email,
+        phone: storeDto.store_contact_number,
+        verify_account: true,
+        dashboard_access: false,
+        schedule_option: 1,
+        bank: {
+          account_number: storeDto.bank_account_number,
+          account_holder: storeDto.bank_account_holder_name,
+          ifsc: storeDto.bank_ifsc_code,
+        },
+        kyc_details: {
+          account_type: storeDto.account_type,
+          business_type: 'Retail and Shopping',
+          gst: storeDto.gst,
+          cin: storeDto.cin,
+          pan: storeDto.pan,
+          [storeDto.kyc_document_type]: storeDto.kyc_document_number, // Dynamic key fixed
+        },
+      };
+    } else if (
+      storeDto.preferred_payment_method == preferred_payment_method.UPI
+    ) {
+      vendor_details = {
+        status: 'ACTIVE',
+        name: storeDto.bank_account_holder_name,
+        email: storeDto.store_contact_email,
+        phone: storeDto.store_contact_number,
+        verify_account: true,
+        dashboard_access: false,
+        schedule_option: 1,
+        upi: {
+          vpa: storeDto.vpa,
+          account_holder: storeDto.bank_account_holder_name,
+        },
+        kyc_details: {
+          account_type: storeDto.account_type,
+          business_type: 'Retail and Shopping',
+          gst: storeDto.gst,
+          cin: storeDto.cin,
+          pan: storeDto.pan,
+          [storeDto.kyc_document_type]: storeDto.kyc_document_number, // Dynamic key fixed
+        },
+      };
+    }
     return await this.createStoreUsecase.execute(
       storeDto,
+      vendor_details,
       licenseFile,
-      idProofFile,
+      kyc_document,
     );
+  }
+
+
+  @HttpCode(HttpStatus.OK)
+  @Delete(':store_id')
+  @UseGuards(JwtAuthGuard)
+  async delete(
+    @Req() request: AuthRequest,
+    @Param('store_id') store_id: string,
+    // @Body() store: UpdateStoreDto,
+  ) {
+    
+    return this.DeleteStoreUsecase.execute(store_id);
   }
 }

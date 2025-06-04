@@ -9,9 +9,9 @@
  * Company: BigBurry Hypersystems LLP
  */
 import { GetUserDetailUseCase } from 'src/modules/users/applicationLayer/use-cases/getUserDetail.usecase';
-import { UserEntity } from 'src/modules/users/domainLayer/entities.ts/user.entity';
 import { IGetUserDetailUseCase } from '../../applicationLayer/interfaces/GetuserDetailsUsecase.interface';
 import { Injectable } from '@nestjs/common';
+import { UserEntity } from '../../domainLayer/entities/user.entity';
 
 /**
  * This class, `IGetUserDetailsUsecaseImp`, provides the concrete implementation for retrieving user details.

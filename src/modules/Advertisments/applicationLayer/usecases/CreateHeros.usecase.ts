@@ -23,7 +23,7 @@
  */
 import { Inject } from '@nestjs/common';
 import { HerosRepository } from '../interfaces/HeroRepository.interface';
-import { HeroDto } from '../../dtos/hero.dto';
+import { HeroDto } from '../../../../common/dtos/hero.dto';
 import { HERO_REPOSITORY } from '../../tokens/HeroRepository.token';
 
 /**

@@ -23,7 +23,7 @@ import { IGetUserDetailUseCase } from 'src/modules/orders/applicationLayer/inter
 import { INotificationUseCase } from 'src/modules/orders/applicationLayer/interfaces/NotificationUsecase.interface';
 import { OrderRepository } from 'src/modules/orders/applicationLayer/interfaces/order.repositoty';
 import { Order } from 'src/modules/orders/domainLayer/entities.ts/order.entity';
-import { OrderDto } from 'src/modules/orders/dtos/Order.dto';
+import { OrderDto } from 'src/common/dtos/Order.dto';
 import { GET_USER_DETAILS } from 'src/modules/orders/tokens/get_user_details.token';
 import { NOTIFICATION_USECASE } from 'src/modules/orders/tokens/notificationusecase.token';
 

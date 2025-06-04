@@ -16,7 +16,7 @@ import { CakeEntity } from "src/modules/cakes/domainLayer/entities/cake.entity";
 import { IGetStoreUsecase } from "../../applicationLayer/interfaces/GetStoreusecase.interface";
 import { getStoreUsecase } from "src/modules/stores/applicationLayer/usercases/getStore.usecase";
 import { StoreEntity } from "src/modules/stores/domainLayer/entities/store.entity";
-import { StoreDto } from "src/modules/stores/dtos/store.dto";
+import { StoreDto } from "src/common/dtos/store.dto";
 import { Injectable } from "@nestjs/common";
 
 /**

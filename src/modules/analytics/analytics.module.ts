@@ -29,7 +29,7 @@ import { GETALLSTOREINPLATFORM } from './tokens/Getallstorelocation.token';
   imports: [
     // Other Dependent Modules
     ConfigModule,
-    forwardRef(()=>CakeModule),
+    CakeModule,
     OrderModule,
     StoreModule,
   ],

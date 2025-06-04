@@ -12,7 +12,7 @@
  */
 import { MqttService } from 'src/modules/mqtt/applicationLayer/usecases/mqtt.usecase';
 import { IMqttService } from '../../applicationLayer/interfaces/MqttService.interface';
-import { PopDto } from 'src/modules/mqtt/dtos/pop.dto';
+import { PopDto } from 'src/common/dtos/pop.dto';
 import { Inject, Injectable } from '@nestjs/common';
 
 /**

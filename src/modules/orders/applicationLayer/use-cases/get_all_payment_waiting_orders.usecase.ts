@@ -11,7 +11,7 @@ import { Inject, Injectable } from '@nestjs/common';
 import { OrderRepository } from '../interfaces/order.repositoty';
 import { Order } from '../../domainLayer/entities.ts/order.entity';
 import { ORDER_REPOSITORY } from '../../tokens/orderRepository.token';
-import { OrderDto } from '../../dtos/Order.dto';
+import { OrderDto } from '../../../../common/dtos/Order.dto';
 
 /**
  * Injectable service file to get the orders that are waiting for the payment to be done

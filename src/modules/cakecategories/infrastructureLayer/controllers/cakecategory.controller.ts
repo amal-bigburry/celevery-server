@@ -15,7 +15,7 @@ import {
 } from '@nestjs/common';
 import { FindCakeCategoryUseCase } from '../../applicationLayer/use-cases/getallcakecategory.usecase';
 import { CreateCakeCategoryUseCase } from '../../applicationLayer/use-cases/createcakecategory.usecase';
-import { CakeCategoryDto } from '../../dtos/cakecategory.dto';
+import { CakeCategoryDto } from '../../../../common/dtos/cakecategory.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { JwtAuthGuard } from 'src/middlewares/jwtauth.middleware';
 /**

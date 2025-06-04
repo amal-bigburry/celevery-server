@@ -8,7 +8,7 @@
 import { Inject, Injectable } from '@nestjs/common';
 import { StoreRepository } from '../interfaces/store.interfaces';
 import { STORE_REPOSITORY } from '../../tokens/storeRepository.token';
-import { UpdateStoreDto } from '../../dtos/updateStore.dto';
+import { UpdateStoreDto } from '../../../../common/dtos/updateStore.dto';
 
 /**
  * Bigburry Hypersystems LLP - Internal Service Logic
