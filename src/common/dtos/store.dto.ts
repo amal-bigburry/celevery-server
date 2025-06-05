@@ -9,6 +9,8 @@ import { Transform } from 'class-transformer';
 import {
   IsBoolean,
   IsEnum,
+  IsISO8601,
+  IsMilitaryTime,
   IsNotEmpty,
   IsString,
   ValidateIf,
@@ -84,7 +86,6 @@ export class StoreDto {
   pan?: string;
   @ValidateIf((o) => o.account_type === 'Business')
   @IsNotEmpty()
-
   cin?: string;
   @ValidateIf(
     (o) => o.preferred_payment_method === preferred_payment_method.UPI,
@@ -113,10 +114,12 @@ export class StoreDto {
   account_type: string;
   @IsNotEmpty()
   @IsString()
+  @IsMilitaryTime()
   sunday_open_at: string;
 
   @IsNotEmpty()
   @IsString()
+  @IsMilitaryTime()
   sunday_close_at: string;
 
   @IsNotEmpty()
@@ -126,10 +129,12 @@ export class StoreDto {
 
   @IsNotEmpty()
   @IsString()
+  @IsMilitaryTime()
   monday_open_at: string;
 
   @IsNotEmpty()
   @IsString()
+  @IsMilitaryTime()
   monday_close_at: string;
 
   @IsNotEmpty()
@@ -139,10 +144,12 @@ export class StoreDto {
 
   @IsNotEmpty()
   @IsString()
+  @IsMilitaryTime()
   tuesday_open_at: string;
 
   @IsNotEmpty()
   @IsString()
+  @IsMilitaryTime()
   tuesday_close_at: string;
 
   @IsNotEmpty()
@@ -152,10 +159,12 @@ export class StoreDto {
 
   @IsNotEmpty()
   @IsString()
+  @IsMilitaryTime()
   wednesday_open_at: string;
 
   @IsNotEmpty()
   @IsString()
+  @IsMilitaryTime()
   wednesday_close_at: string;
 
   @IsNotEmpty()
@@ -165,10 +174,12 @@ export class StoreDto {
 
   @IsNotEmpty()
   @IsString()
+  @IsMilitaryTime()
   thursday_open_at: string;
 
   @IsNotEmpty()
   @IsString()
+  @IsMilitaryTime()
   thursday_close_at: string;
 
   @IsNotEmpty()
@@ -178,10 +189,12 @@ export class StoreDto {
 
   @IsNotEmpty()
   @IsString()
+  @IsMilitaryTime()
   friday_open_at: string;
 
   @IsNotEmpty()
   @IsString()
+  @IsMilitaryTime()
   friday_close_at: string;
 
   @IsNotEmpty()
@@ -191,9 +204,11 @@ export class StoreDto {
 
   @IsNotEmpty()
   @IsString()
+  @IsMilitaryTime()
   saturday_open_at: string;
 
   @IsNotEmpty()
   @IsString()
+  @IsMilitaryTime()
   saturday_close_at: string;
 }

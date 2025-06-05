@@ -33,6 +33,8 @@ import { UpdateKnownForOfCakeUseCase } from '../interfaces/UpdateKnownForOfCakeU
 import { STORE_STATUS } from 'src/common/utils/contants';
 import { PopDto } from 'src/common/dtos/pop.dto';
 import mongoose from 'mongoose';
+import { getCurrentDayName } from 'src/common/utils/getCurrentDayName';
+import { isStoreOpen } from 'src/common/utils/isStoreOpen';
 
 /**
  * injectable service file that makes an order request
@@ -81,13 +83,20 @@ export class RequestOrderUseCase {
     let store = await this.getstoreUsecase.execute(cake.store_id);
     orderDto.seller_id = store.store_owner_id;
     // confirms that the store is open
-    if (store.store_status != STORE_STATUS.OPEN) {
+    if (store.store_status != STORE_STATUS.APPROVED) {
+    }
+    const currentDay = getCurrentDayName().toLowerCase(); // e.g., "monday"
+    const openAt = store[`${currentDay}_open_at`];
+    const closeAt = store[`${currentDay}_close_at`];
+    if (!isStoreOpen(openAt, closeAt)) {
       throw new BadRequestException('The store is not open');
     }
     // Validate if the cake variant exists
-    if (!cake.cake_variants.some(
-      (variant) => variant._id === orderDto.cake_variant_id,
-    )) {
+    if (
+      !cake.cake_variants.some(
+        (variant) => variant._id === orderDto.cake_variant_id,
+      )
+    ) {
       throw new BadRequestException('Cake variant not found');
     }
     let buyer = await this.getuserDetailsUseCase.execute(orderDto.buyer_id);

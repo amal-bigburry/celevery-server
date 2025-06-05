@@ -49,7 +49,7 @@ export class FindCakeUseCase {
     sortby: string,
     orderby: string,
   ): Promise<PaginationDto> {
-    let openStoreCakes = await this.CakeRepository.findAll();
+    let openStoreCakes = await this.CakeRepository.findCakesFromOpenStore();
     let allorders = await this.getAllOrdersUseCase.execute();
     // known for filtering layer
     if (knownfor.length > 0) {

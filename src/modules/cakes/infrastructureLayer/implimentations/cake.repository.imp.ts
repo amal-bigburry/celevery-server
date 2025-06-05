@@ -21,6 +21,9 @@ import { CakeRepository } from '../../applicationLayer/interfaces/cake.repositor
 import { InjectModel } from '@nestjs/mongoose';
 import sharp from 'sharp';
 import { IGetStoreUseCase } from '../../applicationLayer/interfaces/getStoreUsecase.interface';
+import { isStoreOpen } from 'src/common/utils/isStoreOpen';
+import { getCurrentMilitaryTime } from 'src/common/utils/getCurrentMilterytime';
+import { getCurrentDayName } from 'src/common/utils/getCurrentDayName';
 /**
  * implementation of cake repository
  */
@@ -58,21 +61,25 @@ export class CakeRepositoryImp implements CakeRepository {
    * Applies pagination logic on the results
    * Returns paginated cake data with store info and distance
    */
-  async findAll(): Promise<CakeEntity[]> {
-    // Get all cakes in platform
-    const cakes: CakeEntity[] = await this.cakeModel.find().exec();
+  async findCakesFromOpenStore(): Promise<CakeEntity[]> {
+    let cakes = await this.cakeModel.find().exec();
 
-    // filter cakes only from opened stores
-    // let openStoreCakes = (
-    //   await Promise.all(
-    //     cakes.map(async (cake) => {
-    //       const store = await this.getstoreUsecase.execute(cake.store_id);
-    //       return store.store_status === STORE_STATUS.OPEN ? cake : null;
-    //     }),
-    //   )
-    // ).filter((cake) => cake !== null);
-    return cakes;
+    const openStoreCakes = (cakes = cakes.filter(async (cake) => {
+      const store = await this.getstoreUsecase.execute(cake.store_id);
+      const currentDay = getCurrentDayName().toLowerCase(); // e.g., "monday"
+      const openAt = store[`${currentDay}_open_at`];
+      const closeAt = store[`${currentDay}_close_at`];
+      if (isStoreOpen( openAt, closeAt)) {
+        return cake;
+      }
+      if (store.store_status === STORE_STATUS.APPROVED) {
+        return cake;
+      }
+      return null;
+    }));
+    return openStoreCakes;
   }
+
   /**
    * Finds a cake by its unique ID
    * Throws exception if cake not found
