@@ -24,7 +24,6 @@ export class GeneratorController {
   /**
    * post request to send message
    */
-
   @HttpCode(HttpStatus.OK)
   @Get('uuid')
   async generateUUID() {

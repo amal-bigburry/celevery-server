@@ -3,25 +3,22 @@
  * This source code is confidential and intended only for internal use.
  * Unauthorized copying, modification, distribution, or disclosure is prohibited.
  */
-
 /**
  * importing all the required packages
  */
 import { Inject, Injectable } from '@nestjs/common';
-import { OrderRepository } from '../interfaces/order.interface';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
-import { ORDER_REPOSITORY } from '../../tokens/orderRepository.token';
-
+import { ORDERINTERFACETOKEN } from '../../tokens/orderRepository.token';
+import { OrderInterface } from '../interfaces/order.interface';
 /**
  * injectable service file that gets all the placed orders
  */
 @Injectable()
 export class GetAllOrdersPlacedUseCase {
   constructor(
-    @Inject(ORDER_REPOSITORY)
-    private readonly OrderRepository: OrderRepository,
+    @Inject(ORDERINTERFACETOKEN)
+    private readonly OrderRepository: OrderInterface,
   ) {}
-
   /**
    * The executable method to retrieve placed orders
    */

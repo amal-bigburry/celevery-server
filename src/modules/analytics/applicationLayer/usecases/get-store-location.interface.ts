@@ -3,7 +3,6 @@
  * All rights reserved. Unauthorized copying, redistribution or modification of this file,
  * via any medium is strictly prohibited. Proprietary and confidential.
  */
-
 /**
  * Importing Required Packages
  * This section imports necessary decorators, interfaces, data transfer objects (DTOs),
@@ -11,17 +10,9 @@
  * and configuration service used to access environment variables.
  */
 import { Inject, Injectable } from '@nestjs/common';
-import { PaginationDto } from 'src/common/dtos/pagination.dto';
-import { IGetOrdersToAnalyse } from '../interfaces/get-orders-to-analys.interface';
-import { IGetCakeDetailsUseCase } from 'src/modules/orders/applicationLayer/interfaces/get-cake-details.interface';
-import { GETORDERANALYSE } from '../../tokens/GetOrdersToAnalyse.token';
-import { CakeEntity } from 'src/modules/cakes/domainLayer/entities/cake.entity';
-import { CAKEREPOSITORY } from '../../tokens/cake_Repository.token';
-import { OrderDto } from 'src/common/dtos/Order.dto';
 import { ConfigService } from '@nestjs/config';
 import { IGetAllStoreInPlatformUsecase } from '../interfaces/get-all-stores-in-platform.interface';
 import { GETALLSTOREINPLATFORM } from '../../tokens/Getallstorelocation.token';
-
 /**
  * Use case class to get trending products based on order analysis across multiple analysis levels.
  *
@@ -37,7 +28,6 @@ import { GETALLSTOREINPLATFORM } from '../../tokens/Getallstorelocation.token';
 @Injectable()
 export class GetStoreLocationsUsecase {
   constructor(
-    private readonly configService: ConfigService,
     @Inject(GETALLSTOREINPLATFORM)
     private readonly GetAllStoreInPlatformUsecase: IGetAllStoreInPlatformUsecase,
   ) {}

@@ -17,42 +17,14 @@ import {
   UseGuards,
 } from '@nestjs/common';
 
-/**
- * Company: Bigburry Hypersystems LLP
- *
- * Importing the JWT authentication guard to protect routes, ensuring only authenticated users can access them.
- * This middleware verifies the presence and validity of JWT tokens attached to incoming requests.
- */
 import { JwtAuthGuard } from 'src/middlewares/jwtauth.middleware';
-
-/**
- * Company: Bigburry Hypersystems LLP
- *
- * Importing a custom interface representing the authenticated request object.
- * This extends the standard request to include user information extracted after JWT verification.
- */
 import { AuthRequest } from 'src/middlewares/AuthRequest';
-
-/**
- * Company: Bigburry Hypersystems LLP
- *
- * Importing various use cases which encapsulate the business logic related to buyer support operations.
- * These include creating support IDs, adding messages, fetching messages, and retrieving all support IDs for buyers.
- */
 import { CreateSupportIDforBuyerUsecase } from '../../applicationLayer/usecases/create-supportid-for-buyer.usecase';
 import { MesssageSendDto } from '../../../../common/dtos/MesssageSend.dto';
 import { AddMessageToBuyerSupportUsecase } from '../../applicationLayer/usecases/add-message-to-buyer-support.usecase';
 import { FetchMessageFromBuyerSupportUsecase } from '../../applicationLayer/usecases/fetch-message-from-buyer-support.usecase';
 import { FetchAllSupportIdsForBuyerUseCase } from '../../applicationLayer/usecases/fetch-all-supportid-for-buyer.usecase';
 
-/**
- * Company: Bigburry Hypersystems LLP
- *
- * This controller class handles HTTP requests routed to 'buyer/support' endpoint.
- * It defines multiple routes to manage buyer support interactions, including creating support IDs,
- * sending messages, fetching messages by support ID, and retrieving all support IDs linked to the authenticated buyer.
- * All routes are secured using JWT authentication guard to restrict access to authenticated users only.
- */
 @Controller('buyer/support')
 export class BuyerSupportController {
   /**
@@ -67,7 +39,6 @@ export class BuyerSupportController {
     private readonly FetchMessageFromBuyerSupportUsecase: FetchMessageFromBuyerSupportUsecase,
     private readonly FetchAllSupportIdsForBuyerUseCase: FetchAllSupportIdsForBuyerUseCase,
   ) {}
-
   /**
    * Company: Bigburry Hypersystems LLP
    *
@@ -85,7 +56,6 @@ export class BuyerSupportController {
     );
     return res;
   }
-
   /**
    * Company: Bigburry Hypersystems LLP
    *
@@ -105,7 +75,6 @@ export class BuyerSupportController {
       await this.AddMessageToBuyerSupportUsecase.execute(MesssageSendDto);
     return res;
   }
-
   /**
    * Company: Bigburry Hypersystems LLP
    *
@@ -114,7 +83,6 @@ export class BuyerSupportController {
    * The support ID is obtained from the route parameter.
    * The response contains an array of message objects linked to the specified support thread.
    */
-  
   @HttpCode(HttpStatus.OK)
   @Get('message/:support_id')
   @UseGuards(JwtAuthGuard)
@@ -126,7 +94,6 @@ export class BuyerSupportController {
       await this.FetchMessageFromBuyerSupportUsecase.execute(support_id);
     return res;
   }
-
   /**
    * Company: Bigburry Hypersystems LLP
    *
@@ -134,7 +101,6 @@ export class BuyerSupportController {
    * This route retrieves all support IDs associated with the authenticated buyer.
    * The userId is extracted from the authenticated request, and an array of support IDs is returned.
    */
-  
   @HttpCode(HttpStatus.OK)
   @Get('my_supports')
   @UseGuards(JwtAuthGuard)

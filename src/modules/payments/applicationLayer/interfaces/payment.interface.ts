@@ -10,7 +10,6 @@
 import { DtoToGetPaymentSessionId } from 'src/common/dtos/DtoToGetPaymentSessionId.dto';
 import { DtoToRefund } from '../../../../common/dtos/dtoToRefund.dto';
 import { VendorDto } from '../../../../common/dtos/vendor.dto';
-
 /**
  * Interface representing the payment gateway repository.
  * The `PaymentGateway` interface defines the contract for any payment gateway service implementation.
@@ -37,6 +36,5 @@ export interface PaymentGateway {
   getsessionid(
     DtoToGetPaymentSessionId: DtoToGetPaymentSessionId, // Method to retrieve a payment session ID based on the provided DTO
   ): Promise<Object>;
-
   refundPayment(DtoToRefund: DtoToRefund): Promise<string>;  // Method to process a refund using the provided DTO
 }

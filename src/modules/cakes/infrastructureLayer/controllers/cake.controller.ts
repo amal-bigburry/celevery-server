@@ -101,7 +101,6 @@ export class CakeController {
   ) {
     return this.searchForCakesUseCase.execute(keyword, category_id, log, lat);
   }
-
   @HttpCode(HttpStatus.OK)
   @Get('cakesinstore')
   @UseGuards(JwtAuthGuard)

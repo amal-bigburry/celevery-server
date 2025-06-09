@@ -2,7 +2,6 @@
  * Company License: Bigburry Hypersystems LLP
  * All rights reserved © Bigburry Hypersystems LLP
  */
-
 /**
  * @fileoverview This file defines the DeleteHerosUseCase class which encapsulates the business logic
  * for deleting hero records from the system.
@@ -12,7 +11,6 @@
  *
  * Company: Bigburry Hypersystems LLP
  */
-
 /**
  * Importing required dependencies for implementing the use case.
  * The Inject decorator is used for injecting dependencies into the constructor.
@@ -25,7 +23,6 @@
 import { Inject } from "@nestjs/common";
 import { HerosRepository } from "../interfaces/hero.interface";
 import { HERO_REPOSITORY } from "../../tokens/HeroRepository.token";
-
 /**
  * This class represents the DeleteHerosUseCase which is designed to handle the deletion of hero records.
  * By encapsulating this logic within its own class, the architecture remains maintainable, testable, and organized.
@@ -38,7 +35,6 @@ export class DeleteHerosUseCase {
         @Inject(HERO_REPOSITORY)
         private readonly HerosRepository: HerosRepository
     ) {}
-
     /**
      * Executes the hero deletion logic.
      * Accepts a unique hero_id as a string parameter and invokes the delete method of the injected repository.

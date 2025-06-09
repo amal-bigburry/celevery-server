@@ -2,7 +2,6 @@
  * Company License: Bigburry Hypersystems LLP
  * All rights reserved © Bigburry Hypersystems LLP
  */
-
 /**
  * @fileoverview This file defines the GetHerosUseCase class, which encapsulates the logic
  * for retrieving all hero records from the underlying data store.
@@ -11,7 +10,6 @@
  *
  * Company: Bigburry Hypersystems LLP
  */
-
 /**
  * Importing essential modules required for this use case class.
  * The Inject decorator from NestJS is used for injecting dependencies via constructor.
@@ -24,7 +22,6 @@
 import { Inject } from '@nestjs/common';
 import { HerosRepository } from '../interfaces/hero.interface';
 import { HERO_REPOSITORY } from '../../tokens/HeroRepository.token';
-
 /**
  * The GetHerosUseCase class is responsible for orchestrating the retrieval of all hero records.
  * It serves as the application layer's entry point for fetching data from the repository.
@@ -38,7 +35,6 @@ export class GetHerosUseCase {
     @Inject(HERO_REPOSITORY)
     private readonly HerosRepository: HerosRepository,
   ) {}
-
   /**
    * Executes the operation to fetch all hero records from the repository.
    * This method returns a promise that resolves to an array of HeroDto objects.

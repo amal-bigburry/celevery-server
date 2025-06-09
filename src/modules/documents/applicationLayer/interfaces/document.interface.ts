@@ -7,12 +7,6 @@
  * interface for document repository
  */
 export interface DocumentRepository {
-  /**
-   * retrieves the privacy policy content
-   */
   getPrivacyPolicy(): Promise<object>;
-  /**
-   * retrieves the terms and conditions content
-   */
   getTermsAndConditions(): Promise<object>;
 }

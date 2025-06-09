@@ -8,17 +8,15 @@
  * importing the required packages
  */
 import { Inject, Injectable } from '@nestjs/common';
-import { OrderRepository } from '../interfaces/order.interface';
-import { ORDER_REPOSITORY } from '../../tokens/orderRepository.token';
-import { OrderDto } from '../../../../common/dtos/Order.dto';
-import { GetCakeDetailsUseCase } from 'src/modules/cakes/applicationLayer/use-cases/get-cake-details.usecase';
-import { GetUserDetailUseCase } from 'src/modules/users/applicationLayer/use-cases/get-user-details.usecase';
-import { GET_CAKE_DETAILS } from '../../tokens/get_cake_details.token';
-import { GET_USER_DETAILS } from '../../tokens/get_user_details.token';
+import { OrderInterface} from '../interfaces/order.interface';
+import { ORDERINTERFACETOKEN } from '../../tokens/orderRepository.token';
 import { OrderDetailDto } from 'src/common/dtos/orderDetail.dto';
 import { GET_STORE_DETAILS } from '../../tokens/get_store_details.token';
-import { IGetStoreUsecase } from '../interfaces/get-store.interface';
-import { CakeVariantDto } from 'src/common/dtos/cakevarient.dto';
+import { CakeDetailsInterface } from '../interfaces/get-cake-details.interface';
+import { GetUserDetailInterface } from '../interfaces/get-user-details.interface';
+import { GetstoreInterface } from '../interfaces/get-store.interface';
+import { GET_CAKE_DETAILS } from '../../tokens/get_cake_details.token';
+import { GET_USER_DETAILS } from '../../tokens/get_user_details.token';
 
 /**
  * injectable service file that get all the recieved orders of a seller
@@ -26,14 +24,14 @@ import { CakeVariantDto } from 'src/common/dtos/cakevarient.dto';
 @Injectable()
 export class GetOrderDetailsUseCase {
   constructor(
-    @Inject(ORDER_REPOSITORY)
-    private readonly OrderRepository: OrderRepository,
+    @Inject(ORDERINTERFACETOKEN)
+    private readonly OrderRepository: OrderInterface,
     @Inject(GET_CAKE_DETAILS)
-    private readonly GetCakeDetailsUseCase: GetCakeDetailsUseCase,
+    private readonly GetCakeDetailsUseCase: CakeDetailsInterface,
     @Inject(GET_USER_DETAILS)
-    private readonly GetUserDetailUseCase: GetUserDetailUseCase,
+    private readonly GetUserDetailUseCase: GetUserDetailInterface,
     @Inject(GET_STORE_DETAILS)
-    private readonly GetStoreDetailUseCase: IGetStoreUsecase, // Assuming CakeRepository is used to get cake details
+    private readonly GetStoreDetailUseCase: GetstoreInterface, // Assuming CakeRepository is used to get cake details
   ) {}
   /**
    * execuable funtion
@@ -44,10 +42,10 @@ export class GetOrderDetailsUseCase {
     if (!order) {
       throw new Error('Order not found');
     }
-    let cake = await this.GetCakeDetailsUseCase.execute(order.cake_id);
-    let buyer = await this.GetUserDetailUseCase.execute(order.buyer_id);
-    let seller = await this.GetUserDetailUseCase.execute(order.seller_id);
-    let store = await this.GetStoreDetailUseCase.execute(cake.store_id);
+    let cake = await this.GetCakeDetailsUseCase.getcakedetail(order.cake_id);
+    let buyer = await this.GetUserDetailUseCase.getuserdetail(order.buyer_id);
+    let seller = await this.GetUserDetailUseCase.getuserdetail(order.seller_id);
+    let store = await this.GetStoreDetailUseCase.getstore(cake.store_id);
     let variant = cake.cake_variants.find(variant => variant._id == order.cake_variant_id);
     if (!variant) {
       throw new Error('Cake variant not found');

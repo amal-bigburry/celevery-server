@@ -79,7 +79,7 @@ export class ChangeOrderStatus {
    * route to handle the /order/preparing
    */
   @HttpCode(HttpStatus.OK)
-  @Put('prepairing')
+  @Put('preparing')
   @UseGuards(JwtAuthGuard)
   async change_status_to_preparing(
     @Body() changeOrderStatusDto: ChangeOrderStatusDto,

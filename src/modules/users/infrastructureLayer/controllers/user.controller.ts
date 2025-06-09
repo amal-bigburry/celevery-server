@@ -27,24 +27,27 @@ import {
 } from '@nestjs/common';
 import { LoginDto } from '../../../../common/dtos/Login.dto';
 import { RegisterDto } from '../../../../common/dtos/Register.dto';
-import { LoginUseCase } from '../../applicationLayer/use-cases/login.usecase';
-import { RegisterUseCase } from '../../applicationLayer/use-cases/register.usecase';
+import { LoginUseCase } from '../../applicationLayer/usecases/login.usecase';
+import { RegisterUseCase } from '../../applicationLayer/usecases/register.usecase';
 import { JwtAuthGuard } from 'src/middlewares/jwtauth.middleware';
 import { AuthRequest } from 'src/middlewares/AuthRequest';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { UpdateProfileImageUseCase } from '../../applicationLayer/use-cases/update-profile-image.usecase';
-import { UpdateContactNumberUsecase } from '../../applicationLayer/use-cases/update-contact-number.usecase';
+import { UpdateProfileImageUseCase } from '../../applicationLayer/usecases/update-profile-image.usecase';
+import { UpdateContactNumberUsecase } from '../../applicationLayer/usecases/update-contact-number.usecase';
 import { ResetPasswordDto } from '../../../../common/dtos/ResetPassword.dto';
-import { UpdateContactNumberDto } from '../../../../common/dtos/UpdateContactNumber.dto';
+import { UpdateContactNumberDto } from '../../../../common/dtos/update-contact-number.dto';
 import { AuthGuard } from '@nestjs/passport';
-import { RegisterUsingGoogleUseCase } from '../../applicationLayer/use-cases/register-using-google.usecase';
-import { LoginUsingGoogleUseCase } from '../../applicationLayer/use-cases/login-using-google.usecase';
+import { RegisterUsingGoogleUseCase } from '../../applicationLayer/usecases/register-using-google.usecase';
+import { LoginUsingGoogleUseCase } from '../../applicationLayer/usecases/login-using-google.usecase';
 import { Types } from 'mongoose';
-import { GetMyFavouritesUsecase } from '../../applicationLayer/use-cases/get-my-favourites.usecase';
-import { AddToFavouritesUsecase } from '../../applicationLayer/use-cases/add-to-favourites.usecase';
-import { RemoveMyFavouritesUsecase } from '../../applicationLayer/use-cases/remove-from-favourites.usecase';
-import { UpdatePasswordUsecase } from '../../applicationLayer/use-cases/update-password.usecase';
-import { GetUserDetailUseCase } from '../../applicationLayer/use-cases/get-user-details.usecase';
+import { GetMyFavouritesUsecase } from '../../applicationLayer/usecases/get-my-favourites.usecase';
+import { AddToFavouritesUsecase } from '../../applicationLayer/usecases/add-to-favourites.usecase';
+import { RemoveMyFavouritesUsecase } from '../../applicationLayer/usecases/remove-from-favourites.usecase';
+import { UpdatePasswordUsecase } from '../../applicationLayer/usecases/update-password.usecase';
+import { GetUserDetailUseCase } from '../../applicationLayer/usecases/get-user-details.usecase';
+import { UpdateStoreDto } from 'src/common/dtos/udpate-store.dto';
+import { UpdateDisplayNameUseCase } from '../../applicationLayer/usecases/update-displayname.usecase';
+import { UpdateUserDto } from 'src/common/dtos/udpate-user.dto';
 /**
  * ******************************************************************************************************
  * AuthController Class
@@ -60,6 +63,7 @@ export class UserController {
     private readonly registerUseCase: RegisterUseCase,
     private readonly getUserDetailUseCase: GetUserDetailUseCase,
     private readonly UpdateProfileImageUseCase: UpdateProfileImageUseCase,
+    private readonly UpdateDisplayNameUseCase: UpdateDisplayNameUseCase,
     private readonly UpdateContactNumberUsecase: UpdateContactNumberUsecase,
     private readonly update_passwordUsecase: UpdatePasswordUsecase,
     private readonly loginUsingGoogleUseCase: LoginUsingGoogleUseCase,
@@ -150,44 +154,50 @@ export class UserController {
    * @returns Result message after profile image update.
    */
   @HttpCode(HttpStatus.OK)
-  @Put('profileimg')
+  @Put()
   @UseGuards(JwtAuthGuard)
   @UseInterceptors(FileInterceptor('file'))
   async update_profileimage(
     @UploadedFile() file: Express.Multer.File,
+    @Body() body: UpdateUserDto,
     @Req() request: AuthRequest,
   ) {
-    if (!file) {
-      throw new BadRequestException(
-        'Please upload the profile image with the key as file',
+    if (!body) {
+      throw new BadRequestException('Body needs user key and value');
+    }
+    if (body.key == 'profileimg') {
+      if (!file) {
+        throw new BadRequestException(
+          'Please upload the profile image with the key as file',
+        );
+      }
+      return await this.UpdateProfileImageUseCase.execute(
+        request.user['userId'],
+        file,
+      );
+    } else if (body.key == 'contact_number') {
+      if (!body.value || !body.value.UUID || !body.value.OTP) {
+        throw new BadRequestException(
+          'Body needs value with UUID and OTP for contact number update',
+        );
+      }
+      let res = await this.UpdateContactNumberUsecase.execute(
+        request.user['userId'],
+        body.value as UpdateContactNumberDto,
+      );
+    } else if (body.key == 'display_name') {
+      if (!body.value) {
+        throw new BadRequestException(
+          'Body needs value for display name update',
+        );
+      }
+      return await this.UpdateDisplayNameUseCase.execute(
+        request.user['userId'],
+        body.value,
       );
     }
-    return await this.UpdateProfileImageUseCase.execute(
-      request.user['userId'],
-      file,
-    );
   }
-  /**
-   * Updates the user's contact number.
-   * Protected route requiring JWT authentication.
-   * Accepts new contact number data and updates it for the authenticated user.
-   * @param request - Authenticated request containing user info.
-   * @param UpdateContactNumberDto - DTO containing the new contact number.
-   * @returns Result message after updating contact number.
-   */
-  @HttpCode(HttpStatus.OK)
-  @Put('contact_number')
-  @UseGuards(JwtAuthGuard)
-  async update_contact_number(
-    @Req() request: AuthRequest,
-    @Body() UpdateContactNumberDto: UpdateContactNumberDto,
-  ) {
-    let res = await this.UpdateContactNumberUsecase.execute(
-      request.user['userId'],
-      UpdateContactNumberDto,
-    );
-    return res;
-  }
+
   /**
    * Adds a cake to the authenticated user's favourites list.
    * Protected route requiring JWT authentication.

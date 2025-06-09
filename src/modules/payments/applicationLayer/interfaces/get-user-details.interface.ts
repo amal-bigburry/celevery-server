@@ -6,7 +6,6 @@
  * Company: BigBurry Hypersystems LLP
  */
 import { UserEntity } from 'src/modules/users/domainLayer/entities.ts/user.entity';
-
 /**
  * Interface for the use case responsible for fetching the details of a specific user.
  * The `IGetUserDetailUseCase` defines the contract that must be implemented to retrieve user details.

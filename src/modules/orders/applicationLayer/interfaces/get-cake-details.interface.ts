@@ -7,16 +7,14 @@
  * importing the required packages
  */
 import { CakeEntity } from "src/modules/cakes/domainLayer/entities/cake.entity";
-
 /**
  * Interface for the use case of getting cake details by its ID
  */
-export interface IGetCakeDetailsUseCase {
-  
+export interface CakeDetailsInterface {
   /**
    * Executes the retrieval of cake details by cake ID
    * @param cake_id - The unique identifier for the cake
    * @returns Promise of CakeEntity containing the cake details
    */
-  execute(cake_id: string): Promise<CakeEntity>;
+  getcakedetail(cake_id: string): Promise<CakeEntity>;
 }

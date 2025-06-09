@@ -6,8 +6,7 @@
 /**
  * Interface for the Notification use case
  */
-export interface INotificationUseCase {
-  
+export interface NotificationInterface {
   /**
    * Executes the sending of a notification
    * @param title - The title of the notification

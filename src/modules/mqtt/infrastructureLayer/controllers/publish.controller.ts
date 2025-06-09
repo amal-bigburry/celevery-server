@@ -18,7 +18,6 @@ export class MqttPublisherController {
   /**
    * post request to send message
    */
-
   @HttpCode(HttpStatus.CREATED)
   @Post('send')
   async sendMessage(@Body() popDto: PopDto) {

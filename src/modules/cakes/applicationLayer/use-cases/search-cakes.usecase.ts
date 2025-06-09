@@ -9,8 +9,6 @@ import { Inject, Injectable } from '@nestjs/common';
 import { CakeRepository } from '../interfaces/cake.interface';
 import { CAKE_REPOSITORY } from '../../tokens/cake.token';
 import { CakeMinimalModel } from './cake-minimal-data.model';
-import { IGetStoreUseCase } from './get-store.usecase';
-import { GETSTORE } from '../../tokens/get-store.token';
 /**
  * Injectable use case class to search cakes by keyword and category
  */
@@ -22,7 +20,7 @@ export class SearchForCakesUseCase {
      */
     @Inject(CAKE_REPOSITORY) private readonly CakeRepository: CakeRepository,
     // @Inject(GETSTORE)
-    private readonly CakeMinimalModel:CakeMinimalModel,
+    private readonly CakeMinimalModel: CakeMinimalModel,
   ) {}
   /**
    * Executes the search based on keyword and category ID
@@ -42,7 +40,11 @@ export class SearchForCakesUseCase {
       log,
       lat,
     );
-    let cakeMinimalViewModel = await this.CakeMinimalModel.toJson(cakes, log, lat)
+    let cakeMinimalViewModel = await this.CakeMinimalModel.toJson(
+      cakes,
+      log,
+      lat,
+    );
     // let finalcakedata = await cakeMinimalViewModel.toJson();
     return cakeMinimalViewModel;
     // return cakes;

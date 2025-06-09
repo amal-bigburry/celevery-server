@@ -2,7 +2,6 @@
  * Company License: Bigburry Hypersystems LLP
  * All rights reserved © Bigburry Hypersystems LLP
  */
-
 /**
  * @fileoverview This file defines the CreateHerosUseCase class, which encapsulates the business logic
  * required to initiate the creation of a new hero record within the application.
@@ -12,7 +11,6 @@
  *
  * Company: Bigburry Hypersystems LLP
  */
-
 /**
  * Importing the Inject decorator from the NestJS common package to facilitate dependency injection.
  * Also importing the HerosRepository interface to define the expected structure of the repository.
@@ -25,7 +23,6 @@ import { Inject } from '@nestjs/common';
 import { HerosRepository } from '../interfaces/hero.interface';
 import { HeroDto } from '../../../../common/dtos/hero.dto';
 import { HERO_REPOSITORY } from '../../tokens/HeroRepository.token';
-
 /**
  * This class represents the use case responsible for creating new hero entries.
  * It is designed to handle only the execution logic relevant to creating a hero, thereby conforming
@@ -40,7 +37,6 @@ export class CreateHerosUseCase {
     @Inject(HERO_REPOSITORY)
     private readonly HerosRepository: HerosRepository,
   ) {}
-
   /**
    * Executes the creation process for a new hero entry.
    * Accepts a hero data transfer object (HeroDto) and a file, then delegates the creation

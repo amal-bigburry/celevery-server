@@ -1,5 +1,4 @@
 import { CakeEntity } from 'src/modules/cakes/domainLayer/entities/cake.entity';
-import { IGetCakeDetailsUseCase } from 'src/modules/orders/applicationLayer/interfaces/get-cake-details.interface';
 import { OrderDto } from 'src/common/dtos/Order.dto';
 
 export const GetTrendingCakes = async (

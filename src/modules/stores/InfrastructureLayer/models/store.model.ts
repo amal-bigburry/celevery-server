@@ -15,7 +15,6 @@
 import { Prop, Schema, SchemaFactory } from '@nestjs/mongoose';
 import { Document } from 'mongoose';
 import { STORE_STATUS, STORE_WARNINGS } from 'src/common/utils/contants';
-
 /**
  * The `licenseDetails` class represents the schema for storing license-related details of a store.
  * It includes various properties such as the name of the entity that licensed the store, the license
@@ -49,7 +48,6 @@ export class licenseDetails extends Document {
   @Prop()
   kyc_document_url: string;
 }
-
 /**
  * The `Store` class represents the schema for the store entity. It contains information related to the store
  * such as the owner's details, contact information, license details, and physical location.
@@ -95,42 +93,24 @@ export class Store extends Document {
   @Prop({ required: true }) sunday_open_at: string;
   @Prop({ required: true }) sunday_close_at: string;
   @Prop({ required: true }) monday_status: boolean;
-
   @Prop({ required: true }) monday_open_at: string;
-
   @Prop({ required: true }) monday_close_at: string;
-
   @Prop({ required: true }) tuesday_status: boolean;
-
   @Prop({ required: true }) tuesday_open_at: string;
-
   @Prop({ required: true }) tuesday_close_at: string;
-
   @Prop({ required: true }) wednesday_status: boolean;
-
   @Prop({ required: true }) wednesday_open_at: string;
-
   @Prop({ required: true }) wednesday_close_at: string;
-
   @Prop({ required: true }) thursday_status: boolean;
-
   @Prop({ required: true }) thursday_open_at: string;
-
   @Prop({ required: true }) thursday_close_at: string;
-
   @Prop({ required: true }) friday_status: boolean;
-
   @Prop({ required: true }) friday_open_at: string;
-
   @Prop({ required: true }) friday_close_at: string;
-
   @Prop({ required: true }) saturday_status: boolean;
-
   @Prop({ required: true }) saturday_open_at: string;
-
   @Prop({ required: true }) saturday_close_at: string;
 }
-
 /**
  * The `StoreModel` is the Mongoose model that is created from the `Store` schema using the
  * `SchemaFactory.createForClass()` function. This model will be used to interact with the `stores`

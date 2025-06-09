@@ -6,7 +6,6 @@
  * Company: BigBurry Hypersystems LLP
  */
 import { CakeEntity } from 'src/modules/cakes/domainLayer/entities/cake.entity';
-
 /**
  * Interface for the use case responsible for fetching the details of a specific cake.
  * The `IGetCakeDetailsUseCase` defines a contract for any class that implements the logic for retrieving the details

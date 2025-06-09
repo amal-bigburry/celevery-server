@@ -6,8 +6,7 @@
 /**
  * Interface for updating the 'known_for' field of a cake
  */
-export interface UpdateKnownForOfCakeUseCase {
-  
+export interface UpdateKnownForInterface {
   /**
    * Executes the update of the 'known_for' field for a specific cake
    * @param cake_id - The ID of the cake to update

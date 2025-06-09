@@ -4,7 +4,6 @@
 import { Body, Controller, HttpCode, HttpStatus, Post } from '@nestjs/common';
 import { OTPVerifyingService } from '../../applicationLayer/usecases/verify.usecase';
 import { OTPSendingService } from '../../applicationLayer/usecases/send.usecase';
-
 /**
  * OTP Controller handles routes related to OTP (One-Time Password) functionality.
  * This controller interacts with the TwilioService to send OTPs to users.
@@ -15,7 +14,6 @@ export class OtpController {
     private readonly OTPSendingService: OTPSendingService,
     private readonly OTPVerifyingService: OTPVerifyingService,
   ) {} // Inject TwilioService
-
   /**
    * Route: /otp/send
    * 
@@ -34,7 +32,6 @@ export class OtpController {
     );
     return 'otp send successfully'; // Return a confirmation response
   }
-
   @Post('verify') // POST request to send OTP
   async verifyotp(@Body() data: { UUID: string , OTP:string}) {
     // Call the TwilioService to send OTP

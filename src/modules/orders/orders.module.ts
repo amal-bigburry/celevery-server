@@ -25,7 +25,7 @@ import { forwardRef, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Order } from './domainLayer/entities.ts/order.entity';
 import { OrderSchema } from './infrastructureLayer/models/order.model';
-import { OrderRepositoryImp } from './infrastructureLayer/implimentations/orders/order.implimenation';
+import { OrderRepositoryImp } from './infrastructureLayer/implimentations/InternalImplimentations/order.implimenation';
 import { GetAllOrdersReceivedUseCase } from './applicationLayer/use-cases/get-all-orders-received.usecase';
 import { GetAllOrdersPlacedUseCase } from './applicationLayer/use-cases/get-all-orders-placed.usecase';
 import { RequestOrderUseCase } from './applicationLayer/use-cases/request-order.usercase';
@@ -35,17 +35,17 @@ import { CakeModule } from '../cakes/cakes.modules';
 import { ChangeOrderStatus } from './infrastructureLayer/controllers/change-order-status.controller';
 import { ChangeOrderStatusUseCase } from './applicationLayer/use-cases/change-order-status.usecase';
 import { StoreModule } from '../stores/store.module';
-import { ORDER_REPOSITORY } from './tokens/orderRepository.token';
+import { ORDERINTERFACETOKEN } from './tokens/orderRepository.token';
 import { GET_CAKE_DETAILS } from './tokens/get_cake_details.token';
 import { GET_STORE_DETAILS } from './tokens/get_store_details.token';
 import { GET_USER_DETAILS } from './tokens/get_user_details.token';
-import { IGetCakeDetailsUseCaseImp } from './infrastructureLayer/ExternalUseCaseImplimentation/get-cake-details.implimentation';
-import { IGetStoreUseCaseImp } from './infrastructureLayer/ExternalUseCaseImplimentation/get-store.implimentation';
-import { IGetUserDetailsUsecaseImp } from './infrastructureLayer/ExternalUseCaseImplimentation/get-user-detatils.implimentation';
+import { IGetCakeDetailsUseCaseImp } from './infrastructureLayer/implimentations/ExternalImplimentations/get-cake-details.implimentation';
+import { IGetStoreUseCaseImp } from './infrastructureLayer/implimentations/ExternalImplimentations/get-store.implimentation';
+import { IGetUserDetailsUsecaseImp } from './infrastructureLayer/implimentations/ExternalImplimentations/get-user-detatils.implimentation';
 import { NOTIFICATION_USECASE } from './tokens/notificationusecase.token';
-import { INotificationUseCaseImp } from './infrastructureLayer/ExternalUseCaseImplimentation/notification.implimentation';
+import { INotificationUseCaseImp } from './infrastructureLayer/implimentations/ExternalImplimentations/notification.implimentation';
 import { MQTTTOKEN } from './tokens/mqtt.token';
-import { IMqttServiceImp } from './infrastructureLayer/ExternalUseCaseImplimentation/mqtt-service.implimentation';
+import { IMqttServiceImp } from './infrastructureLayer/implimentations/ExternalImplimentations/mqtt-service.implimentation';
 import { NotificationModule } from '../Notifications/notification.module';
 import { MqttModule } from '../mqtt/mqtt.module';
 import { GetOrdersToAnalyse } from './applicationLayer/use-cases/get-order-to-analys.usecase';
@@ -53,9 +53,9 @@ import { OrderController } from './infrastructureLayer/controllers/orders.contro
 import { GetOrderDetailsUseCase } from './applicationLayer/use-cases/get_order_details.usecase';
 import { GetAllPaymentWaitingOrdersUseCase } from './applicationLayer/use-cases/get-all-payment-waiting-orders.usecase';
 import { GET_ORDERS_OFCAKE } from './tokens/get_orders_with_cakeid.token';
-import { GetOrdersWithCakeIdImp } from './infrastructureLayer/implimentations/orders/get-orders-with-cakeid.implimentation';
+import { GetOrdersWithCakeIdImp } from './infrastructureLayer/implimentations/InternalImplimentations/get-orders-with-cakeid.implimentation';
 import { UPDATE_KNOWN_FOR_IN_CAKE } from './tokens/update_known_for_in_cake.token';
-import { UpdateKnownForOfCakeUseCaseImp } from './infrastructureLayer/implimentations/orders/update-knownfor.implimentation';
+import { UpdateKnownForOfCakeUseCaseImp } from './infrastructureLayer/implimentations/InternalImplimentations/update-knownfor.implimentation';
 import { GetAllOrdersUseCase } from './applicationLayer/use-cases/get_all_orders.usecase';
 import { AutoCancelWorker } from './applicationLayer/use-cases/auto-cancel.usecase';
 /**
@@ -90,7 +90,7 @@ import { AutoCancelWorker } from './applicationLayer/use-cases/auto-cancel.useca
     GetAllOrdersUseCase,
     GetAllPaymentWaitingOrdersUseCase,
     {
-      provide: ORDER_REPOSITORY,
+      provide: ORDERINTERFACETOKEN,
       useClass: OrderRepositoryImp,
     },
     {

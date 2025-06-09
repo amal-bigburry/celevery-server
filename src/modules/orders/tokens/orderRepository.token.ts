@@ -7,4 +7,4 @@
 /**
  * Token for Order Repository
  */
-export const ORDER_REPOSITORY = Symbol('OrderRepository');
+export const ORDERINTERFACETOKEN = Symbol('ORDERINTERFACETOKEN');

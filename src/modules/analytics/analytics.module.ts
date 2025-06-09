@@ -24,7 +24,7 @@ import { OrderModule } from '../orders/orders.module';
 import { GETORDERANALYSE } from './tokens/GetOrdersToAnalyse.token';
 import { GetStoreLocationsUsecase } from './applicationLayer/usecases/get-store-location.interface';
 import { StoreModule } from '../stores/store.module';
-import { IGetAllStoreInPlatformUsecaseImp } from './infrastructurelLayer/implimentations/get-all-stores-in-platform.implimentation';
+import { IGetAllStoreInPlatformUsecaseImp } from './infrastructurelLayer/implimentations/InternalImplimentations/get-all-stores-in-platform.implimentation';
 import { GETALLSTOREINPLATFORM } from './tokens/Getallstorelocation.token';
 @Module({
   imports: [

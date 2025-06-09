@@ -9,14 +9,12 @@
  * Company: Bigburry Hypersystems LLP
  * All rights reserved © Bigburry Hypersystems LLP
  */
-
 /**
  * Importing OrderDto to define the data shape used in repository methods
  * OrderDto serves as a Data Transfer Object encapsulating order-related information,
  * enabling abstraction from internal entity representations.
  */
 import { OrderDto } from 'src/common/dtos/Order.dto';
-
 /**
  * Interface defining the contract for the Order Repository
  * This interface ensures any implementing class provides a method to fetch

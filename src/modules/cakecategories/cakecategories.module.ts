@@ -8,7 +8,7 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CakeCategoryController } from './infrastructureLayer/controllers/cake-category.controller';
-import { CakeCategoryRepositoryImp } from './infrastructureLayer/implimentations/cake-category.implimentation';
+import { CakeCategoryRepositoryImp } from './infrastructureLayer/implimentations/InternalImplimentations/cake-category.implimentation';
 import { CakeCategoryModel } from './infrastructureLayer/models/cakecategory.model';
 import { FindCakeCategoryUseCase } from './applicationLayer/use-cases/get-all-cake-category.usecase';
 import { CreateCakeCategoryUseCase } from './applicationLayer/use-cases/create-cake-category.usecase';

@@ -9,13 +9,10 @@
  *
  * Company: BigBurry Hypersystems LLP
  */
-
 // ses-test.ts
-
 // Load the AWS SDK for Node.js
 var AWS = require('aws-sdk');
 import {
-  BadGatewayException,
   BadRequestException,
   Inject,
   Injectable,
@@ -27,12 +24,10 @@ import { OTPStorageRepository } from '../interfaces/otp-storage.interface';
 // import { SendEmailCommand, SESClient } from '@aws-sdk/client-ses';
 import { ConfigService } from '@nestjs/config';
 import { OTP_TEMPLATES } from 'src/templates/email.template';
-
 @Injectable()
 export class OTPSendingService {
   private client: Twilio; // Twilio client instance for sending SMS
   private from: string; // Twilio Messaging Service SID (used as SMS sender)
-
   /**
    * Constructor initializes Twilio and AWS SES clients with credentials from environment variables.
    *
@@ -50,7 +45,6 @@ export class OTPSendingService {
     this.from = process.env.TWILIO_SERVICE_ID!;
     this.client = new Twilio(accountSid, authToken);
   }
-
   /**
    * Sends a 6-digit OTP to the user via SMS or Email based on the `method` provided.
    *
@@ -62,7 +56,6 @@ export class OTPSendingService {
    */
   async send(to: string, UUID: string, method: string): Promise<void> {
     let existing = await this.OTPStorageRepository.isUUIDExist(UUID);
-
     const OTP = (Math.floor(Math.random() * 900000) + 100000).toString();
     const WaitingTimeOptions = [1, 3, 5, 8, 10];
     console.log(existing)
@@ -78,7 +71,6 @@ export class OTPSendingService {
       let LastRequestTimeInMillisecond = new Date(
         UUIDDoc.last_request_time.toString(),
       ).getTime();
-
       let NextAttemptAt =
         waitingTimeInMilliSeconds + LastRequestTimeInMillisecond;
       // console.log(new Date(NextAttemptAt).toLocaleString());
@@ -94,7 +86,6 @@ export class OTPSendingService {
       // Store the generated OTP in the repository with the UUID
       await this.OTPStorageRepository.create(UUID, OTP);
     }
-
     if (method === 'sms') {
       // Send OTP via Twilio SMS
       await this.client.messages.create({
@@ -110,7 +101,6 @@ export class OTPSendingService {
         accessKeyId: this.configService.get<string>('AWS_ACCESS_KEY')!,
         secretAccessKey: this.configService.get<string>('AWS_SECRET_KEY')!,
       });
-
       // Create sendEmail params
       var params = {
         Destination: {
@@ -134,12 +124,10 @@ export class OTPSendingService {
           /* more items */
         ],
       };
-
       // Create the promise and SES service object
       var sendPromise = new AWS.SES({ apiVersion: '2010-12-01' })
         .sendEmail(params)
         .promise();
-
       // Handle promise's fulfilled/rejected states
       sendPromise
         .then(function (data) {
@@ -153,7 +141,6 @@ export class OTPSendingService {
         'method not found, Allowed methods sms, email',
       );
     }
-
     return;
   }
 }

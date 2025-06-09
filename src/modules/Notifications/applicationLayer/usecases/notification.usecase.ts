@@ -9,7 +9,6 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { NotificationDto } from '../../../../common/dtos/notification.dto';
 import * as admin from 'firebase-admin';
-
 /**
  * Service to handle sending notifications
  */
@@ -30,7 +29,6 @@ export class NotificationUseCase {
       },
       token: notificationDto.token,
     };
-
     try {
       const response = await admin.messaging().send(message);
       console.log('Successfully sent message:', response);

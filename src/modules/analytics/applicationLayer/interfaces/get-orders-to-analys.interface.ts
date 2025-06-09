@@ -9,14 +9,12 @@
  * Company: Bigburry Hypersystems LLP
  * All rights reserved © Bigburry Hypersystems LLP
  */
-
 /**
  * Importing the OrderDto data transfer object
  * This DTO represents the structure of order data used for analysis,
  * enabling decoupling of domain entities from external data representation.
  */
 import { OrderDto } from 'src/common/dtos/Order.dto';
-
 /**
  * Interface defining the contract for retrieving orders to analyze
  * This interface mandates an asynchronous method that filters and returns

@@ -17,11 +17,9 @@ export class CakeVariant {
     public cake_price: number,
   ) {}
 }
-
 export class CakeEntity {
-
   constructor(
-    public  _id: string,
+    public _id: string,
     public cake_name: string,
     public cake_description: string,
     public cake_image_urls: Array<string>,

@@ -16,28 +16,6 @@ import { DtoToGetPaymentSessionId } from 'src/common/dtos/DtoToGetPaymentSession
 import { PAYMENTTOKEN } from '../../tokens/payment.token';
 import { IGetOrderDetailsUseCaese } from '../interfaces/get-order-details.interface';
 import { GETORDERDETAILS } from '../../tokens/getOrderDetails.token';
-
-/**
- * Injectable service responsible for creating a payment session ID for an order.
- * The `GetSessionIdUseCase` class provides the functionality to interact with the payment gateway and generate a session ID.
- * It uses the injected `PaymentGateway` to retrieve the session ID and the `IGetOrderDetailsUseCaese` service to fetch the details
- * of the order that the session ID corresponds to.
- * 
- * Constructor:
- * - The constructor uses the `@Inject` decorator to inject the `PaymentGateway` and `IGetOrderDetailsUseCaese` dependencies
- *   into the service, allowing it to interact with the payment system and retrieve order details as required.
- * 
- * Methods:
- * - `execute`: This method accepts a `DtoToGetPaymentSessionId` object as an argument, which contains the necessary information
- *   to create the payment session. The method first fetches the order details based on the `_id` provided in the DTO.
- *   It then updates the DTO with the order's `user_id`, `cake_id`, and `variant_id` before passing the updated DTO to the
- *   payment gateway's `getsessionid` method to generate the session data, which is then returned.
- * 
- * The `GetSessionIdUseCase` class abstracts the logic for creating a payment session ID, ensuring that the payment-related
- * operations are separated from other parts of the application, maintaining clean separation of concerns.
- * 
- * Company: BigBurry Hypersystems LLP
- */
 @Injectable()
 export class GetSessionIdUseCase {
   constructor(
@@ -45,7 +23,6 @@ export class GetSessionIdUseCase {
     @Inject(GETORDERDETAILS)
     private readonly GetOrderDetailsUseCaese: IGetOrderDetailsUseCaese, // Injecting the service to retrieve order details based on order ID
   ) {}
-
   /**
    * Executes the task of creating a payment session ID for a specific order.
    * This method retrieves the order details, updates the provided DTO with relevant data from the order,

@@ -16,22 +16,22 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { PaymentController } from './infrastructureLayer/controllers/payment.controller';
 import { RefundUsecase } from './applicationLayer/use-cases/refund.usecase';
-import { CashFreePaymentGatewayImp } from './infrastructureLayer/implimentations/cashfree.implimentation';
+import { CashFreePaymentGatewayImp } from './infrastructureLayer/implimentations/InternalImplimentations/cashfree.implimentation';
 import { GetSessionIdUseCase } from './applicationLayer/use-cases/get-sessionid.usecase';
 import { PAYMENTTOKEN } from './tokens/payment.token';
 import { GETPAYMENTWAITINGORDERS } from './tokens/getallpaymentwaiting.token';
 import { CHANGEORDERSTATUS } from './tokens/changeorderstatus.token';
-import { IGetAllPaymentWaitingOrdersUsecaseImp } from './infrastructureLayer/ExternalUseCaseImplimentations/get-orders-waiting-to-pay.implimentation';
-import { IChangeOrderStatusUseCaseImp } from './infrastructureLayer/ExternalUseCaseImplimentations/change-order-status.implimentation';
+import { IGetAllPaymentWaitingOrdersUsecaseImp } from './infrastructureLayer/implimentations/ExternalImplimentations/get-orders-waiting-to-pay.implimentation';
 import { GETUSERDETAILS } from './tokens/getuserdetails.token';
 import { GETCAKEDETAILS } from './tokens/getcakedetails.token';
-import { IGetCakeDetailsUseCaseImp } from './infrastructureLayer/ExternalUseCaseImplimentations/get-cake-details.implimentation';
-import { IGetUserDetailsUsecaseImp } from './infrastructureLayer/ExternalUseCaseImplimentations/get-user-details.implimentation';
+import { IGetCakeDetailsUseCaseImp } from './infrastructureLayer/implimentations/ExternalImplimentations/get-cake-details.implimentation';
+import { IGetUserDetailsUsecaseImp } from './infrastructureLayer/implimentations/ExternalImplimentations/get-user-details.implimentation';
 import { OrderModule } from '../orders/orders.module';
-import { IGetOrderDetailsUseCaeseImp } from './infrastructureLayer/ExternalUseCaseImplimentations/get-order-details.implimentation';
+import { IGetOrderDetailsUseCaeseImp } from './infrastructureLayer/implimentations/ExternalImplimentations/get-order-details.implimentation';
 import { GETORDERDETAILS } from './tokens/getOrderDetails.token';
 import { CakeModule } from '../cakes/cakes.modules';
 import { UserModule } from '../users/users.module';
+import { IChangeOrderStatusUseCaseImp } from './infrastructureLayer/implimentations/ExternalImplimentations/change-order-status.implimentation';
 /**
  * The `PaymentModule` defines the core business logic and services related to payments, including processing
  * payments, refunds, and interacting with external payment gateways like CashFree. It serves as a central module

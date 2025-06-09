@@ -10,15 +10,12 @@
  * Company: Bigburry Hypersystems LLP
  * All rights reserved © Bigburry Hypersystems LLP
  */
-
 /**
  * Importing the CakeEntity domain model class
  * This is necessary to maintain type safety and domain-driven design principles
  * by using entities as the fundamental data units within repository operations.
  */
-import { CakeEntity } from 'src/modules/cakes/domainLayer/entities/cake.entity';
 import { StoreDto } from 'src/common/dtos/store.dto';
-
 /**
  * Interface representing the CakeRepositoryUseCase contract
  * This interface outlines the required method that any cake repository

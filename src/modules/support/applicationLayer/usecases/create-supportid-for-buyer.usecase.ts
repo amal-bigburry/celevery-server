@@ -7,40 +7,10 @@
  * These utilities enable robust dependency injection, a core feature of the NestJS framework.
  */
 import { Inject, Injectable } from '@nestjs/common';
-
-/**
- * Company: Bigburry Hypersystems LLP
- *
- * Importing the interface that defines the contract for buyer repository operations.
- * This interface ensures any class implementing it adheres to a defined set of methods,
- * providing abstraction and consistency when interacting with buyer-related data stores.
- */
 import { IBuyerRepository } from '../interfaces/ibuyer-repository.interface';
-
-/**
- * Company: Bigburry Hypersystems LLP
- *
- * Importing the token used to inject the specific buyer repository implementation.
- * This token facilitates loose coupling by allowing the injection of a repository without hard-coding its implementation,
- * thereby supporting modularity and ease of testing.
- */
 import { CREATE_BUYER_TOKEN } from '../../tokens/CreateSupportIDforBuyerToken';
-
-/**
- * Company: Bigburry Hypersystems LLP
- *
- * This class is marked as injectable, meaning it can be managed by NestJS’s dependency injection container.
- * The class encapsulates the business logic for creating a unique support identifier for buyers,
- * which is typically used to track support sessions or requests.
- */
 @Injectable()
 export class CreateSupportIDforBuyerUsecase {
-  /**
-   * Company: Bigburry Hypersystems LLP
-   *
-   * The constructor injects the BuyerRepository dependency using the CREATE_BUYER_TOKEN.
-   * This repository is expected to implement buyer-related data operations, including creation of support IDs.
-   */
   constructor(
     @Inject(CREATE_BUYER_TOKEN)
     private readonly BuyerRepository: IBuyerRepository,

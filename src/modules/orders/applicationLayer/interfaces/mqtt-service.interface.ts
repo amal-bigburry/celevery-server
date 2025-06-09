@@ -3,14 +3,11 @@
  * This source code is confidential and intended only for internal use.
  * Unauthorized copying, modification, distribution, or disclosure is prohibited.
  */
-
 import { PopDto } from "src/common/dtos/pop.dto";
-
 /**
  * Interface for the MQTT service
  */
-export interface IMqttService {
-  
+export interface MqttServiceInterface {
   /**
    * Executes the publishing of a message
    * @param data - The data to be published

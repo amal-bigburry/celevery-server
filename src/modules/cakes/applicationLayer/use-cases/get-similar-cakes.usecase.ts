@@ -26,7 +26,6 @@ export class GetSimilarCakesUseCase {
    * @returns Promise resolving to an array of similar cakes (currently empty)
    */
   async execute(cake_id: string, variant_id: string): Promise<Array<any>> {
-    
     return [];
   }
 }

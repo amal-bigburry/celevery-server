@@ -7,12 +7,10 @@
  * importing the required packages
  */
 import { OrderDto } from "../../../../common/dtos/Order.dto";
-
 /**
  * Interface for retrieving orders associated with a specific cake ID
  */
-export interface GetOrdersWithCakeId {
-  
+export interface GetOrdersWithCakeIdInterface {
   /**
    * Executes the retrieval of orders by cake ID
    * @param cake_id - The unique identifier for the cake

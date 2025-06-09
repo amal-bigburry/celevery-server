@@ -29,7 +29,7 @@ export class FindCakeUseCase {
     @Inject(GETSTORE) private readonly getstoreUsecase: IGetStoreUseCase,
     @Inject(GET_ALL_ORDERS)
     private readonly IGetAllOrdersInterface: IGetAllOrdersInterface,
-    private readonly CakeMinimalModel:CakeMinimalModel,
+    private readonly CakeMinimalModel: CakeMinimalModel,
   ) {}
   /**
    * Executes the find operation with pagination and optional location parameters
@@ -47,7 +47,7 @@ export class FindCakeUseCase {
     knownfor: string[],
     sortby: string,
     orderby: string,
-    category_id:string,
+    category_id: string,
   ): Promise<PaginationDto> {
     let openStoreCakes = await this.CakeRepository.findCakesFromOpenStore();
     // console.log('open store cakes', openStoreCakes.length);
@@ -58,10 +58,9 @@ export class FindCakeUseCase {
         knownfor.includes(cake.known_for),
       );
     }
-
-    if(category_id) {
-      openStoreCakes = openStoreCakes.filter(
-        (cake) => cake.cake_category_ids.includes(category_id),
+    if (category_id) {
+      openStoreCakes = openStoreCakes.filter((cake) =>
+        cake.cake_category_ids.includes(category_id),
       );
       // console.log('filtered')
     }
@@ -81,9 +80,12 @@ export class FindCakeUseCase {
         orderby,
       );
     }
-
     // transform cake data to minimal view model
-    let cakeMinimalViewModel = await this.CakeMinimalModel.toJson(openStoreCakes, lat, log);
+    let cakeMinimalViewModel = await this.CakeMinimalModel.toJson(
+      openStoreCakes,
+      lat,
+      log,
+    );
     // console.log('cakeMinimalViewModel', cakeMinimalViewModel);
     // let finalcakedata = await cakeMinimalViewModel.toJson(openStoreCakes, lat, log);
     // ordering

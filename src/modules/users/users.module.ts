@@ -16,27 +16,28 @@ import { FcmController } from './infrastructureLayer/controllers/fcm-token.contr
 import { MongooseModule } from '@nestjs/mongoose';
 import { UserSchema } from './infrastructureLayer/models/user.model';
 import { JwtStrategy } from 'src/middlewares/jwt.strategy';
-import { LoginUseCase } from './applicationLayer/use-cases/login.usecase';
-import { RegisterUseCase } from './applicationLayer/use-cases/register.usecase';
-import { UpdatefcmUseCase } from './applicationLayer/use-cases/update-fcm.usecase';
-import { GetUserDetailUseCase } from './applicationLayer/use-cases/get-user-details.usecase';
-import { UserRepositoryImpl } from './infrastructureLayer/implimentations/user/user.implimentation';
-import { USER_REPOSITORY } from './tokens/userRepository.token';
-import { UpdateProfileImageUseCase } from './applicationLayer/use-cases/update-profile-image.usecase';
-import { GetMyFavouritesUsecase } from './applicationLayer/use-cases/get-my-favourites.usecase';
-import { RemoveMyFavouritesUsecase } from './applicationLayer/use-cases/remove-from-favourites.usecase';
-import { UpdateContactNumberUsecase } from './applicationLayer/use-cases/update-contact-number.usecase';
-import { OTP_VERIFICATION_SERVICE } from './tokens/otpVerifyingservice.token';
-import { IOTPVerifyingServiceImp } from './infrastructureLayer/implimentations/otp/otp-verification.implimentation';
-import { RegisterUsingGoogleUseCase } from './applicationLayer/use-cases/register-using-google.usecase';
-import { LoginUsingGoogleUseCase } from './applicationLayer/use-cases/login-using-google.usecase';
+import { LoginUseCase } from './applicationLayer/usecases/login.usecase';
+import { RegisterUseCase } from './applicationLayer/usecases/register.usecase';
+import { UpdatefcmUseCase } from './applicationLayer/usecases/update-fcm.usecase';
+import { GetUserDetailUseCase } from './applicationLayer/usecases/get-user-details.usecase';
+import { UserRepositoryImpl } from './infrastructureLayer/implimentations/InternalImplimenatations/user.implimentation';
+import { USER_REPOSITORY } from './tokens/user.token';
+import { UpdateProfileImageUseCase } from './applicationLayer/usecases/update-profile-image.usecase';
+import { GetMyFavouritesUsecase } from './applicationLayer/usecases/get-my-favourites.usecase';
+import { RemoveMyFavouritesUsecase } from './applicationLayer/usecases/remove-from-favourites.usecase';
+import { UpdateContactNumberUsecase } from './applicationLayer/usecases/update-contact-number.usecase';
+import { OTP_VERIFICATION_SERVICE } from './tokens/otp-verifying-service.token';
+import { IOTPVerifyingServiceImp } from './infrastructureLayer/implimentations/ExternalImplimentations/otp-verification.implimentation';
+import { RegisterUsingGoogleUseCase } from './applicationLayer/usecases/register-using-google.usecase';
+import { LoginUsingGoogleUseCase } from './applicationLayer/usecases/login-using-google.usecase';
 import { GoogleLoginStrategy, GoogleRegisterStrategy } from 'src/middlewares/google.strategy';
-import { Getcurrentfcmusecase } from './applicationLayer/use-cases/get-current-fcm.usecase';
-import { AddToFavouritesUsecase } from './applicationLayer/use-cases/add-to-favourites.usecase';
-import { UpdatePasswordUsecase } from './applicationLayer/use-cases/update-password.usecase';
+import { Getcurrentfcmusecase } from './applicationLayer/usecases/get-current-fcm.usecase';
+import { AddToFavouritesUsecase } from './applicationLayer/usecases/add-to-favourites.usecase';
+import { UpdatePasswordUsecase } from './applicationLayer/usecases/update-password.usecase';
 // External Modules
 import { OTPModule } from '../OTP/otp.module';
 import { CakeModule } from '../cakes/cakes.modules';
+import { UpdateDisplayNameUseCase } from './applicationLayer/usecases/update-displayname.usecase';
 /**
  * ******************************************************************************************************
  * UserModule Class
@@ -71,15 +72,16 @@ import { CakeModule } from '../cakes/cakes.modules';
     JwtStrategy,
     LoginUseCase,
     RegisterUseCase,
-    UpdatefcmUseCase,
     Getcurrentfcmusecase,
     GetUserDetailUseCase,
+    UpdatefcmUseCase,
     UpdateProfileImageUseCase,
+    UpdateDisplayNameUseCase,
+    UpdateContactNumberUsecase,
+    UpdatePasswordUsecase,
     GetMyFavouritesUsecase,
     AddToFavouritesUsecase,
     RemoveMyFavouritesUsecase,
-    UpdateContactNumberUsecase,
-    UpdatePasswordUsecase,
     GoogleLoginStrategy,
     GoogleRegisterStrategy,
     RegisterUsingGoogleUseCase,

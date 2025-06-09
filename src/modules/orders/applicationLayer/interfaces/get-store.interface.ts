@@ -7,16 +7,14 @@
  * importing the required packages
  */
 import { StoreDto } from "src/common/dtos/store.dto";
-
 /**
  * Interface for the use case of getting store details by its ID
  */
-export interface IGetStoreUsecase {
-  
+export interface GetstoreInterface {
   /**
    * Executes the retrieval of store details by store ID
    * @param store_id - The unique identifier for the store
    * @returns Promise of StoreDto containing the store details
    */
-  execute(store_id: string): Promise<StoreDto>;
+  getstore(store_id: string): Promise<StoreDto>;
 }

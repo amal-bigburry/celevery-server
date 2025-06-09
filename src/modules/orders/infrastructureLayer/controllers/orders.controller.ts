@@ -24,7 +24,6 @@ import { OrderDto } from '../../../../common/dtos/Order.dto';
 import { ORDER_STATUS } from 'src/common/utils/contants';
 import { RequestOrderUseCase } from '../../applicationLayer/use-cases/request-order.usercase';
 import { GetOrderDetailsUseCase } from '../../applicationLayer/use-cases/get_order_details.usecase';
-
 /**
  * handles the route to orders_placed
  */
@@ -39,7 +38,6 @@ export class OrderController {
   /**
    * get all orders that are placed by the buyer
    */
-
   @HttpCode(HttpStatus.OK)
   @Get('/placed')
   @UseGuards(JwtAuthGuard)
@@ -57,11 +55,9 @@ export class OrderController {
       limit,
     );
   }
-
   /**
    * get all orders that are received by the seller
    */
-
   @HttpCode(HttpStatus.OK)
   @Get('/received')
   @UseGuards(JwtAuthGuard)
@@ -79,7 +75,6 @@ export class OrderController {
       limit,
     );
   }
-
   @HttpCode(HttpStatus.OK)
   @Get(':_id')
   @UseGuards(JwtAuthGuard)
@@ -89,7 +84,6 @@ export class OrderController {
   ) {
     return this.getOrderDetails.execute(_id);
   }
-
   @HttpCode(HttpStatus.CREATED)
   @Post('request')
   @UseGuards(JwtAuthGuard)

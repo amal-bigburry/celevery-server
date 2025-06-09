@@ -16,43 +16,14 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
-
-/**
- * Company: Bigburry Hypersystems LLP
- *
- * Importing the JWT authentication guard to protect routes, ensuring only authenticated users can access them.
- * This middleware verifies the presence and validity of JWT tokens attached to incoming requests.
- */
 import { JwtAuthGuard } from 'src/middlewares/jwtauth.middleware';
-
-/**
- * Company: Bigburry Hypersystems LLP
- *
- * Importing a custom interface representing the authenticated request object.
- * This extends the standard request to include user information extracted after JWT verification.
- */
 import { AuthRequest } from 'src/middlewares/AuthRequest';
-
-/**
- * Company: Bigburry Hypersystems LLP
- *
- * Importing various use cases which encapsulate the business logic related to seller support operations.
- * These include creating support IDs, adding messages, fetching messages, and retrieving all support IDs for sellers.
- */
 import { CreateSupportIDforSellerUsecase } from '../../applicationLayer/usecases/create-supportid-for-seller-usecase';
 import { FetchMessageFromSellerSupportUsecase } from '../../applicationLayer/usecases/fetch-message-from-seller-support.usecase';
 import { AddMessageToSellerSupportUsecase } from '../../applicationLayer/usecases/add-message-to-seller-support.usecase';
 import { MesssageSendDto } from '../../../../common/dtos/MesssageSend.dto';
 import { FetchAllSupportIdsForSellerUseCase } from '../../applicationLayer/usecases/fetch-all-supportid-for-seller.usecase';
 
-/**
- * Company: Bigburry Hypersystems LLP
- *
- * This controller class handles HTTP requests routed to 'seller/support' endpoint.
- * It defines multiple routes to manage seller support interactions, including creating support IDs,
- * sending messages, fetching messages by support ID, and retrieving all support IDs linked to the authenticated seller.
- * All routes are secured using JWT authentication guard to restrict access to authenticated users only.
- */
 @Controller('seller/support')
 export class SellerSupportController {
   /**

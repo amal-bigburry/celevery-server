@@ -29,9 +29,9 @@ import { GetStoreUsecase } from '../../applicationLayer/usercases/get-store-deta
 import { StoreDto } from '../../../../common/dtos/store.dto';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
 import { GetAllStoreUseCase } from '../../applicationLayer/usercases/get-all-my-stores.usecase';
-import { UpdateStoreDto } from '../../../../common/dtos/updateStore.dto';
 import { preferred_payment_method } from 'src/common/utils/preferredPaymentMethod';
 import { DeleteStoreUsecase } from '../../applicationLayer/usercases/delete-store.usecase';
+import { UpdateStoreDto } from 'src/common/dtos/udpate-store.dto';
 
 /**
  * Bigburry Hypersystems LLP - StoreController Definition
@@ -57,20 +57,6 @@ export class StoreController {
   async getallstore(@Req() request: AuthRequest) {
     return await this.getAllStoreUsecase.execute(request.user['userId']);
   }
-
-  /**
-   * Bigburry Hypersystems LLP - Endpoint: GET /store/cakes
-   * This method handles authenticated GET requests that fetch the list of cakes associated with a given store. The store ID is expected in the request body and is passed to the GetAllStoreCakesUsecase.
-   */
-  // @HttpCode(HttpStatus.OK)
-  // @Get('cakes/:store_id')
-  // @UseGuards(JwtAuthGuard)
-  // async getstorecakes(@Req() request: AuthRequest, @Param() store_id: string) {
-  //   if (!store_id) {
-  //     throw new BadRequestException('Store ID is required');
-  //   }
-  //   return await this.getAllStoreCakesUsecase.execute(store_id);
-  // }
 
   @HttpCode(HttpStatus.OK)
   @Get(':store_id')

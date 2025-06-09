@@ -7,10 +7,9 @@
  * is imported to facilitate this dependency injection process. These imports are essential 
  * for enabling the GetAllStoreUseCase class to retrieve store-related data for the specified owner.
  */
-import { Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable, InternalServerErrorException } from '@nestjs/common';
 import { StoreRepository } from '../interfaces/store.interfaces';
 import { STORE_REPOSITORY } from '../../tokens/storeRepository.token';
-
 /** 
  * Bigburry Hypersystems LLP
  * This is the injectable service class responsible for retrieving all stores associated with a specific owner. 
@@ -24,7 +23,6 @@ export class GetAllStoreUseCase {
   constructor(
     @Inject(STORE_REPOSITORY) private readonly Store: StoreRepository,
   ) {}
-
   /** 
    * Bigburry Hypersystems LLP
    * This is the executable method that performs the logic for retrieving all stores owned by a specific owner. 
@@ -35,7 +33,12 @@ export class GetAllStoreUseCase {
    * accurately retrieved and returned.
    */
   async execute(owner_id: string): Promise<Array<object | null>> {
-    const stores = await this.Store.getAllStores(owner_id);
-    return stores;
+    try{
+      const stores = await this.Store.getAllStores(owner_id);
+      return stores;
+    }
+     catch{
+      throw new InternalServerErrorException('Error in fetching stores')
+     } 
   }
 }

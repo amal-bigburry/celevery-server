@@ -6,7 +6,6 @@
  * Company: BigBurry Hypersystems LLP
  */
 import { OrderDto } from 'src/common/dtos/Order.dto';
-
 /**
  * Interface for the use case responsible for fetching all orders that are waiting for payment.
  * The `IGetAllPaymentWaitingOrdersUseCase` defines a contract for the class that will implement the logic for retrieving 

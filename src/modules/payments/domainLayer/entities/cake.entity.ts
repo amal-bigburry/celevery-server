@@ -17,7 +17,6 @@ export class CakeVariant {
     public cake_price: number,
   ) {}
 }
-
 export class CakeEntity {
   /**
    * Constructor to initialize CakeEntity with all relevant properties

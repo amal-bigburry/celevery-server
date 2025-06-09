@@ -63,6 +63,7 @@ export interface UserRepository {
   updateProfileImage(userid: string, file): Promise<string>;
   updateContactNumber(userid: string, contact_number: string): Promise<string>;
   updatePassword(email: string, password: string): Promise<string>;
+  updateDisplayName(email: string, password: string): Promise<string>;
   // adding
   addFavourite(userid: string, cake_id: string): Promise<string>;
   // removing

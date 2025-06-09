@@ -3,7 +3,6 @@
  * All rights reserved. Unauthorized copying, redistribution or modification of this file,
  * via any medium is strictly prohibited. Proprietary and confidential.
  */
-
 /**
  * @fileoverview This file defines the HeroController class which serves as the routing layer for handling
  * incoming HTTP requests related to hero operations such as creation, retrieval, and deletion.
@@ -14,7 +13,6 @@
  *
  * Company: Bigburry Hypersystems LLP
  */
-
 /**
  * Importing essential NestJS components and decorators to define and manage routes.
  * Includes custom middleware for JWT-based authentication, DTOs for data validation,
@@ -44,7 +42,6 @@ import { CreateHerosUseCase } from '../../applicationLayer/usecases/create-hero.
 import { GetHerosUseCase } from '../../applicationLayer/usecases/get-hero.usecase';
 import { DeleteHerosUseCase } from '../../applicationLayer/usecases/delete-hero.usecase';
 import { FileInterceptor } from '@nestjs/platform-express';
-
 /**
  * This controller defines the base route 'hero' for managing hero-related endpoints.
  * It serves as the access point for clients to perform CRUD operations on hero data.
@@ -59,7 +56,6 @@ export class HeroController {
     private readonly GetHerosUsecase: GetHerosUseCase,
     private readonly DeleteHerosUsecase: DeleteHerosUseCase,
   ) {}
-
   /**
    * GET endpoint for retrieving all hero records.
    * This route is protected using JwtAuthGuard to ensure that only authenticated users can access it.
@@ -68,7 +64,6 @@ export class HeroController {
    *
    * Company: Bigburry Hypersystems LLP
    */
-
   @HttpCode(HttpStatus.OK)
   @Get()
   @UseGuards(JwtAuthGuard)
@@ -76,7 +71,6 @@ export class HeroController {
     let res = await this.GetHerosUsecase.execute();
     return res;
   }
-
   /**
    * POST endpoint for creating a new hero entry in the system.
    * This route is protected by JWT authentication and uses FileInterceptor to handle image file uploads.
@@ -102,7 +96,6 @@ export class HeroController {
     let res = await this.createHerosUsecase.execute(HeroDto, file);
     return res;
   }
-
   /**
    * DELETE endpoint for removing a hero entry from the system.
    * This route is also protected with JWT-based authentication to restrict unauthorized deletions.

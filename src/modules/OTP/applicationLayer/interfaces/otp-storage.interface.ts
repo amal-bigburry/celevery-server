@@ -17,9 +17,7 @@
  * logic, promoting flexibility and maintainability across the software system.
  * ******************************************************************************************************
  */
-
 import { OTPStorageEntity } from "../../domainLayer/entities/otp-storage.entity";
-
 export interface OTPStorageRepository {
   create(UUID: string, OTP:string): Promise<string>;
   get(UUID: string): Promise<string>;

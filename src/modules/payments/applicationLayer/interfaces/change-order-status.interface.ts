@@ -6,7 +6,6 @@
  * Company: BigBurry Hypersystems LLP
  */
 import { OrderDto } from 'src/common/dtos/Order.dto';
-
 /**
  * Interface for the use case responsible for changing the status of an order.
  * The `IChangeOrderStatusUseCase` defines a contract for a class that will implement the logic for updating the status of an order.

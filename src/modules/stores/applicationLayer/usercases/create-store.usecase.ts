@@ -47,24 +47,25 @@ export class CreateStoreUsecase {
    */
   async execute(
     storeDto: StoreDto,
-    vendor_details:object,
+    vendor_details: object,
     license_file: Express.Multer.File,
     kyc_document: Express.Multer.File,
-  ): Promise<string> {
+  ): Promise<object> {
     let stores: StoreDto[] = await this.Store.getAllStoreInPlatform();
     let store = stores.find((s) => s.store_name === storeDto.store_name);
     if (store) {
       throw new BadRequestException('Store name already exists');
     }
-    const order = await this.Store.createStore(
-      storeDto,
-      vendor_details,
-      license_file,
-      kyc_document,
-    )
-      return 'ok';
-  
-    // return 'failed';
-    
+    try {
+      const order = await this.Store.createStore(
+        storeDto,
+        vendor_details,
+        license_file,
+        kyc_document,
+      );
+      return { status: 'created' };
+    } catch (error) {
+      return { status: 'failed', error: error };
+    }
   }
 }

@@ -20,12 +20,11 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CREATE_SELLER_TOKEN } from './tokens/CreateSupportIDforSellerToken';
-import { ISellerRepositoryImp } from './infrastructerLayer/implimentations/Iseller-repository.implementation';
 import { SellerSupportModel } from './infrastructerLayer/models/seller.support.model';
 import { SellerSupportController } from './infrastructerLayer/controllers/seller.support.controller';
 import { CreateSupportIDforSellerUsecase } from './applicationLayer/usecases/create-supportid-for-seller-usecase';
 import { CREATE_BUYER_TOKEN } from './tokens/CreateSupportIDforBuyerToken';
-import { IBuyerRepositoryImp } from './infrastructerLayer/implimentations/Ibuyer-repository.implimentation';
+import { IBuyerRepositoryImp } from './infrastructerLayer/implimentations/InternalImplimenations/Ibuyer-repository.implimentation';
 import { CreateSupportIDforBuyerUsecase } from './applicationLayer/usecases/create-supportid-for-buyer.usecase';
 import { BuyerSupportController } from './infrastructerLayer/controllers/buyer.support.controller';
 import { BuyerSupportModel } from './infrastructerLayer/models/buyer.support.model';
@@ -36,9 +35,10 @@ import { FetchMessageFromSellerSupportUsecase } from './applicationLayer/usecase
 import { FetchAllSupportIdsForSellerUseCase } from './applicationLayer/usecases/fetch-all-supportid-for-seller.usecase';
 import { FetchAllSupportIdsForBuyerUseCase } from './applicationLayer/usecases/fetch-all-supportid-for-buyer.usecase';
 import { NOTIFY } from './tokens/Notity.token';
-import { NotifyImp } from './infrastructerLayer/implimentations/notify.implimentation';
+import { NotifyImp } from './infrastructerLayer/implimentations/ExternalImplimentations/notify.implimentation';
 // External Modules
 import { MqttModule } from '../mqtt/mqtt.module';
+import { ISellerRepositoryImp } from './infrastructerLayer/implimentations/InternalImplimenations/Iseller-repository.implementation';
 /**
  * ******************************************************************************************************
  * @Module Decorator Configuration

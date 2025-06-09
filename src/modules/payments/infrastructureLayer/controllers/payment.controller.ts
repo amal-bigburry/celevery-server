@@ -31,8 +31,6 @@ import { CHANGEORDERSTATUS } from '../../tokens/changeorderstatus.token';
 import { GETPAYMENTWAITINGORDERS } from '../../tokens/getallpaymentwaiting.token';
 import { AuthRequest } from 'src/middlewares/AuthRequest';
 import { JwtAuthGuard } from 'src/middlewares/jwtauth.middleware';
-import { OrderDto } from 'src/common/dtos/Order.dto';
-
 /**
  * PaymentController is responsible for handling payment-related operations in the system.
  * It exposes routes for obtaining a payment session ID, processing refunds, transferring amounts,
@@ -51,7 +49,6 @@ export class PaymentController {
     @Inject(GETPAYMENTWAITINGORDERS)
     private readonly getAllPaymentWaitingOrdersUseCase: IGetAllPaymentWaitingOrdersUseCase,
   ) {}
-
   /**
    * This POST route `/payments/getsessionid` allows the user to retrieve a payment session ID for their order.
    * The route is protected by the JwtAuthGuard, ensuring that only authenticated users can initiate payment operations.
@@ -67,7 +64,6 @@ export class PaymentController {
    *
    * Company: BigBurry Hypersystems LLP
    */
-
   @HttpCode(HttpStatus.CREATED)
   @Post('getsessionid')
   @UseGuards(JwtAuthGuard)
@@ -81,7 +77,6 @@ export class PaymentController {
     );
     return order;
   }
-
   /**
    * This POST route `/payments/refund` allows the user to initiate a refund for a given order.
    * The method receives a `DtoToRefund` containing the refund details, including the order ID and refund amount.
@@ -93,7 +88,6 @@ export class PaymentController {
    *
    * Company: BigBurry Hypersystems LLP
    */
-
   @HttpCode(HttpStatus.CREATED)
   @Post('refund')
   @UseGuards(JwtAuthGuard)
@@ -130,7 +124,6 @@ export class PaymentController {
     } else if (webhook_request_data?.refund != undefined) {
       _id = webhook_request_data?.refund?._id;
     }
-
     let validOrder = allOrders.find((order) => order.id === _id);
     if (!validOrder) {
       throw new BadGatewayException('This Order is Is a valid order');

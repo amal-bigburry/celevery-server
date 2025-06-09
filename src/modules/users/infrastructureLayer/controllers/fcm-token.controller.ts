@@ -14,9 +14,9 @@
 import { Body, Controller, Get, Put, Req, UseGuards } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/middlewares/jwtauth.middleware';
 import { AuthRequest } from 'src/middlewares/AuthRequest';
-import { UpdatefcmUseCase } from '../../applicationLayer/use-cases/update-fcm.usecase';
+import { UpdatefcmUseCase } from '../../applicationLayer/usecases/update-fcm.usecase';
 import { TokenDto } from '../../../../common/dtos/token.dto';
-import { Getcurrentfcmusecase } from '../../applicationLayer/use-cases/get-current-fcm.usecase';
+import { Getcurrentfcmusecase } from '../../applicationLayer/usecases/get-current-fcm.usecase';
 
 /**
  * ******************************************************************************************************

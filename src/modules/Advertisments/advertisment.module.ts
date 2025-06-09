@@ -17,7 +17,7 @@ import { HeroController } from './InfrastructureLayer/controllers/hero.controlle
 import { CreateHerosUseCase } from './applicationLayer/usecases/create-hero.usecase';
 import { DeleteHerosUseCase } from './applicationLayer/usecases/delete-hero.usecase';
 import { GetHerosUseCase } from './applicationLayer/usecases/get-hero.usecase';
-import { HerosRepositoryImp } from './InfrastructureLayer/implimentations/hero.implimentation';
+import { HerosRepositoryImp } from './InfrastructureLayer/implimentations/InternalImplimentations/hero.implimentation';
 import { HERO_REPOSITORY } from './tokens/HeroRepository.token';
 
 /**
