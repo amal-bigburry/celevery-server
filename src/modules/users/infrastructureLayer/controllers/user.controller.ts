@@ -29,22 +29,22 @@ import { LoginDto } from '../../../../common/dtos/Login.dto';
 import { RegisterDto } from '../../../../common/dtos/Register.dto';
 import { LoginUseCase } from '../../applicationLayer/use-cases/login.usecase';
 import { RegisterUseCase } from '../../applicationLayer/use-cases/register.usecase';
-import { GetUserDetailUseCase } from '../../applicationLayer/use-cases/getUserDetail.usecase';
 import { JwtAuthGuard } from 'src/middlewares/jwtauth.middleware';
 import { AuthRequest } from 'src/middlewares/AuthRequest';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { UpdateProfileImageUseCase } from '../../applicationLayer/use-cases/updateProfileImage.usecase';
-import { UpdateContactNumberUsecase } from '../../applicationLayer/use-cases/updateContactNumber.usecase';
+import { UpdateProfileImageUseCase } from '../../applicationLayer/use-cases/update-profile-image.usecase';
+import { UpdateContactNumberUsecase } from '../../applicationLayer/use-cases/update-contact-number.usecase';
 import { ResetPasswordDto } from '../../../../common/dtos/ResetPassword.dto';
 import { UpdateContactNumberDto } from '../../../../common/dtos/UpdateContactNumber.dto';
 import { AuthGuard } from '@nestjs/passport';
-import { RegisterUsingGoogleUseCase } from '../../applicationLayer/use-cases/RegisterUsingGoogle.usecase';
-import { LoginUsingGoogleUseCase } from '../../applicationLayer/use-cases/loginUsingGoogle.usecase';
+import { RegisterUsingGoogleUseCase } from '../../applicationLayer/use-cases/register-using-google.usecase';
+import { LoginUsingGoogleUseCase } from '../../applicationLayer/use-cases/login-using-google.usecase';
 import { Types } from 'mongoose';
-import { GetMyFavouritesUsecase } from '../../applicationLayer/use-cases/GetMyFavourites.usecase';
-import { AddToFavouritesUsecase } from '../../applicationLayer/use-cases/AddToFavourites.usecase';
-import { RemoveMyFavouritesUsecase } from '../../applicationLayer/use-cases/RemoveMyFavourites.usecase';
-import { UpdatePasswordUsecase } from '../../applicationLayer/use-cases/Update_password.usecase';
+import { GetMyFavouritesUsecase } from '../../applicationLayer/use-cases/get-my-favourites.usecase';
+import { AddToFavouritesUsecase } from '../../applicationLayer/use-cases/add-to-favourites.usecase';
+import { RemoveMyFavouritesUsecase } from '../../applicationLayer/use-cases/remove-from-favourites.usecase';
+import { UpdatePasswordUsecase } from '../../applicationLayer/use-cases/update-password.usecase';
+import { GetUserDetailUseCase } from '../../applicationLayer/use-cases/get-user-details.usecase';
 /**
  * ******************************************************************************************************
  * AuthController Class

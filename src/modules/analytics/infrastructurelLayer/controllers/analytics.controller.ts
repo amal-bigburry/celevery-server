@@ -17,7 +17,7 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/middlewares/jwtauth.middleware';
-import { GetStoreLocationsUsecase } from '../../applicationLayer/usecases/GetStoreLocations.usecase';
+import { GetStoreLocationsUsecase } from '../../applicationLayer/usecases/get-store-location.interface';
 /**
  * Main route /analytics
  * Defines endpoints for analytics data related to trending and popular products

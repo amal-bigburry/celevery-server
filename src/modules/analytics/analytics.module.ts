@@ -1,3 +1,4 @@
+
 /**
  * Licensed to Bigburry Hypersystems LLP
  * All rights reserved. Unauthorized copying, redistribution or modification of this file,
@@ -21,9 +22,9 @@ import { CakeModule } from '../cakes/cakes.modules';
 import { CAKEREPOSITORY } from './tokens/cake_Repository.token';
 import { OrderModule } from '../orders/orders.module';
 import { GETORDERANALYSE } from './tokens/GetOrdersToAnalyse.token';
-import { GetStoreLocationsUsecase } from './applicationLayer/usecases/GetStoreLocations.usecase';
+import { GetStoreLocationsUsecase } from './applicationLayer/usecases/get-store-location.interface';
 import { StoreModule } from '../stores/store.module';
-import { IGetAllStoreInPlatformUsecaseImp } from './infrastructurelLayer/implimentations/IGetAllStoreInPlatform.implimentation';
+import { IGetAllStoreInPlatformUsecaseImp } from './infrastructurelLayer/implimentations/get-all-stores-in-platform.implimentation';
 import { GETALLSTOREINPLATFORM } from './tokens/Getallstorelocation.token';
 @Module({
   imports: [

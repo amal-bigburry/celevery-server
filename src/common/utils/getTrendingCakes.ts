@@ -1,5 +1,5 @@
 import { CakeEntity } from 'src/modules/cakes/domainLayer/entities/cake.entity';
-import { IGetCakeDetailsUseCase } from 'src/modules/orders/applicationLayer/interfaces/GetCakeDetailsusecase.interface';
+import { IGetCakeDetailsUseCase } from 'src/modules/orders/applicationLayer/interfaces/get-cake-details.interface';
 import { OrderDto } from 'src/common/dtos/Order.dto';
 
 export const GetTrendingCakes = async (
@@ -34,7 +34,7 @@ export const GetTrendingCakes = async (
     
     topCakeDetails = await Promise.all(
       sortedCakes.map(async ([cakeId]) => {
-        return cakes.find((cake) => cake.id.toString() === cakeId.toString())!;
+        return cakes.find((cake) => cake._id.toString() === cakeId.toString())!;
       }),
     );
   } else {
@@ -43,7 +43,7 @@ export const GetTrendingCakes = async (
 
     topCakeDetails = await Promise.all(
       sortedCakes.map(async ([cakeId]) => {
-        return cakes.find((cake) => cake.id.toString() === cakeId.toString())!;
+        return cakes.find((cake) => cake._id.toString() === cakeId.toString())!;
       }),
     );
   }

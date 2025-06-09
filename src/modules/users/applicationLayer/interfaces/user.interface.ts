@@ -51,21 +51,31 @@ import { CakeEntity } from 'src/modules/cakes/domainLayer/entities/cake.entity';
  * ******************************************************************************************************
  */
 export interface UserRepository {
+  // finding
   findByEmail(email: string): Promise<UserEntity>;
-  findByNumber(number: string): Promise<UserEntity|null>;
-  createUser(RegisterDto: RegisterDto): Promise<UserEntity | null>;
-  updatefcm(userid: string, token: TokenDto): Promise<string>;
-  getfcm(userid: string): Promise<string>;
+  findByNumber(number: string): Promise<UserEntity | null>;
   findById(userid: string): Promise<UserEntity | null>;
-  updateProfileImage(userid: string, file): Promise<string>;
-  addFavourite(userid: string, cake_id:string): Promise<string>;
-  removeFavourite(userid: string, cake_id:string): Promise<string>;
+  // getting
+  getfcm(userid: string): Promise<string>;
   getFavourite(userid: string): Promise<Array<CakeEntity>>;
-  updateContactNumber(userid:string, contact_number:string):Promise<string>;
-  updatePassword(email:string, password:string):Promise<string>;
-  createGoogleUser(email:string, profile_url:string, display_name:string):Promise<UserEntity>;
+  // updating
+  updatefcm(userid: string, token: TokenDto): Promise<string>;
+  updateProfileImage(userid: string, file): Promise<string>;
+  updateContactNumber(userid: string, contact_number: string): Promise<string>;
+  updatePassword(email: string, password: string): Promise<string>;
+  // adding
+  addFavourite(userid: string, cake_id: string): Promise<string>;
+  // removing
+  removeFavourite(userid: string, cake_id: string): Promise<string>;
+  // creating
+  createUser(RegisterDto: RegisterDto): Promise<UserEntity | null>;
+  createGoogleUser(
+    email: string,
+    profile_url: string,
+    display_name: string,
+  ): Promise<UserEntity>;
 }
 
 export interface IOTPVerifyingService {
-  verify(UUID: string, OTP:string): Promise<boolean>;
+  verify(UUID: string, OTP: string): Promise<boolean>;
 }

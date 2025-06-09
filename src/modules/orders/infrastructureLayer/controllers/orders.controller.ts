@@ -16,13 +16,14 @@ import {
   Req,
   UseGuards,
 } from '@nestjs/common';
-import { GetAllOrdersPlacedUseCase } from '../../applicationLayer/use-cases/get_all_orders_placed.usecase';
+import { GetAllOrdersPlacedUseCase } from '../../applicationLayer/use-cases/get-all-orders-placed.usecase';
 import { JwtAuthGuard } from 'src/middlewares/jwtauth.middleware';
 import { AuthRequest } from 'src/middlewares/AuthRequest';
-import { GetAllOrdersReceivedUseCase } from '../../applicationLayer/use-cases/get_all_orders_received.usecase';
+import { GetAllOrdersReceivedUseCase } from '../../applicationLayer/use-cases/get-all-orders-received.usecase';
 import { OrderDto } from '../../../../common/dtos/Order.dto';
 import { ORDER_STATUS } from 'src/common/utils/contants';
-import { RequestOrderUseCase } from '../../applicationLayer/use-cases/request_order.usercase';
+import { RequestOrderUseCase } from '../../applicationLayer/use-cases/request-order.usercase';
+import { GetOrderDetailsUseCase } from '../../applicationLayer/use-cases/get_order_details.usecase';
 
 /**
  * handles the route to orders_placed
@@ -33,6 +34,7 @@ export class OrderController {
     private readonly getAllOrdersPlacedUseCase: GetAllOrdersPlacedUseCase,
     private readonly getAllOrdersReceivedUseCase: GetAllOrdersReceivedUseCase,
     private readonly RequestOrderUseCase: RequestOrderUseCase,
+    private readonly getOrderDetails: GetOrderDetailsUseCase,
   ) {}
   /**
    * get all orders that are placed by the buyer
@@ -76,6 +78,16 @@ export class OrderController {
       page,
       limit,
     );
+  }
+
+  @HttpCode(HttpStatus.OK)
+  @Get(':_id')
+  @UseGuards(JwtAuthGuard)
+  async get_order_detail(
+    @Req() request: AuthRequest,
+    @Param('_id') _id: string,
+  ) {
+    return this.getOrderDetails.execute(_id);
   }
 
   @HttpCode(HttpStatus.CREATED)

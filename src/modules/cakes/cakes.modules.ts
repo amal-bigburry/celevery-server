@@ -8,28 +8,30 @@
  */
 import { forwardRef, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { CakeSchema } from './infrastructureLayer/models/cake.schema';
-import { CakeRepositoryImp } from './infrastructureLayer/implimentations/cake.repository.imp';
+import { CakeSchema } from './infrastructureLayer/models/cake.model';
+import { CakeRepositoryImp } from './infrastructureLayer/implimentations/cake.implimentation';
 import { CakeController } from './infrastructureLayer/controllers/cake.controller';
-import { CreateCakeUseCase } from './applicationLayer/use-cases/createcake.usecase';
-import { FindCakeUseCase } from './applicationLayer/use-cases/findcake.usecase';
-import { SearchForCakesUseCase } from './applicationLayer/use-cases/searchcakes.usecase';
-import { GetCakeDetailsUseCase } from './applicationLayer/use-cases/GetCakeDetailsUseCase';
-import { GetSimilarCakesUseCase } from './applicationLayer/use-cases/GetSimilarCakes.usecase';
-import { CAKE_REPOSITORY } from './tokens/cakeRepository.token';
-import { CAKE_CATEGORY_REPOSITORY } from './tokens/cakeCategoryRepository.token';
-import { CakecategoryRepositoryImp } from './infrastructureLayer/ExternalImplimentations/CakecategoryRepositoty.implimentations';
-import { GETSTORE } from './tokens/getstoreusecase.token';
-import { GetStoreUsecaseImp } from './infrastructureLayer/ExternalImplimentations/Getstoreusecase.implimentation';
-import { I_GET_CAKE_DETAILS_USECASE } from './tokens/getcakedetailsusecase';
-import { IGetCakeDetailsUseCaseImp } from '../orders/infrastructureLayer/ExternalUseCaseImplimentation/GetCakeDetailsUseCase.implimentation';
+import { CreateCakeUseCase } from './applicationLayer/use-cases/create-cake.usecase';
+import { FindCakeUseCase } from './applicationLayer/use-cases/find-cake.usecase';
+import { SearchForCakesUseCase } from './applicationLayer/use-cases/search-cakes.usecase';
+import { GetCakeDetailsUseCase } from './applicationLayer/use-cases/get-cake-details.usecase';
+import { GetSimilarCakesUseCase } from './applicationLayer/use-cases/get-similar-cakes.usecase';
+import { CAKE_REPOSITORY } from './tokens/cake.token';
+import { CAKE_CATEGORY_REPOSITORY } from './tokens/cake-category.token';
+import { CakecategoryRepositoryImp } from './infrastructureLayer/ExternalImplimentations/cake-category.implimentation';
+import { GETSTORE } from './tokens/get-store.token';
+import { I_GET_CAKE_DETAILS_USECASE } from './tokens/get-cake-details.token';
+import { IGetCakeDetailsUseCaseImp } from '../orders/infrastructureLayer/ExternalUseCaseImplimentation/get-cake-details.implimentation';
 import { StoreModule } from '../stores/store.module';
 import { CakeCategoryModule } from '../cakecategories/cakecategories.module';
-import { UpdateKnownFor } from './applicationLayer/use-cases/UpdateKnownFor.usecase';
+import { UpdateKnownFor } from './applicationLayer/use-cases/update-knownfor.usecase';
 import { OrderModule } from '../orders/orders.module';
-import { GET_ALL_ORDERS } from './tokens/getAllOrder.token';
-import { IGetAllOrdersUseCaseImp } from './infrastructureLayer/ExternalImplimentations/getAllOrders.implimentations';
-import { GetCakesInStoreUsecase } from './applicationLayer/use-cases/getCakesInStore.usecase';
+import { GET_ALL_ORDERS } from './tokens/get-all-orders.token';
+import { GetCakesInStoreUsecase } from './applicationLayer/use-cases/get-cakes-in-store.usecase';
+import { IGetAllOrdersImplimentation } from './infrastructureLayer/ExternalImplimentations/get-all-orders.implimentation';
+import { GetStoreImplimentation } from './infrastructureLayer/ExternalImplimentations/get-store.implimentation';
+import { IGetStoreUseCase } from './applicationLayer/use-cases/get-store.usecase';
+import { CakeMinimalModel } from './applicationLayer/use-cases/cake-minimal-data.model';
 /**
  * module declaration
  */
@@ -47,6 +49,8 @@ import { GetCakesInStoreUsecase } from './applicationLayer/use-cases/getCakesInS
     CreateCakeUseCase,
     FindCakeUseCase,
     UpdateKnownFor,
+    IGetStoreUseCase,
+    CakeMinimalModel,
     GetCakeDetailsUseCase,
     GetCakesInStoreUsecase,
     GetSimilarCakesUseCase,
@@ -60,11 +64,11 @@ import { GetCakesInStoreUsecase } from './applicationLayer/use-cases/getCakesInS
     },
     {
       provide: GETSTORE,
-      useClass: GetStoreUsecaseImp,
+      useClass: GetStoreImplimentation,
     },
     {
       provide: GET_ALL_ORDERS,
-      useClass: IGetAllOrdersUseCaseImp,
+      useClass: IGetAllOrdersImplimentation,
     },
     {
       provide: I_GET_CAKE_DETAILS_USECASE,

@@ -32,7 +32,7 @@ export class CakeEntity {
    * @param cake_rating - rating of the cake
    */
   constructor(
-    public readonly id: string,
+    public _id: string,
     public cake_name: string,
     public cake_description: string,
     public cake_image_urls: Array<string>,

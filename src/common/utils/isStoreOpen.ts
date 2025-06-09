@@ -7,7 +7,6 @@ function parseMilitaryTimeToMinutes(time: string): number {
 }
 
 export function isStoreOpen(openTime: string, closeTime: string): boolean {
-  const currentDay = getCurrentDayName().toLowerCase(); // e.g., "monday"
   const currentTime = getCurrentMilitaryTime();
   const nowMinutes = parseMilitaryTimeToMinutes(currentTime);
   const openMinutes = parseMilitaryTimeToMinutes(openTime);

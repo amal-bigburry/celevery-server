@@ -39,11 +39,11 @@ import { AuthRequest } from 'src/middlewares/AuthRequest';
  * Importing various use cases which encapsulate the business logic related to seller support operations.
  * These include creating support IDs, adding messages, fetching messages, and retrieving all support IDs for sellers.
  */
-import { CreateSupportIDforSellerUsecase } from '../../applicationLayer/usecases/CreateSupportIDforSeller.usecase';
-import { FetchMessageFromSellerSupportUsecase } from '../../applicationLayer/usecases/FetchMessageFromSellerSupport.usecase';
-import { AddMessageToSellerSupportUsecase } from '../../applicationLayer/usecases/AddMessageToSellerSupport.usecase';
+import { CreateSupportIDforSellerUsecase } from '../../applicationLayer/usecases/create-supportid-for-seller-usecase';
+import { FetchMessageFromSellerSupportUsecase } from '../../applicationLayer/usecases/fetch-message-from-seller-support.usecase';
+import { AddMessageToSellerSupportUsecase } from '../../applicationLayer/usecases/add-message-to-seller-support.usecase';
 import { MesssageSendDto } from '../../../../common/dtos/MesssageSend.dto';
-import { FetchAllSupportIdsForSellerUseCase } from '../../applicationLayer/usecases/FetchAllSupportIdsForSeller.usecase';
+import { FetchAllSupportIdsForSellerUseCase } from '../../applicationLayer/usecases/fetch-all-supportid-for-seller.usecase';
 
 /**
  * Company: Bigburry Hypersystems LLP

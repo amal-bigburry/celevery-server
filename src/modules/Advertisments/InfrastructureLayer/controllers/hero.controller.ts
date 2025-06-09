@@ -40,9 +40,9 @@ import {
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/middlewares/jwtauth.middleware';
 import { HeroDto } from '../../../../common/dtos/hero.dto';
-import { CreateHerosUseCase } from '../../applicationLayer/usecases/CreateHeros.usecase';
-import { GetHerosUseCase } from '../../applicationLayer/usecases/GetHeros.usecase';
-import { DeleteHerosUseCase } from '../../applicationLayer/usecases/DeleteHeros.usecase';
+import { CreateHerosUseCase } from '../../applicationLayer/usecases/create-hero.usecase';
+import { GetHerosUseCase } from '../../applicationLayer/usecases/get-hero.usecase';
+import { DeleteHerosUseCase } from '../../applicationLayer/usecases/delete-hero.usecase';
 import { FileInterceptor } from '@nestjs/platform-express';
 
 /**

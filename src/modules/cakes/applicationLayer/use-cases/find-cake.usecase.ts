@@ -1,0 +1,105 @@
+/*
+ * Company License: Bigburry Hypersystems LLP
+ * All rights reserved © Bigburry Hypersystems LLP
+ */
+/**
+ * Importing required packages for the use case
+ */
+import { Inject, Injectable } from '@nestjs/common';
+import { CakeRepository } from '../interfaces/cake.interface';
+import { PaginationDto } from 'src/common/dtos/pagination.dto';
+import { CAKE_REPOSITORY } from '../../tokens/cake.token';
+import { GetPopularCakes } from 'src/common/utils/getPopularCakes';
+import { GetTrendingCakes } from 'src/common/utils/getTrendingCakes';
+import { CakeMinimalModel } from './cake-minimal-data.model';
+import { GETSTORE } from '../../tokens/get-store.token';
+import { IGetStoreUseCase } from './get-store.usecase';
+import { GET_ALL_ORDERS } from '../../tokens/get-all-orders.token';
+import { IGetAllOrdersInterface } from '../interfaces/get-all-orders.interface';
+/**
+ * Injectable service class responsible for finding cakes with pagination and location filters
+ */
+@Injectable()
+export class FindCakeUseCase {
+  constructor(
+    /**
+     * Injecting CakeRepository to access cake data
+     */
+    @Inject(CAKE_REPOSITORY) private readonly CakeRepository: CakeRepository,
+    @Inject(GETSTORE) private readonly getstoreUsecase: IGetStoreUseCase,
+    @Inject(GET_ALL_ORDERS)
+    private readonly IGetAllOrdersInterface: IGetAllOrdersInterface,
+    private readonly CakeMinimalModel:CakeMinimalModel,
+  ) {}
+  /**
+   * Executes the find operation with pagination and optional location parameters
+   * @param page - Page number for pagination
+   * @param limit - Number of items per page
+   * @param log - Longitude coordinate for filtering by location
+   * @param lat - Latitude coordinate for filtering by location
+   * @returns Promise resolving to a PaginationDto containing cake results
+   */
+  async execute(
+    page: number,
+    limit: number,
+    log: number,
+    lat: number,
+    knownfor: string[],
+    sortby: string,
+    orderby: string,
+    category_id:string,
+  ): Promise<PaginationDto> {
+    let openStoreCakes = await this.CakeRepository.findCakesFromOpenStore();
+    // console.log('open store cakes', openStoreCakes.length);
+    let allorders = await this.IGetAllOrdersInterface.getallorders();
+    // known for filtering layer
+    if (knownfor.length > 0) {
+      openStoreCakes = openStoreCakes.filter((cake) =>
+        knownfor.includes(cake.known_for),
+      );
+    }
+
+    if(category_id) {
+      openStoreCakes = openStoreCakes.filter(
+        (cake) => cake.cake_category_ids.includes(category_id),
+      );
+      // console.log('filtered')
+    }
+    // popular filter layer
+    if (sortby === 'popular') {
+      openStoreCakes = await GetPopularCakes(
+        openStoreCakes,
+        allorders,
+        orderby,
+      );
+    }
+    // trending filter layer
+    else if (sortby === 'trending') {
+      openStoreCakes = await GetTrendingCakes(
+        openStoreCakes,
+        allorders,
+        orderby,
+      );
+    }
+
+    // transform cake data to minimal view model
+    let cakeMinimalViewModel = await this.CakeMinimalModel.toJson(openStoreCakes, lat, log);
+    // console.log('cakeMinimalViewModel', cakeMinimalViewModel);
+    // let finalcakedata = await cakeMinimalViewModel.toJson(openStoreCakes, lat, log);
+    // ordering
+    cakeMinimalViewModel.sort((a, b) => a.distance - b.distance);
+    // pagination logic
+    const total = cakeMinimalViewModel.length;
+    const totalPages = Math.ceil(total / limit);
+    const start = (page - 1) * limit;
+    const end = start + limit;
+    const paginatedData = cakeMinimalViewModel.slice(start, end);
+    return {
+      data: paginatedData,
+      total,
+      page,
+      limit,
+      totalPages,
+    };
+  }
+}

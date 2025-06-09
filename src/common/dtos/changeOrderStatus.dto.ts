@@ -4,7 +4,7 @@
  * Unauthorized copying, modification, distribution, or disclosure is prohibited.
  */
 
-import { IsNotEmpty, IsString } from 'class-validator';
+import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 
 /**
  * DTO to change the order status
@@ -12,13 +12,10 @@ import { IsNotEmpty, IsString } from 'class-validator';
 export class ChangeOrderStatusDto {
   @IsNotEmpty()
   @IsString()
-  order_id: string;
-
-  // @IsNotEmpty()
-  // @IsString()
+  _id: string;
   user_id: string;
-
-  // @IsNotEmpty()
-  // @IsString()
   new_status: string;
+  @IsString()
+  @IsOptional()
+  cancellation_reason?: string;
 }

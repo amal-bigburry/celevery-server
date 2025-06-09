@@ -20,16 +20,16 @@ import {
   UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
-import { FindCakeUseCase } from '../../applicationLayer/use-cases/findcake.usecase';
-import { CreateCakeUseCase } from '../../applicationLayer/use-cases/createcake.usecase';
+import { FindCakeUseCase } from '../../applicationLayer/use-cases/find-cake.usecase';
+import { CreateCakeUseCase } from '../../applicationLayer/use-cases/create-cake.usecase';
 import { CakeDto } from '../../../../common/dtos/cake.dto';
 import { JwtAuthGuard } from 'src/middlewares/jwtauth.middleware';
-import { SearchForCakesUseCase } from '../../applicationLayer/use-cases/searchcakes.usecase';
+import { SearchForCakesUseCase } from '../../applicationLayer/use-cases/search-cakes.usecase';
 import { FilesInterceptor } from '@nestjs/platform-express';
-import { GetCakeDetailsUseCase } from '../../applicationLayer/use-cases/GetCakeDetailsUseCase';
-import { GetSimilarCakesUseCase } from '../../applicationLayer/use-cases/GetSimilarCakes.usecase';
+import { GetCakeDetailsUseCase } from '../../applicationLayer/use-cases/get-cake-details.usecase';
+import { GetSimilarCakesUseCase } from '../../applicationLayer/use-cases/get-similar-cakes.usecase';
 import { AuthRequest } from 'src/middlewares/AuthRequest';
-import { GetCakesInStoreUsecase } from '../../applicationLayer/use-cases/getCakesInStore.usecase';
+import { GetCakesInStoreUsecase } from '../../applicationLayer/use-cases/get-cakes-in-store.usecase';
 /**
  * Controller handling HTTP requests related to cakes
  */
@@ -56,8 +56,9 @@ export class CakeController {
     @Query('knownfor') knownfor:string[] = [],
     @Query('sortby') sortby:string,
     @Query('orderby') orderby:string,
+    @Query('category_id') category_id:string,
   ) {
-    return this.findCakeUseCase.execute(page, limit, log, lat, knownfor, sortby, orderby);
+    return this.findCakeUseCase.execute(page, limit, log, lat, knownfor, sortby, orderby,category_id);
   }
   /**
    * Handles POST requests to create a new cake with image uploads

@@ -10,12 +10,12 @@
 import { Module } from '@nestjs/common';
 import { OtpController } from './infrastructureLayer/controllers/otp.controller';
 import { SESClient } from '@aws-sdk/client-ses';
-import { OTPSendingService } from './applicationLayer/usecases/Send.usecase';
-import { OTPVerifyingService } from './applicationLayer/usecases/Verify.usecase';
+import { OTPSendingService } from './applicationLayer/usecases/send.usecase';
+import { OTPVerifyingService } from './applicationLayer/usecases/verify.usecase';
 import { REGISTER_OTP_TOKEN } from './tokens/ResiterOTP.token';
-import { OTPStorageRepositoryImp } from './infrastructureLayer/implimentations/otpstorage.repository.imp';
+import { OTPStorageRepositoryImp } from './infrastructureLayer/implimentations/otp-storage.implimentation';
 import { MongooseModule } from '@nestjs/mongoose';
-import { OTPStorageSchema } from './infrastructureLayer/models/otpStorage.schema';
+import { OTPStorageSchema } from './infrastructureLayer/models/otp-storage.model';
 // import { EmailService } from './infrastructureLayer/usecases/emailService.usecase';
 /**
  * Module definition for the Twilio functionality within the application.

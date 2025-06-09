@@ -15,8 +15,8 @@ import {
   UseGuards,
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/middlewares/jwtauth.middleware';
-import { GetPrivacyAndPolicyUseCase } from '../../applicationLayer/use-cases/GetPrivacyAndPolicy.usecase';
-import { GetTermsAndConditionsuseCase } from '../../applicationLayer/use-cases/GetTermsAndConditions.usecase';
+import { GetPrivacyAndPolicyUseCase } from '../../applicationLayer/use-cases/get-privacy-policy.usecase';
+import { GetTermsAndConditionsuseCase } from '../../applicationLayer/use-cases/get-terms-condition.usecase';
 /**
  * controller for handling documents related routes
  */

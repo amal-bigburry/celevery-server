@@ -14,6 +14,7 @@
 import { CakeDto } from 'src/common/dtos/cake.dto';
 import { StoreDto } from '../../../../common/dtos/store.dto';
 import { UpdateStoreDto } from '../../../../common/dtos/updateStore.dto';
+import { CakeEntity } from 'src/modules/cakes/domainLayer/entities/cake.entity';
 
 /**
  * The `StoreRepository` interface defines the operations related to store management. It specifies the expected 
@@ -51,5 +52,4 @@ export interface StoreRepository {
   deleteStore(store_id:string): Promise<string>;
   getAllStores(store_owner_id: string): Promise<Array<StoreDto>>;
   getAllStoreInPlatform(): Promise<Array<StoreDto>>;
-  getAllStoreCakes(store_id: string): Promise<Array<CakeDto>>;
 }

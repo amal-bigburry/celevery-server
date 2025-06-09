@@ -7,7 +7,7 @@ export async function GetPopularCakes(
   orderby: string,
 ): Promise<CakeEntity[]> {
   // Normalize IDs to strings
-  const validCakeIds = new Set(cakes.map((c) => c.id.toString()));
+  const validCakeIds = new Set(cakes.map((c) => c._id.toString()));
 
   const cakeOccurrences: Record<string, number> = {};
   for (const order of orders) {
@@ -23,7 +23,7 @@ export async function GetPopularCakes(
     );
     topCakeDetails = await Promise.all(
       sortedByPopularity.map(async ([cakeId]) => {
-        return cakes.find((cake) => cake.id.toString() === cakeId.toString())!;
+        return cakes.find((cake) => cake._id.toString() === cakeId.toString())!;
       }),
     );
   } else {
@@ -32,7 +32,7 @@ export async function GetPopularCakes(
     );
     topCakeDetails = await Promise.all(
       sortedByPopularity.map(async ([cakeId]) => {
-        return cakes.find((cake) => cake.id.toString() === cakeId.toString())!;
+        return cakes.find((cake) => cake._id.toString() === cakeId.toString())!;
       }),
     );
   }

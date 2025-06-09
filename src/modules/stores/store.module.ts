@@ -8,18 +8,17 @@
  */
 import { forwardRef, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { StoreModel } from './InfrastructureLayer/models/store.schema';
+import { StoreModel } from './InfrastructureLayer/models/store.model';
 import { StoreController } from './InfrastructureLayer/controllers/store.controller';
-import { StoreRepositoryImplimentation } from './InfrastructureLayer/implimentations/Store.repository.imp';
-import { CreateStoreUsecase } from './applicationLayer/usercases/createStore.usecase';
+import { StoreRepositoryImplimentation } from './InfrastructureLayer/implimentations/store.implimentation';
+import { CreateStoreUsecase } from './applicationLayer/usercases/create-store.usecase';
 import { updateStoreUsecase } from './applicationLayer/usercases/updateStore.usecase';
-import { getStoreUsecase } from './applicationLayer/usercases/getStore.usecase';
-import { CakeSchema } from '../cakes/infrastructureLayer/models/cake.schema';
-import { GetAllStoreCakesUsecase } from './applicationLayer/usercases/GetAllStoreCakes.Usecase';
+import { GetStoreUsecase } from './applicationLayer/usercases/get-store-details.usecase';
+import { CakeSchema } from '../cakes/infrastructureLayer/models/cake.model';
 import { STORE_REPOSITORY } from './tokens/storeRepository.token';
-import { GetAllStoreUseCase } from './applicationLayer/usercases/getAllStores.usecase';
-import { GetAllStoreInPlatformUsecase } from './applicationLayer/usercases/getAllStoreInPlatform.usecase';
-import { DeleteStoreUsecase } from './applicationLayer/usercases/deleteStore.usecase';
+import { GetAllStoreUseCase } from './applicationLayer/usercases/get-all-my-stores.usecase';
+import { GetAllStoreInPlatformUsecase } from './applicationLayer/usercases/get-all-store-in-platform.usecase';
+import { DeleteStoreUsecase } from './applicationLayer/usercases/delete-store.usecase';
 /**
  * Bigburry Hypersystems LLP - StoreModule Definition
  *
@@ -39,10 +38,9 @@ import { DeleteStoreUsecase } from './applicationLayer/usercases/deleteStore.use
   providers: [
     CreateStoreUsecase,
     updateStoreUsecase,
-    GetAllStoreCakesUsecase,
     GetAllStoreUseCase,
     DeleteStoreUsecase,
-    getStoreUsecase,
+    GetStoreUsecase,
     GetAllStoreInPlatformUsecase,
 
     {
@@ -50,6 +48,7 @@ import { DeleteStoreUsecase } from './applicationLayer/usercases/deleteStore.use
       useClass: StoreRepositoryImplimentation,
     },
   ],
-  exports: [getStoreUsecase, GetAllStoreInPlatformUsecase],
+  exports: [
+    GetStoreUsecase, GetAllStoreInPlatformUsecase],
 })
 export class StoreModule {}

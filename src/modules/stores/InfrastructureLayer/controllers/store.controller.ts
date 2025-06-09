@@ -23,16 +23,15 @@ import {
 } from '@nestjs/common';
 import { JwtAuthGuard } from 'src/middlewares/jwtauth.middleware';
 import { AuthRequest } from 'src/middlewares/AuthRequest';
-import { CreateStoreUsecase } from '../../applicationLayer/usercases/createStore.usecase';
+import { CreateStoreUsecase } from '../../applicationLayer/usercases/create-store.usecase';
 import { updateStoreUsecase } from '../../applicationLayer/usercases/updateStore.usecase';
-import { getStoreUsecase } from '../../applicationLayer/usercases/getStore.usecase';
+import { GetStoreUsecase } from '../../applicationLayer/usercases/get-store-details.usecase';
 import { StoreDto } from '../../../../common/dtos/store.dto';
 import { FileFieldsInterceptor } from '@nestjs/platform-express';
-import { GetAllStoreCakesUsecase } from '../../applicationLayer/usercases/GetAllStoreCakes.Usecase';
-import { GetAllStoreUseCase } from '../../applicationLayer/usercases/getAllStores.usecase';
+import { GetAllStoreUseCase } from '../../applicationLayer/usercases/get-all-my-stores.usecase';
 import { UpdateStoreDto } from '../../../../common/dtos/updateStore.dto';
 import { preferred_payment_method } from 'src/common/utils/preferredPaymentMethod';
-import { DeleteStoreUsecase } from '../../applicationLayer/usercases/deleteStore.usecase';
+import { DeleteStoreUsecase } from '../../applicationLayer/usercases/delete-store.usecase';
 
 /**
  * Bigburry Hypersystems LLP - StoreController Definition
@@ -43,9 +42,8 @@ export class StoreController {
   constructor(
     private readonly createStoreUsecase: CreateStoreUsecase,
     private readonly updateStoreUsecase: updateStoreUsecase,
-    private readonly getStoreUsecase: getStoreUsecase,
+    private readonly getStoreUsecase: GetStoreUsecase,
     private readonly getAllStoreUsecase: GetAllStoreUseCase,
-    private readonly getAllStoreCakesUsecase: GetAllStoreCakesUsecase,
     private readonly DeleteStoreUsecase: DeleteStoreUsecase,
   ) {}
 
@@ -64,18 +62,15 @@ export class StoreController {
    * Bigburry Hypersystems LLP - Endpoint: GET /store/cakes
    * This method handles authenticated GET requests that fetch the list of cakes associated with a given store. The store ID is expected in the request body and is passed to the GetAllStoreCakesUsecase.
    */
-
-  @HttpCode(HttpStatus.OK)
-  @Get('cakes')
-  @UseGuards(JwtAuthGuard)
-  async getstorecakes(@Req() request: AuthRequest, @Body() store_id: string) {
-    return await this.getAllStoreCakesUsecase.execute(store_id);
-  }
-
-  /**
-   * Bigburry Hypersystems LLP - Endpoint: GET /store/:store_id
-   * This method handles authenticated GET requests for fetching the details of a specific store by its unique identifier provided as a route parameter. It invokes the getStoreUsecase with the given ID.
-   */
+  // @HttpCode(HttpStatus.OK)
+  // @Get('cakes/:store_id')
+  // @UseGuards(JwtAuthGuard)
+  // async getstorecakes(@Req() request: AuthRequest, @Param() store_id: string) {
+  //   if (!store_id) {
+  //     throw new BadRequestException('Store ID is required');
+  //   }
+  //   return await this.getAllStoreCakesUsecase.execute(store_id);
+  // }
 
   @HttpCode(HttpStatus.OK)
   @Get(':store_id')
@@ -99,6 +94,7 @@ export class StoreController {
     @Req() request: AuthRequest,
     @Body() udpateStoreDto: UpdateStoreDto,
   ) {
+    console.log(udpateStoreDto);
     return this.updateStoreUsecase.execute(udpateStoreDto);
   }
 
@@ -136,7 +132,6 @@ export class StoreController {
     // console.log(storeDto)
 
     if (storeDto.preferred_payment_method == preferred_payment_method.BANK) {
-      
       vendor_details = {
         status: 'ACTIVE',
         name: storeDto.bank_account_holder_name,
@@ -192,7 +187,6 @@ export class StoreController {
     );
   }
 
-
   @HttpCode(HttpStatus.OK)
   @Delete(':store_id')
   @UseGuards(JwtAuthGuard)
@@ -201,7 +195,6 @@ export class StoreController {
     @Param('store_id') store_id: string,
     // @Body() store: UpdateStoreDto,
   ) {
-    
     return this.DeleteStoreUsecase.execute(store_id);
   }
 }

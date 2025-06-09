@@ -13,7 +13,7 @@
 
 import { BadRequestException, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { REGISTER_OTP_TOKEN } from '../../tokens/ResiterOTP.token';
-import { OTPStorageRepository } from '../interfaces/otpStorage.repository';
+import { OTPStorageRepository } from '../interfaces/otp-storage.interface';
 
 /**
  * ******************************************************************************************************
@@ -38,17 +38,17 @@ export class OTPVerifyingService {
    * and returns a string indicating the outcome of the update operation.
    * **************************************************************************************************
    */
-  async verify(UUID: string, OTP: string): Promise<boolean> {
+  async verify(UUID: string, OTP: string): Promise<object> {
     const otp = await this.OTPStorageRepository.get(UUID);
     const isUsed = await this.OTPStorageRepository.isUsed(UUID)
     if(isUsed){
       throw new UnauthorizedException("Invalid OTP")
     }
     if (OTP == otp) {
-      await this.OTPStorageRepository.markAsUsed(UUID)
-      return true;
+      // await this.OTPStorageRepository.markAsUsed(UUID)
+      return {isValidOTP:true};
     } else {
-      return false;
+      return {isValidOTP:false};
     }
   }
 }

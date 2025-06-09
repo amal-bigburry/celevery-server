@@ -1,5 +1,17 @@
-import { Expose } from 'class-transformer';
-import { IsEnum, IsMongoId, isNotEmpty, IsNotEmpty, IsNumber, IsString, MaxLength } from 'class-validator';
+import { Optional } from '@nestjs/common';
+import { Expose, Transform } from 'class-transformer';
+import {
+  IsBoolean,
+  isBoolean,
+  IsEnum,
+  IsMongoId,
+  isNotEmpty,
+  IsNotEmpty,
+  IsNumber,
+  IsOptional,
+  IsString,
+  MaxLength,
+} from 'class-validator';
 import { known_fors } from 'src/common/utils/known_fors';
 export class OrderDto {
   @Expose({ name: '_id' }) id: string;
@@ -7,15 +19,27 @@ export class OrderDto {
   updatedAt: Date;
   @IsNotEmpty() @IsString() @IsMongoId() cake_id: string;
   payment_tracking_id: string;
-  order_id: string;
   order_status: string;
+  @IsBoolean()
+  @IsOptional()
+  is_paid: boolean;
   @IsNotEmpty() @IsString() cake_variant_id: string;
-  @IsNotEmpty() @IsNumber() need_before: string;
+  @IsNotEmpty() @IsString() need_before: string;
   @IsNotEmpty() quantity: number;
   buyer_id: string;
-  @IsNotEmpty()
-  @MaxLength(30)
-  text_on_cake :string;
-  @IsEnum(known_fors, { message: "Please choose the known_for from the available ones" }) known_for: string;
+  @Transform(({ value }) => value ?? '')
+  @IsString()
+  @IsOptional()
+  text_on_cake: string;
+  @IsOptional()
+  @Transform(({ value }) => value ?? '')
+  @IsEnum(known_fors, {
+    message: 'Please choose the known_for from the available ones',
+  })
+  known_for: string;
   seller_id: string;
+  cancelled_by: string;
+  @IsOptional()
+  @IsString()
+  cancellation_reason: string;
 }

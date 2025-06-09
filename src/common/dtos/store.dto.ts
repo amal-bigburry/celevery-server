@@ -12,6 +12,8 @@ import {
   IsISO8601,
   IsMilitaryTime,
   IsNotEmpty,
+  IsNumber,
+  IsOptional,
   IsString,
   ValidateIf,
 } from 'class-validator';
@@ -29,12 +31,16 @@ export class StoreDto {
   _id: string;
   store_owner_id: string;
   @IsNotEmpty()
+  @IsString()
   store_name: string;
   @IsNotEmpty()
+  @IsString()
   store_description: string;
+  @IsOptional()
   @IsString()
   @IsNotEmpty()
   store_contact_number: string;
+  @IsOptional()
   @IsString()
   @IsNotEmpty()
   store_contact_email: string;
@@ -49,9 +55,9 @@ export class StoreDto {
   licensed_country: string;
   @IsString()
   address: number;
-  @IsString()
+  @IsNotEmpty()
   lat: number;
-  @IsString()
+  @IsNotEmpty()
   log: number;
   // @IsEnum(store_status, {
   //   message: `Please choose the status from the available ones`,

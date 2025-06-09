@@ -19,14 +19,14 @@ import {
   HttpCode,
   HttpStatus,
 } from '@nestjs/common';
-import { GetSessionIdUseCase } from '../../applicationLayer/use-cases/getSessionId.UseCase';
+import { GetSessionIdUseCase } from '../../applicationLayer/use-cases/get-sessionid.usecase';
 import { RefundUsecase } from '../../applicationLayer/use-cases/refund.usecase';
 import { ORDER_STATUS } from 'src/common/utils/contants';
 import { ChangeOrderStatusDto } from 'src/common/dtos/changeOrderStatus.dto';
 import { DtoToGetPaymentSessionId } from 'src/common/dtos/DtoToGetPaymentSessionId.dto';
 import { DtoToRefund } from '../../../../common/dtos/dtoToRefund.dto';
-import { IChangeOrderStatusUseCase } from '../../applicationLayer/interfaces/IChangeOrderStatusUseCase.interface';
-import { IGetAllPaymentWaitingOrdersUseCase } from '../../applicationLayer/interfaces/IGetAllPaymentWaitingOrdersUseCase.interface';
+import { IChangeOrderStatusUseCase } from '../../applicationLayer/interfaces/change-order-status.interface';
+import { IGetAllPaymentWaitingOrdersUseCase } from '../../applicationLayer/interfaces/get-orders-waiting-to-pay.interface';
 import { CHANGEORDERSTATUS } from '../../tokens/changeorderstatus.token';
 import { GETPAYMENTWAITINGORDERS } from '../../tokens/getallpaymentwaiting.token';
 import { AuthRequest } from 'src/middlewares/AuthRequest';
@@ -122,34 +122,34 @@ export class PaymentController {
   async status_webhook(@Body() body: any) {
     let webhook_request_data = body?.data;
     // find what this request is about
-    let order_id: string;
+    let _id: string;
     let allOrders = await this.getAllPaymentWaitingOrdersUseCase.execute();
-    console.log(webhook_request_data?.refund);
+    // console.log(webhook_request_data?.refund);
     if (webhook_request_data?.order !== undefined) {
-      order_id = webhook_request_data?.order?.order_id;
+      _id = webhook_request_data?.order?._id;
     } else if (webhook_request_data?.refund != undefined) {
-      order_id = webhook_request_data?.refund?.order_id;
+      _id = webhook_request_data?.refund?._id;
     }
 
-    let validOrder = allOrders.find((order) => order.id === order_id);
+    let validOrder = allOrders.find((order) => order.id === _id);
     if (!validOrder) {
       throw new BadGatewayException('This Order is Is a valid order');
     }
     let updatedstatus: ChangeOrderStatusDto = {
-      order_id: '',
+      _id: '',
       new_status: '',
       user_id: '',
     };
     if (validOrder) {
       if (webhook_request_data?.payment?.payment_status == 'SUCCESS') {
         updatedstatus = {
-          order_id: validOrder.id,
+          _id: validOrder.id,
           new_status: ORDER_STATUS.ORDERED,
           user_id: validOrder.buyer_id,
         };
       } else if (webhook_request_data?.payment?.payment_status == 'FAILED') {
         updatedstatus = {
-          order_id: validOrder.id,
+          _id: validOrder.id,
           new_status: ORDER_STATUS.WAITING_TO_PAY,
           user_id: validOrder.buyer_id,
         };
@@ -157,13 +157,13 @@ export class PaymentController {
         webhook_request_data?.payment?.payment_status == 'USER_DROPPED'
       ) {
         updatedstatus = {
-          order_id: validOrder.id,
+          _id: validOrder.id,
           new_status: ORDER_STATUS.WAITING_TO_PAY,
           user_id: validOrder.buyer_id,
         };
       } else if (webhook_request_data?.refund?.refund_status == 'SUCCESS') {
         updatedstatus = {
-          order_id: validOrder.id,
+          _id: validOrder.id,
           new_status: ORDER_STATUS.REFUNDED,
           user_id: validOrder.buyer_id,
         };

@@ -13,20 +13,20 @@
  * Company: BigBurry Hypersystems LLP
  */
 import axios from 'axios';
-import { PaymentGateway } from 'src/modules/payments/applicationLayer/interfaces/payment.repository';
+import { PaymentGateway } from 'src/modules/payments/applicationLayer/interfaces/payment.interface';
 import { DtoToGetPaymentSessionId } from 'src/common/dtos/DtoToGetPaymentSessionId.dto';
 import { ConfigService } from '@nestjs/config';
 import { DtoToRefund } from '../../../../common/dtos/dtoToRefund.dto';
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
-import { IGetCakeDetailsUseCase } from '../../applicationLayer/interfaces/GetCakeDetailsusecase.interface';
-import { IGetUserDetailUseCase } from '../../applicationLayer/interfaces/GetuserDetailsUsecase.interface';
+import { IGetCakeDetailsUseCase } from '../../applicationLayer/interfaces/get-cake-details.interface';
+import { IGetUserDetailUseCase } from '../../applicationLayer/interfaces/get-user-details.interface';
 import { GETCAKEDETAILS } from '../../tokens/getcakedetails.token';
 import { GETUSERDETAILS } from '../../tokens/getuserdetails.token';
-import { IGetOrderDetailsUseCaese } from '../../applicationLayer/interfaces/IGetOrderDetailsUseCaese.interface';
+import { IGetOrderDetailsUseCaese } from '../../applicationLayer/interfaces/get-order-details.interface';
 import { ORDER_STATUS } from 'src/common/utils/contants';
 import { GETORDERDETAILS } from '../../tokens/getOrderDetails.token';
-import { ChangeOrderStatusUseCase } from 'src/modules/orders/applicationLayer/use-cases/change_order_status.usecase';
-import { IChangeOrderStatusUseCase } from '../../applicationLayer/interfaces/IChangeOrderStatusUseCase.interface';
+import { ChangeOrderStatusUseCase } from 'src/modules/orders/applicationLayer/use-cases/change-order-status.usecase';
+import { IChangeOrderStatusUseCase } from '../../applicationLayer/interfaces/change-order-status.interface';
 import { CHANGEORDERSTATUS } from '../../tokens/changeorderstatus.token';
 import { VendorDto } from '../../../../common/dtos/vendor.dto';
 
@@ -86,7 +86,7 @@ export class CashFreePaymentGatewayImp implements PaymentGateway {
       DtoToGetPaymentSessionId.user_id,
     );
     let order = await this.IGetOrderDetails.execute(
-      DtoToGetPaymentSessionId.order_id,
+      DtoToGetPaymentSessionId._id,
     );
     if (order.order_status === ORDER_STATUS.REQUESTED) {
       throw new BadRequestException('The order is not confirm to pay.');
@@ -94,7 +94,7 @@ export class CashFreePaymentGatewayImp implements PaymentGateway {
       throw new BadRequestException('The order is already paid.');
     }
     const orderData = {
-      order_id: DtoToGetPaymentSessionId.order_id,
+      _id: DtoToGetPaymentSessionId._id,
       order_amount: 200,
       order_currency: 'INR',
       customer_details: {
@@ -137,7 +137,7 @@ export class CashFreePaymentGatewayImp implements PaymentGateway {
     DtoToRefund.refund_id = `refund_${Date.now()}`;
     const response = await axios.post(
       this.configService.get<string>('CASHFREE_API_URL') +
-        `/orders/${DtoToRefund.order_id}/refunds`,
+        `/orders/${DtoToRefund._id}/refunds`,
       {
         refund_amount: DtoToRefund.refund_amount,
         refund_id: DtoToRefund.refund_id,
@@ -154,7 +154,7 @@ export class CashFreePaymentGatewayImp implements PaymentGateway {
       },
     );
     let updatedstatus = {
-      order_id: DtoToRefund.order_id,
+      _id: DtoToRefund._id,
       new_status: ORDER_STATUS.REFUND_INITIATED,
       user_id: DtoToRefund.user_id,
     };
