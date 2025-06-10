@@ -6,10 +6,10 @@
  * Importing necessary packages and dependencies
  */
 import { BadRequestException, Inject, Injectable } from '@nestjs/common';
-import { CakeRepository } from '../interfaces/cake.interface';
+import { CakeInterface } from '../interfaces/cake.interface';
 // import { CAKE_REPOSITORY } from '../../tokens/cakeRepository.token';
 import { CakeEntity } from '../../domainLayer/entities/cake.entity';
-import { CAKE_REPOSITORY } from '../../tokens/cake.token';
+import { CAKEINTERFACETOKEN } from '../../tokens/cake.token';
 /**
  * Injectable use case class to get details of a cake by its ID
  */
@@ -19,8 +19,8 @@ export class GetCakeDetailsUseCase {
     /**
      * Injecting CakeRepository to access cake data
      */
-    @Inject(CAKE_REPOSITORY)
-    private readonly CakeRepository: CakeRepository,
+    @Inject(CAKEINTERFACETOKEN)
+    private readonly CakeInterface: CakeInterface,
   ) {}
   /**
    * Executes the retrieval of cake details based on cake ID
@@ -29,7 +29,7 @@ export class GetCakeDetailsUseCase {
    * @throws BadRequestException if the cake is not found
    */
   async execute(cake_id: string): Promise<CakeEntity> {
-    const cake = await this.CakeRepository.findById(cake_id);
+    const cake = await this.CakeInterface.findById(cake_id);
     if (!cake) throw new BadRequestException('Cake not found');
     return cake;
   }

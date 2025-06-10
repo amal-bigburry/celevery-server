@@ -9,16 +9,12 @@ import { Transform } from 'class-transformer';
 import {
   IsBoolean,
   IsEnum,
-  IsISO8601,
   IsMilitaryTime,
   IsNotEmpty,
-  IsNumber,
   IsOptional,
   IsString,
   ValidateIf,
 } from 'class-validator';
-import { known_fors } from '../utils/known_fors';
-import { store_status } from '../utils/store_status';
 import { kyc_document_types } from '../utils/kyc_documents';
 import { preferred_payment_method } from '../utils/preferredPaymentMethod';
 
@@ -59,10 +55,6 @@ export class StoreDto {
   lat: number;
   @IsNotEmpty()
   log: number;
-  // @IsEnum(store_status, {
-  //   message: `Please choose the status from the available ones`,
-  // })
-  // status: string;
   @IsNotEmpty()
   bank_account_holder_name: string;
   @IsNotEmpty()

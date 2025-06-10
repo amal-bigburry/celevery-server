@@ -6,8 +6,8 @@
  * Importing Required Packages
  */
 import { Inject, Injectable } from '@nestjs/common';
-import { CakeCategoryRepository } from '../interfaces/cake-category.interface';
-import { CAKE_CATEGORY_REPOSITORY } from '../../tokens/cakeCategoryRepository.token';
+import { CakeCategoryInterface } from '../interfaces/cake-category.interface';
+import { CAKECATEGORYINTERFACETOKEN } from '../../tokens/cakeCategoryRepository.token';
 import { CakeCategoryDto } from '../../../../common/dtos/cakecategory.dto';
 /**
  * Injectable service class for finding cake categories by ID
@@ -18,8 +18,8 @@ export class FindCakeCategoryByIDUseCase {
    * Injects the cake category repository dependency
    */
   constructor(
-    @Inject(CAKE_CATEGORY_REPOSITORY)
-    private readonly cakeCategoryRepository: CakeCategoryRepository,
+    @Inject(CAKECATEGORYINTERFACETOKEN)
+    private readonly CakeCategoryInterface: CakeCategoryInterface,
   ) {}
   /**
    * Executes retrieval of a cake category by its unique ID
@@ -28,7 +28,7 @@ export class FindCakeCategoryByIDUseCase {
    */
   async execute(category_id: string): Promise<CakeCategoryDto> {
     // Fetch the cake category from the repository by ID
-    const cakescategories = await this.cakeCategoryRepository.findCategoryById(category_id);
+    const cakescategories = await this.CakeCategoryInterface.findCategoryById(category_id);
     // Return the found cake category data transfer object
     return cakescategories;
   }

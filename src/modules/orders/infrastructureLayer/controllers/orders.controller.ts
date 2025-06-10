@@ -59,18 +59,20 @@ export class OrderController {
    * get all orders that are received by the seller
    */
   @HttpCode(HttpStatus.OK)
-  @Get('/received')
+  @Get('/received/:store_id')
   @UseGuards(JwtAuthGuard)
   async get_all_orders(
     @Req() request: AuthRequest,
     @Query('page') page: number,
     @Query('limit') limit: number,
+    @Param('store_id') store_id:string,
   ) {
     /**
      * returning the received orders
      */
     return this.getAllOrdersReceivedUseCase.execute(
       request.user['userId'],
+      store_id,
       page,
       limit,
     );

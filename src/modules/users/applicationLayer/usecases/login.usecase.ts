@@ -12,10 +12,10 @@
  * ******************************************************************************************************
  */
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
-import { UserRepository } from '../interfaces/user.interface';
+import { UserInterface } from '../interfaces/user.interface';
 import { JwtService } from '@nestjs/jwt';
 import { LoginDto } from '../../../../common/dtos/Login.dto';
-import { USER_REPOSITORY } from '../../tokens/user.token';
+import { USERINTERFACETOKEN } from '../../tokens/user.token';
 import * as bcrypt from 'bcrypt';
 import { UserEntity } from '../../domainLayer/entities.ts/user.entity';
 /**
@@ -29,7 +29,7 @@ import { UserEntity } from '../../domainLayer/entities.ts/user.entity';
 @Injectable()
 export class LoginUseCase {
   constructor(
-    @Inject(USER_REPOSITORY) private readonly userRepo: UserRepository,
+    @Inject(USERINTERFACETOKEN) private readonly userRepo: UserInterface,
     private readonly jwtService: JwtService,
   ) {}
   /**

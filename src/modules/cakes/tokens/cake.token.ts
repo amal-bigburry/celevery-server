@@ -5,4 +5,4 @@
 /**
  * Token for dependency injection of the Cake Repository interface
  */
-export const CAKE_REPOSITORY = Symbol('CakeRepository');
+export const CAKEINTERFACETOKEN = Symbol('CAKEINTERFACETOKEN');

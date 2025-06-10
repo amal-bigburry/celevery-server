@@ -11,7 +11,7 @@ import { CakeDto } from '../../../../common/dtos/cake.dto';
 /**
  * Interface defining the Cake Repository contract
  */
-export interface CakeRepository {
+export interface CakeInterface {
   //find or get
   findCakesFromOpenStore(): Promise<CakeEntity[]>;
   findById(cake_id: string): Promise<CakeEntity | null>;

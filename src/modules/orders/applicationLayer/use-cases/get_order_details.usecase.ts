@@ -11,12 +11,12 @@ import { Inject, Injectable } from '@nestjs/common';
 import { OrderInterface} from '../interfaces/order.interface';
 import { ORDERINTERFACETOKEN } from '../../tokens/orderRepository.token';
 import { OrderDetailDto } from 'src/common/dtos/orderDetail.dto';
-import { GET_STORE_DETAILS } from '../../tokens/get_store_details.token';
+import { GETSTOREINTERFACETOKEN } from '../../tokens/get_store_details.token';
 import { CakeDetailsInterface } from '../interfaces/get-cake-details.interface';
 import { GetUserDetailInterface } from '../interfaces/get-user-details.interface';
 import { GetstoreInterface } from '../interfaces/get-store.interface';
-import { GET_CAKE_DETAILS } from '../../tokens/get_cake_details.token';
-import { GET_USER_DETAILS } from '../../tokens/get_user_details.token';
+import { CAKEDETAILINTERFACETOKEN } from '../../tokens/get_cake_details.token';
+import { GETUSERDETAILINTERFACETOKEN } from '../../tokens/get_user_details.token';
 
 /**
  * injectable service file that get all the recieved orders of a seller
@@ -26,11 +26,11 @@ export class GetOrderDetailsUseCase {
   constructor(
     @Inject(ORDERINTERFACETOKEN)
     private readonly OrderRepository: OrderInterface,
-    @Inject(GET_CAKE_DETAILS)
+    @Inject(CAKEDETAILINTERFACETOKEN)
     private readonly GetCakeDetailsUseCase: CakeDetailsInterface,
-    @Inject(GET_USER_DETAILS)
+    @Inject(GETUSERDETAILINTERFACETOKEN)
     private readonly GetUserDetailUseCase: GetUserDetailInterface,
-    @Inject(GET_STORE_DETAILS)
+    @Inject(GETSTOREINTERFACETOKEN)
     private readonly GetStoreDetailUseCase: GetstoreInterface, // Assuming CakeRepository is used to get cake details
   ) {}
   /**

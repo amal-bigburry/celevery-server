@@ -10,7 +10,7 @@
  * ******************************************************************************************************
  */
 import { Injectable } from '@nestjs/common';
-import { IOTPVerifyingService } from 'src/modules/users/applicationLayer/interfaces/otp-verifying-service.interface';
+import { OtpVerificationInterface } from 'src/modules/users/applicationLayer/interfaces/otp-verifying-service.interface';
 import { OTPVerifyingService } from 'src/modules/OTP/applicationLayer/usecases/verify.usecase';
 /**
  * ******************************************************************************************************
@@ -22,7 +22,7 @@ import { OTPVerifyingService } from 'src/modules/OTP/applicationLayer/usecases/v
  * ******************************************************************************************************
  */
 @Injectable()
-export class IOTPVerifyingServiceImp implements IOTPVerifyingService {
+export class IOTPVerifyingServiceImp implements OtpVerificationInterface {
   constructor(private readonly OTPVerifyingService: OTPVerifyingService) {}
   async verify(UUID: string, OTP: string): Promise<object> {
     return await this.OTPVerifyingService.verify(UUID, OTP);

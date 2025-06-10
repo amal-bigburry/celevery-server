@@ -7,16 +7,16 @@
  * importing the required packages
  */
 import { Inject, Injectable } from '@nestjs/common';
-import { USER_REPOSITORY } from '../../tokens/user.token';
-import { UserRepository } from '../interfaces/user.interface';
+import { USERINTERFACETOKEN } from '../../tokens/user.token';
+import { UserInterface } from '../interfaces/user.interface';
 /**
  * Usecase to handle removing a cake from user's favourites
  */
 @Injectable()
 export class RemoveMyFavouritesUsecase {
   constructor(
-    @Inject(USER_REPOSITORY)
-    private readonly UserRepository: UserRepository,
+    @Inject(USERINTERFACETOKEN)
+    private readonly UserRepository: UserInterface,
   ) {}
   /**
    * Removes a cake from the user's favourites list.

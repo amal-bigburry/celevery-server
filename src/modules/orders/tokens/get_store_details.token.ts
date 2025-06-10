@@ -7,4 +7,4 @@
 /**
  * Token for getting store details
  */
-export const GET_STORE_DETAILS = Symbol('GET_STORE_DETAILS');
+export const GETSTOREINTERFACETOKEN = Symbol('GETSTOREINTERFACETOKEN');

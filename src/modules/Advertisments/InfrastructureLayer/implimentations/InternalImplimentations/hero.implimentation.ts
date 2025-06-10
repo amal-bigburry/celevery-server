@@ -29,7 +29,7 @@ import {
   Injectable,
   NotFoundException,
 } from '@nestjs/common';
-import { HerosRepository } from '../../../applicationLayer/interfaces/hero.interface';
+import { HeroInterface } from '../../../applicationLayer/interfaces/hero.interface';
 import { HeroDto } from '../../../../../common/dtos/hero.dto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
@@ -47,7 +47,7 @@ import { randomUUID } from 'crypto';
  * Company: Bigburry Hypersystems LLP
  */
 @Injectable()
-export class HerosRepositoryImp implements HerosRepository {
+export class HerosRepositoryImp implements HeroInterface {
   constructor(
     @InjectModel('HeroRepository')
     private HeroRepositoryModel: Model<HeroDto>,

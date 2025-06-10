@@ -14,14 +14,14 @@ import { JwtModule } from '@nestjs/jwt';
 import {  UserController } from './infrastructureLayer/controllers/user.controller';
 import { FcmController } from './infrastructureLayer/controllers/fcm-token.controller';
 import { MongooseModule } from '@nestjs/mongoose';
-import { UserSchema } from './infrastructureLayer/models/user.model';
+import { UserSchema } from '../../common/databaseModels/user.model';
 import { JwtStrategy } from 'src/middlewares/jwt.strategy';
 import { LoginUseCase } from './applicationLayer/usecases/login.usecase';
 import { RegisterUseCase } from './applicationLayer/usecases/register.usecase';
 import { UpdatefcmUseCase } from './applicationLayer/usecases/update-fcm.usecase';
 import { GetUserDetailUseCase } from './applicationLayer/usecases/get-user-details.usecase';
 import { UserRepositoryImpl } from './infrastructureLayer/implimentations/InternalImplimenatations/user.implimentation';
-import { USER_REPOSITORY } from './tokens/user.token';
+import { USERINTERFACETOKEN } from './tokens/user.token';
 import { UpdateProfileImageUseCase } from './applicationLayer/usecases/update-profile-image.usecase';
 import { GetMyFavouritesUsecase } from './applicationLayer/usecases/get-my-favourites.usecase';
 import { RemoveMyFavouritesUsecase } from './applicationLayer/usecases/remove-from-favourites.usecase';
@@ -87,7 +87,7 @@ import { UpdateDisplayNameUseCase } from './applicationLayer/usecases/update-dis
     RegisterUsingGoogleUseCase,
     LoginUsingGoogleUseCase,
     {
-      provide: USER_REPOSITORY,
+      provide: USERINTERFACETOKEN,
       useClass: UserRepositoryImpl,
     },
     {

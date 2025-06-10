@@ -4,7 +4,7 @@
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { CakeCategoryEntity } from '../../../domainLayer/entities/cake-category.entity';
-import { CakeCategoryRepository } from '../../../applicationLayer/interfaces/cake-category.interface';
+import { CakeCategoryInterface } from '../../../applicationLayer/interfaces/cake-category.interface';
 import { CakeCategoryDto } from '../../../../../common/dtos/cakecategory.dto';
 import {
   BadRequestException,
@@ -17,7 +17,7 @@ import { ConfigService } from '@nestjs/config';
 /**
  * implimentation of cake category interface
  */
-export class CakeCategoryRepositoryImp implements CakeCategoryRepository {
+export class CakeCategoryRepositoryImp implements CakeCategoryInterface {
   constructor(
     @InjectModel('CakeCategories')
     private cakecategoryModel: Model<CakeCategoryEntity>,

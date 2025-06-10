@@ -13,7 +13,7 @@
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { UserEntity } from 'src/modules/users/domainLayer/entities.ts/user.entity';
-import { UserRepository } from 'src/modules/users/applicationLayer/interfaces/user.interface';
+import { UserInterface } from 'src/modules/users/applicationLayer/interfaces/user.interface';
 import { RegisterDto } from 'src/common/dtos/Register.dto';
 import { TokenDto } from 'src/common/dtos/token.dto';
 import {
@@ -40,7 +40,7 @@ import * as bcrypt from 'bcrypt';
  * ******************************************************************************************************
  */
 @Injectable()
-export class UserRepositoryImpl implements UserRepository {
+export class UserRepositoryImpl implements UserInterface {
   constructor(
     @InjectModel('Users') private userModel: Model<UserEntity>,
     private readonly configService: ConfigService,

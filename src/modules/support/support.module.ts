@@ -20,14 +20,14 @@
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { CREATE_SELLER_TOKEN } from './tokens/CreateSupportIDforSellerToken';
-import { SellerSupportModel } from './infrastructerLayer/models/seller.support.model';
+import { SellerSupportModel } from '../../common/databaseModels/seller-support.model';
 import { SellerSupportController } from './infrastructerLayer/controllers/seller.support.controller';
 import { CreateSupportIDforSellerUsecase } from './applicationLayer/usecases/create-supportid-for-seller-usecase';
 import { CREATE_BUYER_TOKEN } from './tokens/CreateSupportIDforBuyerToken';
 import { IBuyerRepositoryImp } from './infrastructerLayer/implimentations/InternalImplimenations/Ibuyer-repository.implimentation';
 import { CreateSupportIDforBuyerUsecase } from './applicationLayer/usecases/create-supportid-for-buyer.usecase';
 import { BuyerSupportController } from './infrastructerLayer/controllers/buyer.support.controller';
-import { BuyerSupportModel } from './infrastructerLayer/models/buyer.support.model';
+import { BuyerSupportModel } from '../../common/databaseModels/buyer-support.model';
 import { AddMessageToBuyerSupportUsecase } from './applicationLayer/usecases/add-message-to-buyer-support.usecase';
 import { AddMessageToSellerSupportUsecase } from './applicationLayer/usecases/add-message-to-seller-support.usecase';
 import { FetchMessageFromBuyerSupportUsecase } from './applicationLayer/usecases/fetch-message-from-buyer-support.usecase';

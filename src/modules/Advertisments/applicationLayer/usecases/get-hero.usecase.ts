@@ -20,8 +20,8 @@
  * Company: Bigburry Hypersystems LLP
  */
 import { Inject } from '@nestjs/common';
-import { HerosRepository } from '../interfaces/hero.interface';
-import { HERO_REPOSITORY } from '../../tokens/HeroRepository.token';
+import { HeroInterface } from '../interfaces/hero.interface';
+import { HEROINTERFACETOKEN } from '../../tokens/HeroRepository.token';
 /**
  * The GetHerosUseCase class is responsible for orchestrating the retrieval of all hero records.
  * It serves as the application layer's entry point for fetching data from the repository.
@@ -32,8 +32,8 @@ import { HERO_REPOSITORY } from '../../tokens/HeroRepository.token';
  */
 export class GetHerosUseCase {
   constructor(
-    @Inject(HERO_REPOSITORY)
-    private readonly HerosRepository: HerosRepository,
+    @Inject(HEROINTERFACETOKEN)
+    private readonly HeroInterface: HeroInterface,
   ) {}
   /**
    * Executes the operation to fetch all hero records from the repository.
@@ -43,6 +43,6 @@ export class GetHerosUseCase {
    * Company: Bigburry Hypersystems LLP
    */
   async execute() {
-    return await this.HerosRepository.getAll();
+    return await this.HeroInterface.getAll();
   }
 }

@@ -7,16 +7,16 @@
  * Importing the required packages
  */
 import { Inject, Injectable } from '@nestjs/common';
-import { UserRepository } from '../interfaces/user.interface';
-import { USER_REPOSITORY } from '../../tokens/user.token';
+import { UserInterface } from '../interfaces/user.interface';
+import { USERINTERFACETOKEN } from '../../tokens/user.token';
 /**
  * Service to handle adding a cake to user's favourites
  */
 @Injectable()
 export class AddToFavouritesUsecase {
   constructor(
-    @Inject(USER_REPOSITORY)
-    private readonly userRepository: UserRepository,
+    @Inject(USERINTERFACETOKEN)
+    private readonly userRepository: UserInterface,
   ) {}
   /**
    * Adds a cake to the user's favourites list

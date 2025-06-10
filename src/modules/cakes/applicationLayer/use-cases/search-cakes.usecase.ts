@@ -6,8 +6,8 @@
  * Importing required packages for cake search functionality
  */
 import { Inject, Injectable } from '@nestjs/common';
-import { CakeRepository } from '../interfaces/cake.interface';
-import { CAKE_REPOSITORY } from '../../tokens/cake.token';
+import { CakeInterface } from '../interfaces/cake.interface';
+import { CAKEINTERFACETOKEN } from '../../tokens/cake.token';
 import { CakeMinimalModel } from './cake-minimal-data.model';
 /**
  * Injectable use case class to search cakes by keyword and category
@@ -18,8 +18,7 @@ export class SearchForCakesUseCase {
     /**
      * Injecting CakeRepository to perform search operations
      */
-    @Inject(CAKE_REPOSITORY) private readonly CakeRepository: CakeRepository,
-    // @Inject(GETSTORE)
+    @Inject(CAKEINTERFACETOKEN) private readonly CakeInterface: CakeInterface,
     private readonly CakeMinimalModel: CakeMinimalModel,
   ) {}
   /**
@@ -34,7 +33,7 @@ export class SearchForCakesUseCase {
     log: number,
     lat: number,
   ): Promise<Array<any>> {
-    const cakes = await this.CakeRepository.find(
+    const cakes = await this.CakeInterface.find(
       keyword,
       category_id,
       log,

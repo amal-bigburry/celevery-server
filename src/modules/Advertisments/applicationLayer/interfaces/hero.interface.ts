@@ -24,7 +24,7 @@ import { HeroDto } from '../../../../common/dtos/hero.dto';
  *
  * Company: BigBurry HyperSystems LLP
  */
-export interface HerosRepository {
+export interface HeroInterface {
   create(HeroDto: HeroDto, file): Promise<HeroDto>;
   getAll(): Promise<HeroDto[]>;
   delete(hero_id: string): Promise<string>;

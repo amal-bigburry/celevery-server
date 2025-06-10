@@ -23,6 +23,7 @@ export interface OrderInterface {
   ): Promise<PaginationDto>;
   findReceivedOrders(
     user_id: string,
+    store_id:string,
     page: number,
     limit: number,
   ): Promise<PaginationDto>;

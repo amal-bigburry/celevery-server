@@ -6,8 +6,8 @@
  * Importing Required Packages
  */
 import { Inject, Injectable } from '@nestjs/common';
-import { CakeCategoryRepository } from '../interfaces/cake-category.interface';
-import { CAKE_CATEGORY_REPOSITORY } from '../../tokens/cakeCategoryRepository.token';
+import { CakeCategoryInterface } from '../interfaces/cake-category.interface';
+import { CAKECATEGORYINTERFACETOKEN } from '../../tokens/cakeCategoryRepository.token';
 /**
  * Injectable service class for finding all cake categories
  */
@@ -17,8 +17,8 @@ export class FindCakeCategoryUseCase {
    * Injects the cake category repository dependency
    */
   constructor(
-    @Inject(CAKE_CATEGORY_REPOSITORY)
-    private readonly cakeCategoryRepository: CakeCategoryRepository,
+    @Inject(CAKECATEGORYINTERFACETOKEN)
+    private readonly CakeCategoryInterface: CakeCategoryInterface,
   ) {}
   /**
    * Executes retrieval of all cake categories
@@ -26,7 +26,7 @@ export class FindCakeCategoryUseCase {
    */
   async execute(): Promise<Array<any>> {
     // Fetch all cake categories from the repository
-    const cakescategories = await this.cakeCategoryRepository.findAll();
+    const cakescategories = await this.CakeCategoryInterface.findAll();
     // Return the list of cake categories
     return cakescategories;
   }

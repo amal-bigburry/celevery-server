@@ -25,14 +25,14 @@ import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { ORDER_STATUS } from 'src/common/utils/contants';
 import { Order } from 'src/modules/orders/domainLayer/entities.ts/order.entity';
 import { OrderDto } from 'src/common/dtos/Order.dto';
-import { GET_USER_DETAILS } from 'src/modules/orders/tokens/get_user_details.token';
-import { NOTIFICATION_USECASE } from 'src/modules/orders/tokens/notificationusecase.token';
+import { GETUSERDETAILINTERFACETOKEN } from 'src/modules/orders/tokens/get_user_details.token';
+import { NOTIFICATIONINTERFACETOKEN } from 'src/modules/orders/tokens/notificationusecase.token';
 import { ChangeOrderStatusDto } from 'src/common/dtos/changeOrderStatus.dto';
 import { PopDto } from 'src/common/dtos/pop.dto';
-import { GET_CAKE_DETAILS } from 'src/modules/orders/tokens/get_cake_details.token';
+import { CAKEDETAILINTERFACETOKEN } from 'src/modules/orders/tokens/get_cake_details.token';
 import { MQTTTOKEN } from 'src/modules/orders/tokens/mqtt.token';
 import { IGetStoreUseCase } from 'src/modules/cakes/applicationLayer/use-cases/get-store.usecase';
-import { GET_STORE_DETAILS } from 'src/modules/orders/tokens/get_store_details.token';
+import { GETSTOREINTERFACETOKEN } from 'src/modules/orders/tokens/get_store_details.token';
 import { OrderInterface } from 'src/modules/orders/applicationLayer/interfaces/order.interface';
 import { NotificationInterface } from 'src/modules/orders/applicationLayer/interfaces/notification.interface';
 import { GetUserDetailInterface } from 'src/modules/orders/applicationLayer/interfaces/get-user-details.interface';
@@ -50,13 +50,13 @@ export class OrderRepositoryImp implements OrderInterface {
    */
   constructor(
     @InjectModel(Order.name) private orderModel: Model<OrderDto>,
-    @Inject(NOTIFICATION_USECASE)
+    @Inject(NOTIFICATIONINTERFACETOKEN)
     private readonly notificationUseCase: NotificationInterface,
-    @Inject(GET_USER_DETAILS)
+    @Inject(GETUSERDETAILINTERFACETOKEN)
     private readonly IGetUserDetailUseCase: GetUserDetailInterface,
-    @Inject(GET_CAKE_DETAILS)
+    @Inject(CAKEDETAILINTERFACETOKEN)
     private readonly getCakeDetailsUseCase: CakeDetailsInterface,
-    @Inject(GET_STORE_DETAILS)
+    @Inject(GETSTOREINTERFACETOKEN)
     private readonly getStoreUsecase: GetstoreInterface,
     @Inject(MQTTTOKEN)
     private readonly mqttService: MqttServiceInterface,
@@ -259,12 +259,13 @@ export class OrderRepositoryImp implements OrderInterface {
    */
   async findReceivedOrders(
     user_id: string,
+    store_id:string,
     page: number = 1,
     limit: number = 10,
   ): Promise<PaginationDto> {
     // console.log(user_id)
     const skip = (page - 1) * limit;
-    const filter = { seller_id: user_id };
+    const filter = { seller_id: user_id , store_id:store_id};
     const [orders, total] = await Promise.all([
       this.orderModel
         .find(filter)

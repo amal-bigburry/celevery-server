@@ -7,4 +7,4 @@
 /**
  * Token for getting user details
  */
-export const GET_USER_DETAILS = Symbol('GET_USER_DETAILS');
+export const GETUSERDETAILINTERFACETOKEN = Symbol('GETUSERDETAILINTERFACETOKEN');

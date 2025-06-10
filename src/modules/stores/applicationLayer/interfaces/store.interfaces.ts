@@ -49,7 +49,7 @@ export interface StoreRepository {
     kyc_document: Express.Multer.File,
   ): Promise<string>;
   // updateing
-  updateStore(UpdateStoreDto: UpdateStoreDto): Promise<string>;
+  updateStore(UpdateStoreDto: UpdateStoreDto, store_id:string): Promise<string>;
   // deleting
   deleteStore(store_id: string): Promise<string>;
   // getting

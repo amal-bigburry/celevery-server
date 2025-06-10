@@ -6,16 +6,14 @@
  * Importing required packages for the use case
  */
 import { Inject, Injectable } from '@nestjs/common';
-import { CakeRepository } from '../interfaces/cake.interface';
+import { CakeInterface } from '../interfaces/cake.interface';
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
-import { CAKE_REPOSITORY } from '../../tokens/cake.token';
+import { CAKEINTERFACETOKEN } from '../../tokens/cake.token';
 import { GetPopularCakes } from 'src/common/utils/getPopularCakes';
 import { GetTrendingCakes } from 'src/common/utils/getTrendingCakes';
 import { CakeMinimalModel } from './cake-minimal-data.model';
-import { GETSTORE } from '../../tokens/get-store.token';
-import { IGetStoreUseCase } from './get-store.usecase';
-import { GET_ALL_ORDERS } from '../../tokens/get-all-orders.token';
-import { IGetAllOrdersInterface } from '../interfaces/get-all-orders.interface';
+import { GETALLORDERSTOKEN } from '../../tokens/get-all-orders.token';
+import { GetAllOrdersInterface } from '../interfaces/get-all-orders.interface';
 /**
  * Injectable service class responsible for finding cakes with pagination and location filters
  */
@@ -25,10 +23,10 @@ export class FindCakeUseCase {
     /**
      * Injecting CakeRepository to access cake data
      */
-    @Inject(CAKE_REPOSITORY) private readonly CakeRepository: CakeRepository,
-    @Inject(GETSTORE) private readonly getstoreUsecase: IGetStoreUseCase,
-    @Inject(GET_ALL_ORDERS)
-    private readonly IGetAllOrdersInterface: IGetAllOrdersInterface,
+    @Inject(CAKEINTERFACETOKEN) private readonly CakeInterface: CakeInterface,
+    @Inject(GETALLORDERSTOKEN)
+    
+    private readonly GetAllOrdersInterface: GetAllOrdersInterface,
     private readonly CakeMinimalModel: CakeMinimalModel,
   ) {}
   /**
@@ -49,9 +47,9 @@ export class FindCakeUseCase {
     orderby: string,
     category_id: string,
   ): Promise<PaginationDto> {
-    let openStoreCakes = await this.CakeRepository.findCakesFromOpenStore();
+    let openStoreCakes = await this.CakeInterface.findCakesFromOpenStore();
     // console.log('open store cakes', openStoreCakes.length);
-    let allorders = await this.IGetAllOrdersInterface.getallorders();
+    let allorders = await this.GetAllOrdersInterface.getallorders();
     // known for filtering layer
     if (knownfor.length > 0) {
       openStoreCakes = openStoreCakes.filter((cake) =>

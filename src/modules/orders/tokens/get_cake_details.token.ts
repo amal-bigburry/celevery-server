@@ -7,4 +7,4 @@
 /**
  * Token for getting cake details
  */
-export const GET_CAKE_DETAILS = Symbol('GetCakeDetail');
+export const CAKEDETAILINTERFACETOKEN = Symbol('CAKEDETAILINTERFACETOKEN');

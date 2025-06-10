@@ -8,13 +8,13 @@
  */
 import { forwardRef, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { StoreModel } from './InfrastructureLayer/models/store.model';
+import { StoreModel } from '../../common/databaseModels/store.model';
 import { StoreController } from './InfrastructureLayer/controllers/store.controller';
 import { StoreRepositoryImplimentation } from './InfrastructureLayer/implimentations/InternalImplimentations/store.implimentation';
 import { CreateStoreUsecase } from './applicationLayer/usercases/create-store.usecase';
 import { updateStoreUsecase } from './applicationLayer/usercases/updateStore.usecase';
 import { GetStoreUsecase } from './applicationLayer/usercases/get-store-details.usecase';
-import { CakeSchema } from '../cakes/infrastructureLayer/models/cake.model';
+import { CakeSchema } from '../../common/databaseModels/cake.model';
 import { STORE_REPOSITORY } from './tokens/storeRepository.token';
 import { GetAllStoreUseCase } from './applicationLayer/usercases/get-all-my-stores.usecase';
 import { GetAllStoreInPlatformUsecase } from './applicationLayer/usercases/get-all-store-in-platform.usecase';

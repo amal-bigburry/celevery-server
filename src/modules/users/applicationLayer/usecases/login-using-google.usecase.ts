@@ -9,13 +9,13 @@
  * ******************************************************************************************************
  */
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
-import { UserRepository } from '../interfaces/user.interface';
-import { USER_REPOSITORY } from '../../tokens/user.token';
+import { UserInterface } from '../interfaces/user.interface';
+import { USERINTERFACETOKEN } from '../../tokens/user.token';
 import { JwtService } from '@nestjs/jwt';
 @Injectable()
 export class LoginUsingGoogleUseCase {
   constructor(
-    @Inject(USER_REPOSITORY) private readonly userRepo: UserRepository,
+    @Inject(USERINTERFACETOKEN) private readonly userRepo: UserInterface,
     private readonly jwtService: JwtService,
   ) {}
   /**

@@ -11,8 +11,8 @@
  * ******************************************************************************************************
  */
 import { Inject, Injectable } from '@nestjs/common';
-import { UserRepository } from '../interfaces/user.interface';
-import { USER_REPOSITORY } from '../../tokens/user.token';
+import { UserInterface } from '../interfaces/user.interface';
+import { USERINTERFACETOKEN } from '../../tokens/user.token';
 /**
  * ******************************************************************************************************
  * UpdatefcmUseCase Class
@@ -24,7 +24,7 @@ import { USER_REPOSITORY } from '../../tokens/user.token';
 @Injectable()
 export class UpdateProfileImageUseCase {
   constructor(
-    @Inject(USER_REPOSITORY) private readonly userRepo: UserRepository,
+    @Inject(USERINTERFACETOKEN) private readonly userRepo: UserInterface,
   ) {}
   /**
    * **************************************************************************************************

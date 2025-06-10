@@ -6,8 +6,8 @@
  * Importing necessary packages and dependencies
  */
 import { Inject, Injectable } from '@nestjs/common';
-import { CakeRepository } from '../interfaces/cake.interface';
-import { CAKE_REPOSITORY } from '../../tokens/cake.token';
+import { CakeInterface } from '../interfaces/cake.interface';
+import { CAKEINTERFACETOKEN } from '../../tokens/cake.token';
 import { CakeMinimalModel } from './cake-minimal-data.model';
 /**
  * Injectable use case class to get details of a cake by its ID
@@ -18,8 +18,8 @@ export class GetCakesInStoreUsecase {
     /**
      * Injecting CakeRepository to access cake data
      */
-    @Inject(CAKE_REPOSITORY)
-    private readonly CakeRepository: CakeRepository,
+    @Inject(CAKEINTERFACETOKEN)
+    private readonly CakeInterface: CakeInterface,
     private readonly CakeMinimalModel: CakeMinimalModel,
   ) {}
   /**
@@ -29,7 +29,7 @@ export class GetCakesInStoreUsecase {
    * @throws BadRequestException if the cake is not found
    */
   async execute(store_id: string): Promise<object[]> {
-    const cakes = await this.CakeRepository.findCakeByStoreId(store_id);
+    const cakes = await this.CakeInterface.findCakeByStoreId(store_id);
     let cakeMinimalViewModel = await this.CakeMinimalModel.toJson(cakes, 0, 0);
     return cakeMinimalViewModel;
   }

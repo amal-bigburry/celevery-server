@@ -5,4 +5,4 @@
 /**
  * Token for dependency injection of the IGetCakeDetailsUseCase interface
  */
-export const GET_ALL_ORDERS = Symbol('GET_ALL_ORDERS');
+export const GETALLORDERSTOKEN = Symbol('GETALLORDERSTOKEN');

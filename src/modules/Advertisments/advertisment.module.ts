@@ -12,13 +12,13 @@
  */
 import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
-import { HeroSchema } from './InfrastructureLayer/models/Hero.model';
 import { HeroController } from './InfrastructureLayer/controllers/hero.controller';
 import { CreateHerosUseCase } from './applicationLayer/usecases/create-hero.usecase';
 import { DeleteHerosUseCase } from './applicationLayer/usecases/delete-hero.usecase';
 import { GetHerosUseCase } from './applicationLayer/usecases/get-hero.usecase';
 import { HerosRepositoryImp } from './InfrastructureLayer/implimentations/InternalImplimentations/hero.implimentation';
-import { HERO_REPOSITORY } from './tokens/HeroRepository.token';
+import { HEROINTERFACETOKEN } from './tokens/HeroRepository.token';
+import { HeroSchema } from 'src/common/databaseModels/hero.model';
 
 /**
  * @description
@@ -57,7 +57,7 @@ import { HERO_REPOSITORY } from './tokens/HeroRepository.token';
     DeleteHerosUseCase,
     GetHerosUseCase,
     {
-      provide: HERO_REPOSITORY,
+      provide: HEROINTERFACETOKEN,
       useClass: HerosRepositoryImp,
     },
   ],

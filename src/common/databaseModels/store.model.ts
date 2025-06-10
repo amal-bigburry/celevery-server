@@ -49,23 +49,6 @@ export class licenseDetails extends Document {
   kyc_document_url: string;
 }
 /**
- * The `Store` class represents the schema for the store entity. It contains information related to the store
- * such as the owner's details, contact information, license details, and physical location.
- *
- * The properties defined in this schema are:
- * - `store_owner_id`: The unique identifier of the store owner.
- * - `store_name`: The name of the store (must be unique).
- * - `store_contact_number`: The contact phone number for the store.
- * - `store_contact_email`: The contact email address for the store.
- * - `store_license_details`: An embedded object that holds the `licenseDetails` schema, which contains
- *   license and ID proof information.
- * - `address`: The physical address of the store.
- * - `lat`: The latitude of the store's location (optional).
- * - `log`: The longitude of the store's location (optional).
- *
- * The `Store` schema also includes `timestamps: true`, which automatically adds `createdAt` and `updatedAt`
- * fields to the schema for tracking when the document was created and last modified.
- *
  * Company: BigBurry Hypersystems LLP
  */
 @Schema({ timestamps: true })
@@ -89,6 +72,19 @@ export class Store extends Document {
   @Prop() address: string;
   @Prop() lat: number;
   @Prop() log: number;
+  @Prop() bank_account_holder_name: string;
+  @Prop() preferred_payment_method: string;
+  @Prop() license_file_url: string;
+  @Prop() store_warining: string;
+  @Prop() back_account_number: string;
+  @Prop() bank_ifsc_code: string;
+  @Prop() gst: string;
+  @Prop() pan: string;
+  @Prop() cin: string;
+  @Prop() vpa: string;
+  @Prop() kyc_document_type: string;
+  @Prop() kyc_document_number: string;
+  @Prop() kyc_document_url: string;
   @Prop({ required: true }) sunday_status: boolean;
   @Prop({ required: true }) sunday_open_at: string;
   @Prop({ required: true }) sunday_close_at: string;

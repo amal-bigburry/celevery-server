@@ -18,7 +18,7 @@ import { MesssageSendDto } from '../../../../common/dtos/MesssageSend.dto';
  * messages, and listing conversation identifiers. Implementers are responsible for ensuring
  * integration with persistence mechanisms such as databases or APIs.
  */
-export interface ISellerRepository {
+export interface SellerInterface {
   // create or add
   create(userId: string): Promise<string>;
   AddMessage(MesssageSendDto: MesssageSendDto): Promise<Array<object>>;

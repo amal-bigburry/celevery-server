@@ -7,4 +7,4 @@
 /**
  * Token for getting orders of a cake
  */
-export const GET_ORDERS_OFCAKE = Symbol('GET_ORDERS_OFCAKE');
+export const GETORDERWITHCAKEIDTOKEN = Symbol('GETORDERWITHCAKEIDTOKEN');

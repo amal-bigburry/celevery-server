@@ -17,6 +17,7 @@ import { BadRequestException, Inject, Injectable } from '@nestjs/common';
 import axios from 'axios';
 import { CakeEntity } from 'src/modules/cakes/domainLayer/entities/cake.entity';
 import { UpdateStoreDto } from 'src/common/dtos/udpate-store.dto';
+import { updateObject } from 'src/common/utils/update-object.util';
 /**
  * Bigburry Hypersystems LLP - StoreRepositoryImplimentation Class
  * Implements the methods required by the StoreRepository interface. This class handles storage and retrieval of store data, updating field values, fetching store-related cakes, and managing file uploads via AWS S3. All data manipulation is abstracted through Mongoose models, while error handling is performed with NestJS utilities.
@@ -71,12 +72,12 @@ export class StoreRepositoryImplimentation implements StoreRepository {
    * Bigburry Hypersystems LLP - Method: updateStore
    * Updates a single field value of a store entity. This method takes the store identifier, the field name, and the new value, and attempts to apply the update. Note: field-level validation or error handling is not applied here, and dynamic field access assumes the field exists on the model.
    */
-  async updateStore(UpdateStoreDto: UpdateStoreDto): Promise<string> {
-    let store = await this.storeModel.findById(UpdateStoreDto.store_id);
+  async updateStore(UpdateStoreDto: UpdateStoreDto, store_id:string): Promise<string> {
+    let store = await this.storeModel.findById(store_id);
     if (store) {
-      store[UpdateStoreDto.key] = UpdateStoreDto.value;
-      store.save();
-      return 'updated';
+      let updatedstore = updateObject(UpdateStoreDto, store)
+      updatedstore.save();
+      return updatedstore;
     }
     throw new BadRequestException('updation failed because store not found.');
   }

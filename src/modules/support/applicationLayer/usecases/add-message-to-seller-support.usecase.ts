@@ -7,7 +7,7 @@
  * making it accessible and manageable throughout the application.
  */
 import { Inject, Injectable } from '@nestjs/common';
-import { ISellerRepository } from '../interfaces/iseller-repository.interface';
+import { SellerInterface } from '../interfaces/iseller-repository.interface';
 import { MesssageSendDto } from '../../../../common/dtos/MesssageSend.dto';
 import { CREATE_SELLER_TOKEN } from '../../tokens/CreateSupportIDforSellerToken';
 import { Notify } from '../interfaces/notify.interface';
@@ -16,7 +16,7 @@ import { NOTIFY } from '../../tokens/Notity.token';
 export class AddMessageToSellerSupportUsecase {
   constructor(
     @Inject(CREATE_SELLER_TOKEN)
-    private readonly SellerRepository: ISellerRepository,
+    private readonly SellerRepository: SellerInterface,
     @Inject(NOTIFY)
     private readonly Notify: Notify,
   ) {}

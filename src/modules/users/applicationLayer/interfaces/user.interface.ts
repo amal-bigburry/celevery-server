@@ -50,7 +50,7 @@ import { CakeEntity } from 'src/modules/cakes/domainLayer/entities/cake.entity';
  * interchangeable use and easier testing within the system developed by Bigburry Hypersystems LLP.
  * ******************************************************************************************************
  */
-export interface UserRepository {
+export interface UserInterface {
   // finding
   findByEmail(email: string): Promise<UserEntity>;
   findByNumber(number: string): Promise<UserEntity | null>;

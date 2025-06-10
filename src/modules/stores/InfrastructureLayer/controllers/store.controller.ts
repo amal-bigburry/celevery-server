@@ -74,14 +74,15 @@ export class StoreController {
    */
 
   @HttpCode(HttpStatus.OK)
-  @Put()
+  @Put(':store_id')
   @UseGuards(JwtAuthGuard)
   async updatestore(
     @Req() request: AuthRequest,
     @Body() udpateStoreDto: UpdateStoreDto,
+    @Param('store_id') store_id:string,
   ) {
-    console.log(udpateStoreDto);
-    return this.updateStoreUsecase.execute(udpateStoreDto);
+    // console.log(udpateStoreDto)
+    return this.updateStoreUsecase.execute(udpateStoreDto, store_id);
   }
 
   /**

@@ -9,7 +9,7 @@ import { CakeCategoryDto } from '../../../../common/dtos/cakecategory.dto';
 /**
  * Returns interface of cakecategory repository
  */
-export interface CakeCategoryRepository {
+export interface CakeCategoryInterface {
   // find
   findAll(): Promise<Array<any>>;
   findCategoryById(cakeCategoryId: string): Promise<CakeCategoryDto>;

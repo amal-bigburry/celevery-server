@@ -20,9 +20,9 @@
  * Company: Bigburry Hypersystems LLP
  */
 import { Inject } from '@nestjs/common';
-import { HerosRepository } from '../interfaces/hero.interface';
+import { HeroInterface } from '../interfaces/hero.interface';
 import { HeroDto } from '../../../../common/dtos/hero.dto';
-import { HERO_REPOSITORY } from '../../tokens/HeroRepository.token';
+import { HEROINTERFACETOKEN } from '../../tokens/HeroRepository.token';
 /**
  * This class represents the use case responsible for creating new hero entries.
  * It is designed to handle only the execution logic relevant to creating a hero, thereby conforming
@@ -34,8 +34,8 @@ import { HERO_REPOSITORY } from '../../tokens/HeroRepository.token';
  */
 export class CreateHerosUseCase {
   constructor(
-    @Inject(HERO_REPOSITORY)
-    private readonly HerosRepository: HerosRepository,
+    @Inject(HEROINTERFACETOKEN)
+    private readonly HeroInterface: HeroInterface,
   ) {}
   /**
    * Executes the creation process for a new hero entry.
@@ -47,6 +47,6 @@ export class CreateHerosUseCase {
    * Company: Bigburry Hypersystems LLP
    */
   async execute(HeroDto: HeroDto, file) {
-    return await this.HerosRepository.create(HeroDto, file);
+    return await this.HeroInterface.create(HeroDto, file);
   }
 }

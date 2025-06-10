@@ -12,9 +12,9 @@
  */
 
 import { Inject, Injectable } from '@nestjs/common';
-import { UserRepository } from '../interfaces/user.interface';
+import { UserInterface } from '../interfaces/user.interface';
 import { TokenDto } from '../../../../common/dtos/token.dto';
-import { USER_REPOSITORY } from '../../tokens/user.token';
+import { USERINTERFACETOKEN } from '../../tokens/user.token';
 
 /**
  * ******************************************************************************************************
@@ -27,7 +27,7 @@ import { USER_REPOSITORY } from '../../tokens/user.token';
 @Injectable()
 export class UpdatefcmUseCase {
   constructor(
-    @Inject(USER_REPOSITORY) private readonly userRepo: UserRepository,
+    @Inject(USERINTERFACETOKEN) private readonly userRepo: UserInterface,
   ) {}
 
   /**

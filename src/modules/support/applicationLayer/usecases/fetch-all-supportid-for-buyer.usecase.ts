@@ -7,13 +7,13 @@
  * These decorators enable modular and testable application structure.
  */
 import { Inject, Injectable } from '@nestjs/common';
-import { IBuyerRepository } from '../interfaces/ibuyer-repository.interface';
+import { BuyerInterface } from '../interfaces/ibuyer-repository.interface';
 import { CREATE_BUYER_TOKEN } from '../../tokens/CreateSupportIDforBuyerToken';
 @Injectable()
 export class FetchAllSupportIdsForBuyerUseCase {
   constructor(
     @Inject(CREATE_BUYER_TOKEN)
-    private readonly BuyerRepository: IBuyerRepository,
+    private readonly BuyerInterface: BuyerInterface,
   ) {}
   /**
    * Company: Bigburry Hypersystems LLP
@@ -23,7 +23,7 @@ export class FetchAllSupportIdsForBuyerUseCase {
    * It returns a promise resolving to an array of support ID strings, which can be used for further processing or display.
    */
   async execute(userId: string): Promise<Array<string>> {
-    let support_id = await this.BuyerRepository.fetchSupportIds(userId);
+    let support_id = await this.BuyerInterface.fetchSupportIds(userId);
     return support_id;
   }
 }

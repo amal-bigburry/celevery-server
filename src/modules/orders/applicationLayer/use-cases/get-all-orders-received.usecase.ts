@@ -24,11 +24,13 @@ export class GetAllOrdersReceivedUseCase {
    */
   async execute(
     userId: string,
+    store_id:string,
     page: number,
     limit: number,
   ): Promise<PaginationDto> {
     const orders = await this.OrderRepository.findReceivedOrders(
       userId,
+      store_id,
       page,
       limit,
     );

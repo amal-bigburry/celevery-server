@@ -1,23 +1,21 @@
 /**
  * Company: Bigburry Hypersystems LLP
- * 
+ *
  * Importing required packages and interfaces to implement the notification mechanism
  * for seller support system. This implementation will use an MQTT service to publish
  * notification messages to relevant topics.
  */
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { ISellerRepository } from '../../../applicationLayer/interfaces/iseller-repository.interface';
 import { SellerSupportEntity } from '../../../domainLayer/entities/seller.support.entity';
-import { MesssageSendDto } from '../../../../../common/dtos/MesssageSend.dto';
-import { BadRequestException, Injectable } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { Notify } from '../../../applicationLayer/interfaces/notify.interface';
 import { MqttService } from 'src/modules/mqtt/applicationLayer/usecases/mqtt.usecase';
 import { PopDto } from 'src/common/dtos/pop.dto';
 
 /**
  * Company: Bigburry Hypersystems LLP
- * 
+ *
  * NotifyImp class implements the Notify interface to send notifications
  * via MQTT whenever there is an update in the support messages.
  * It publishes a simple "update" message to the provided MQTT topic.
@@ -37,7 +35,7 @@ export class NotifyImp implements Notify {
    */
   async seller(topic: string): Promise<string> {
     const notifydata: PopDto = {
-      message: "update",
+      message: 'update',
       topic: topic,
     };
     this.MqttService.publish(notifydata);
@@ -51,7 +49,7 @@ export class NotifyImp implements Notify {
    */
   async buyer(topic: string): Promise<string> {
     const notifydata: PopDto = {
-      message: "update",
+      message: 'update',
       topic: topic,
     };
     this.MqttService.publish(notifydata);

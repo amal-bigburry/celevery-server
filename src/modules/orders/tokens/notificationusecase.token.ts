@@ -7,4 +7,4 @@
 /**
  * Token for Notification UseCase
  */
-export const NOTIFICATION_USECASE = Symbol('NOTIFICATION_USECASE');
+export const NOTIFICATIONINTERFACETOKEN = Symbol('NOTIFICATIONINTERFACETOKEN');

@@ -3,13 +3,13 @@
  * All rights reserved © Bigburry Hypersystems LLP
  */
 import { BadRequestException, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
-import { CakeRepository } from '../interfaces/cake.interface';
+import { CakeInterface } from '../interfaces/cake.interface';
 import { CakeDto } from '../../../../common/dtos/cake.dto';
-import { CAKE_REPOSITORY } from '../../tokens/cake.token';
+import { CAKEINTERFACETOKEN } from '../../tokens/cake.token';
 import { CAKE_CATEGORY_REPOSITORY } from '../../tokens/cake-category.token';
-import { CakeCategoryRepository } from '../interfaces/cake-category.interface';
 import { IGetStoreUseCase } from './get-store.usecase';
 import { GETSTORE } from '../../tokens/get-store.token';
+import { CakecategoryRepositoryImp } from '../../infrastructureLayer/implimentations/ExternalImplimentations/cake-category.implimentation';
 /**
  * Injectable use case class responsible for creating a cake entity
  */
@@ -19,12 +19,12 @@ export class CreateCakeUseCase {
     /**
      * Injecting CakeRepository for cake related data operations
      */
-    @Inject(CAKE_REPOSITORY) private readonly CakeRepository: CakeRepository,
+    @Inject(CAKEINTERFACETOKEN) private readonly CakeInterface: CakeInterface,
     /**
      * Injecting CakeCategoryRepository for category validation
      */
     @Inject(CAKE_CATEGORY_REPOSITORY)
-    private readonly cakeCategoryRepository: CakeCategoryRepository,
+    private readonly cakeCategoryRepository: CakecategoryRepositoryImp,
     /**
      * Injecting GetStoreUseCase to validate store existence
      */
@@ -67,12 +67,12 @@ export class CreateCakeUseCase {
     /**
      * Upload the cake images and get URLs
      */
-    let imageUrls = await this.CakeRepository.uploadImage(files);
+    let imageUrls = await this.CakeInterface.uploadImage(files);
     cakeDto.cake_image_urls = imageUrls ? imageUrls : [];
     /**
      * Create the cake record in the repository
      */
-    let cake = await this.CakeRepository.createcake(cakeDto);
+    let cake = await this.CakeInterface.createcake(cakeDto);
     /**
      * Return the created cake or empty object if creation failed
      */

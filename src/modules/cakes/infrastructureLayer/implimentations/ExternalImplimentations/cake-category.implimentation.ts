@@ -2,7 +2,7 @@
  * importing required packages
  */
 import { Injectable } from '@nestjs/common';
-import { CakeCategoryRepository } from '../../../applicationLayer/interfaces/cake-category.interface';
+import { CakeCategoryInterface } from '../../../applicationLayer/interfaces/cake-category.interface';
 import { FindCakeCategoryByIDUseCase } from 'src/modules/cakecategories/applicationLayer/use-cases/find-category-by-id.usecase';
 import { CakeCategoryDto } from 'src/common/dtos/cakecategory.dto';
 /**
@@ -11,7 +11,7 @@ import { CakeCategoryDto } from 'src/common/dtos/cakecategory.dto';
  * and the domain-specific repository interface.
  */
 @Injectable()
-export class CakecategoryRepositoryImp implements CakeCategoryRepository {
+export class CakecategoryRepositoryImp implements CakeCategoryInterface {
   /**
    * Injects the FindCakeCategoryByIDUseCase which contains the business logic
    * to retrieve cake categories by their ID.

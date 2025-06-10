@@ -8,12 +8,12 @@
  */
 import { Inject, Injectable } from '@nestjs/common';
 import { CREATE_SELLER_TOKEN } from '../../tokens/CreateSupportIDforSellerToken';
-import { ISellerRepository } from '../interfaces/iseller-repository.interface';
+import { SellerInterface } from '../interfaces/iseller-repository.interface';
 @Injectable()
 export class CreateSupportIDforSellerUsecase {
   constructor(
     @Inject(CREATE_SELLER_TOKEN)
-    private readonly SellerRepository: ISellerRepository,
+    private readonly SellerInterface: SellerInterface,
   ) {}
   /**
    * Company: Bigburry Hypersystems LLP
@@ -24,7 +24,7 @@ export class CreateSupportIDforSellerUsecase {
    * This allows the system to consistently generate and manage support identifiers for sellers.
    */
   async execute(userId: string): Promise<string> {
-    let support_id = await this.SellerRepository.create(userId);
+    let support_id = await this.SellerInterface.create(userId);
     return support_id;
   }
 }

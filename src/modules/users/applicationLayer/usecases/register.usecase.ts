@@ -11,18 +11,18 @@
  * ******************************************************************************************************
  */
 import { UnauthorizedException, Inject, Injectable } from '@nestjs/common';
-import { UserRepository } from '../interfaces/user.interface';
+import { UserInterface } from '../interfaces/user.interface';
 import { RegisterDto } from '../../../../common/dtos/Register.dto';
-import { USER_REPOSITORY } from '../../tokens/user.token';
-import { IOTPVerifyingService } from '../interfaces/otp-verifying-service.interface';
+import { USERINTERFACETOKEN } from '../../tokens/user.token';
+import { OtpVerificationInterface } from '../interfaces/otp-verifying-service.interface';
 import { OTP_VERIFICATION_SERVICE } from '../../tokens/otp-verifying-service.token';
 import { JwtService } from '@nestjs/jwt';
 @Injectable()
 export class RegisterUseCase {
   constructor(
-    @Inject(USER_REPOSITORY) private readonly userRepo: UserRepository,
+    @Inject(USERINTERFACETOKEN) private readonly userRepo: UserInterface,
     @Inject(OTP_VERIFICATION_SERVICE)
-    private readonly OTPVerifyingService: IOTPVerifyingService,
+    private readonly OTPVerifyingService: OtpVerificationInterface,
     private readonly jwtService: JwtService,
   ) {}
   /**

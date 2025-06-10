@@ -11,17 +11,17 @@
  * ******************************************************************************************************
  */
 import { Inject, Injectable } from '@nestjs/common';
-import { UserRepository } from '../interfaces/user.interface';
+import { UserInterface } from '../interfaces/user.interface';
 import { ResetPasswordDto } from '../../../../common/dtos/ResetPassword.dto';
-import { USER_REPOSITORY } from '../../tokens/user.token';
+import { USERINTERFACETOKEN } from '../../tokens/user.token';
 import { OTP_VERIFICATION_SERVICE } from '../../tokens/otp-verifying-service.token';
-import { IOTPVerifyingService } from '../interfaces/otp-verifying-service.interface';
+import { OtpVerificationInterface } from '../interfaces/otp-verifying-service.interface';
 @Injectable()
 export class UpdatePasswordUsecase {
   constructor(
-    @Inject(USER_REPOSITORY) private readonly userRepo: UserRepository,
+    @Inject(USERINTERFACETOKEN) private readonly userRepo: UserInterface,
     @Inject(OTP_VERIFICATION_SERVICE)
-    private readonly OTPVerifyingService: IOTPVerifyingService,
+    private readonly OTPVerifyingService: OtpVerificationInterface,
   ) {}
   /**
    * Verifies the OTP and updates the user's password if verification succeeds.

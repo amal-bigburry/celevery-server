@@ -24,7 +24,7 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Order } from './domainLayer/entities.ts/order.entity';
-import { OrderSchema } from './infrastructureLayer/models/order.model';
+import { OrderSchema } from '../../common/databaseModels/order.model';
 import { OrderRepositoryImp } from './infrastructureLayer/implimentations/InternalImplimentations/order.implimenation';
 import { GetAllOrdersReceivedUseCase } from './applicationLayer/use-cases/get-all-orders-received.usecase';
 import { GetAllOrdersPlacedUseCase } from './applicationLayer/use-cases/get-all-orders-placed.usecase';
@@ -36,13 +36,13 @@ import { ChangeOrderStatus } from './infrastructureLayer/controllers/change-orde
 import { ChangeOrderStatusUseCase } from './applicationLayer/use-cases/change-order-status.usecase';
 import { StoreModule } from '../stores/store.module';
 import { ORDERINTERFACETOKEN } from './tokens/orderRepository.token';
-import { GET_CAKE_DETAILS } from './tokens/get_cake_details.token';
-import { GET_STORE_DETAILS } from './tokens/get_store_details.token';
-import { GET_USER_DETAILS } from './tokens/get_user_details.token';
+import {  CAKEDETAILINTERFACETOKEN } from './tokens/get_cake_details.token';
+import { GETSTOREINTERFACETOKEN } from './tokens/get_store_details.token';
+import { GETUSERDETAILINTERFACETOKEN } from './tokens/get_user_details.token';
 import { IGetCakeDetailsUseCaseImp } from './infrastructureLayer/implimentations/ExternalImplimentations/get-cake-details.implimentation';
 import { IGetStoreUseCaseImp } from './infrastructureLayer/implimentations/ExternalImplimentations/get-store.implimentation';
 import { IGetUserDetailsUsecaseImp } from './infrastructureLayer/implimentations/ExternalImplimentations/get-user-detatils.implimentation';
-import { NOTIFICATION_USECASE } from './tokens/notificationusecase.token';
+import { NOTIFICATIONINTERFACETOKEN } from './tokens/notificationusecase.token';
 import { INotificationUseCaseImp } from './infrastructureLayer/implimentations/ExternalImplimentations/notification.implimentation';
 import { MQTTTOKEN } from './tokens/mqtt.token';
 import { IMqttServiceImp } from './infrastructureLayer/implimentations/ExternalImplimentations/mqtt-service.implimentation';
@@ -52,7 +52,7 @@ import { GetOrdersToAnalyse } from './applicationLayer/use-cases/get-order-to-an
 import { OrderController } from './infrastructureLayer/controllers/orders.controller';
 import { GetOrderDetailsUseCase } from './applicationLayer/use-cases/get_order_details.usecase';
 import { GetAllPaymentWaitingOrdersUseCase } from './applicationLayer/use-cases/get-all-payment-waiting-orders.usecase';
-import { GET_ORDERS_OFCAKE } from './tokens/get_orders_with_cakeid.token';
+import { GETORDERWITHCAKEIDTOKEN } from './tokens/get_orders_with_cakeid.token';
 import { GetOrdersWithCakeIdImp } from './infrastructureLayer/implimentations/InternalImplimentations/get-orders-with-cakeid.implimentation';
 import { UPDATE_KNOWN_FOR_IN_CAKE } from './tokens/update_known_for_in_cake.token';
 import { UpdateKnownForOfCakeUseCaseImp } from './infrastructureLayer/implimentations/InternalImplimentations/update-knownfor.implimentation';
@@ -94,23 +94,23 @@ import { AutoCancelWorker } from './applicationLayer/use-cases/auto-cancel.useca
       useClass: OrderRepositoryImp,
     },
     {
-      provide: GET_CAKE_DETAILS,
+      provide: CAKEDETAILINTERFACETOKEN,
       useClass: IGetCakeDetailsUseCaseImp,
     },
     {
-      provide: GET_STORE_DETAILS,
+      provide: GETSTOREINTERFACETOKEN,
       useClass: IGetStoreUseCaseImp,
     },
     {
-      provide: GET_USER_DETAILS,
+      provide: GETUSERDETAILINTERFACETOKEN,
       useClass: IGetUserDetailsUsecaseImp,
     },
     {
-      provide: NOTIFICATION_USECASE,
+      provide: NOTIFICATIONINTERFACETOKEN,
       useClass: INotificationUseCaseImp,
     },
     {
-      provide: GET_ORDERS_OFCAKE,
+      provide: GETORDERWITHCAKEIDTOKEN,
       useClass: GetOrdersWithCakeIdImp,
     },
     {

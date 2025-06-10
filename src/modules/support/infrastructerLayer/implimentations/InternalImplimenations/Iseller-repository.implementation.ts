@@ -8,7 +8,7 @@
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
 import { BadRequestException, Injectable } from '@nestjs/common';
-import { ISellerRepository } from 'src/modules/support/applicationLayer/interfaces/iseller-repository.interface';
+import { SellerInterface } from 'src/modules/support/applicationLayer/interfaces/iseller-repository.interface';
 import { SellerSupportEntity } from 'src/modules/support/domainLayer/entities/seller.support.entity';
 import { MesssageSendDto } from 'src/common/dtos/MesssageSend.dto';
 
@@ -20,7 +20,7 @@ import { MesssageSendDto } from 'src/common/dtos/MesssageSend.dto';
  * the injected Mongoose model instance. All CRUD operations and validations are handled here.
  */
 @Injectable()
-export class ISellerRepositoryImp implements ISellerRepository {
+export class ISellerRepositoryImp implements SellerInterface {
 
 /** 
  * Company: Bigburry Hypersystems LLP

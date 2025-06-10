@@ -16,7 +16,7 @@ import { BadRequestException, Injectable } from '@nestjs/common';
 import getDistanceFromLatLonInKm from 'src/common/utils/getDistanceFromLatLonInKm';
 import { ConfigService } from '@nestjs/config';
 import { STORE_STATUS } from 'src/common/utils/contants';
-import { CakeRepository } from '../../../applicationLayer/interfaces/cake.interface';
+import { CakeInterface } from '../../../applicationLayer/interfaces/cake.interface';
 import { InjectModel } from '@nestjs/mongoose';
 import sharp from 'sharp';
 import { IGetStoreUseCase } from '../../../applicationLayer/use-cases/get-store.usecase';
@@ -26,7 +26,7 @@ import { getCurrentDayName } from 'src/common/utils/getCurrentDayName';
  * implementation of cake repository
  */
 @Injectable()
-export class CakeRepositoryImp implements CakeRepository {
+export class CakeRepositoryImp implements CakeInterface {
   /**
    * constructor injecting required dependencies
    */

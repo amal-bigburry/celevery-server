@@ -28,10 +28,10 @@ export class updateStoreUsecase {
    * The execute method serves as the primary exposed function within this use case. It accepts a store identifier, the name of the field to be updated, and the new value to apply. It then delegates the update operation to the data repository layer. The operation is asynchronous and returns a string value which is expected to represent the result or status of the update process.
    * This abstraction supports decoupling between business rules and persistence logic, aligning with clean architecture principles employed at Bigburry Hypersystems LLP.
    */
-  async execute(UpdateStoreDto: UpdateStoreDto): Promise<object> {
+  async execute(UpdateStoreDto: UpdateStoreDto, store_id:string): Promise<object> {
     try {
-      const order = await this.Store.updateStore(UpdateStoreDto);
-      return { status: 'updated', order };
+      const udaptedstore = await this.Store.updateStore(UpdateStoreDto,store_id);
+      return { status: 'updated', udaptedstore };
     } catch (error) {
       throw new InternalServerErrorException(error);
     }

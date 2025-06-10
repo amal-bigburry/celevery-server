@@ -14,12 +14,12 @@ import {
 } from '@nestjs/common';
 import { OrderDto } from '../../../../common/dtos/Order.dto';
 import { ORDERINTERFACETOKEN } from '../../tokens/orderRepository.token';
-import { NOTIFICATION_USECASE } from '../../tokens/notificationusecase.token';
-import { GET_STORE_DETAILS } from '../../tokens/get_store_details.token';
-import { GET_USER_DETAILS } from '../../tokens/get_user_details.token';
-import { GET_CAKE_DETAILS } from '../../tokens/get_cake_details.token';
+import { NOTIFICATIONINTERFACETOKEN } from '../../tokens/notificationusecase.token';
+import { GETSTOREINTERFACETOKEN } from '../../tokens/get_store_details.token';
+import { GETUSERDETAILINTERFACETOKEN } from '../../tokens/get_user_details.token';
+import { CAKEDETAILINTERFACETOKEN } from '../../tokens/get_cake_details.token';
 import { MQTTTOKEN } from '../../tokens/mqtt.token';
-import { GET_ORDERS_OFCAKE } from '../../tokens/get_orders_with_cakeid.token';
+import { GETORDERWITHCAKEIDTOKEN } from '../../tokens/get_orders_with_cakeid.token';
 import { UPDATE_KNOWN_FOR_IN_CAKE } from '../../tokens/update_known_for_in_cake.token';
 import { STORE_STATUS } from 'src/common/utils/contants';
 import { PopDto } from 'src/common/dtos/pop.dto';
@@ -47,15 +47,15 @@ export class RequestOrderUseCase {
   constructor(
     @Inject(ORDERINTERFACETOKEN)
     private readonly OrderRepository: OrderInterface,
-    @Inject(NOTIFICATION_USECASE)
+    @Inject(NOTIFICATIONINTERFACETOKEN)
     private readonly notificationUseCase: NotificationInterface,
-    @Inject(GET_STORE_DETAILS)
+    @Inject(GETSTOREINTERFACETOKEN)
     private readonly getstoreUsecase: GetstoreInterface,
-    @Inject(GET_USER_DETAILS)
+    @Inject(GETUSERDETAILINTERFACETOKEN)
     private readonly getuserDetailsUseCase: GetUserDetailInterface,
-    @Inject(GET_CAKE_DETAILS)
+    @Inject(CAKEDETAILINTERFACETOKEN)
     private readonly getCakeDetailsUseCase: CakeDetailsInterface,
-    @Inject(GET_ORDERS_OFCAKE)
+    @Inject(GETORDERWITHCAKEIDTOKEN)
     private readonly getOrdersWithCakeId: GetOrdersWithCakeIdInterface,
     @Inject(UPDATE_KNOWN_FOR_IN_CAKE)
     private readonly updateKnownForOfCake: UpdateKnownForInterface,

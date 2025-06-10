@@ -6,8 +6,8 @@
  * Importing required packages for the use case
  */
 import { Inject, Injectable } from '@nestjs/common';
-import { CakeRepository } from '../interfaces/cake.interface';
-import { CAKE_REPOSITORY } from '../../tokens/cake.token';
+import { CakeInterface } from '../interfaces/cake.interface';
+import { CAKEINTERFACETOKEN } from '../../tokens/cake.token';
 /**
  * Injectable service class to retrieve similar cakes based on cake and variant IDs
  */
@@ -17,7 +17,7 @@ export class GetSimilarCakesUseCase {
     /**
      * Injecting CakeRepository to access cake data
      */
-    @Inject(CAKE_REPOSITORY) private readonly CakeRepository: CakeRepository,
+    @Inject(CAKEINTERFACETOKEN) private readonly CakeInterface: CakeInterface,
   ) {}
   /**
    * Placeholder execute method intended to find similar cakes

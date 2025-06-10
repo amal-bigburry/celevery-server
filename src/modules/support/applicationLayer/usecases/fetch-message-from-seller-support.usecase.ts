@@ -8,12 +8,12 @@
  */
 import { Inject, Injectable } from '@nestjs/common';
 import { CREATE_SELLER_TOKEN } from '../../tokens/CreateSupportIDforSellerToken';
-import { ISellerRepository } from '../interfaces/iseller-repository.interface';
+import { SellerInterface } from '../interfaces/iseller-repository.interface';
 @Injectable()
 export class FetchMessageFromSellerSupportUsecase {
   constructor(
     @Inject(CREATE_SELLER_TOKEN)
-    private readonly SellerRepository: ISellerRepository,
+    private readonly SellerInterface: SellerInterface,
   ) {}
   /**
    * Company: Bigburry Hypersystems LLP
@@ -23,7 +23,7 @@ export class FetchMessageFromSellerSupportUsecase {
    * It returns a promise that resolves to an array of message objects, representing the conversation history for the given support ID.
    */
   async execute(support_id: string): Promise<Array<object>> {
-    let Messages = await this.SellerRepository.fetchMessages(support_id);
+    let Messages = await this.SellerInterface.fetchMessages(support_id);
     return Messages;
   }
 }

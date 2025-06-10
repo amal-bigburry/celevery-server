@@ -4,13 +4,13 @@
 import { Injectable } from '@nestjs/common';
 import { StoreDto } from 'src/common/dtos/store.dto';
 import { GetStoreUsecase } from 'src/modules/stores/applicationLayer/usercases/get-store-details.usecase';
-import { IGetStoreInterface } from '../../../applicationLayer/interfaces/get-store.interface';
+import { GetStoreInterface } from '../../../applicationLayer/interfaces/get-store.interface';
 /**
  * Injectable implementation class for the IGetStoreUseCase interface.
  * Delegates the store fetching operation to the injected getStoreUsecase service.
  */
 @Injectable()
-export class GetStoreImplimentation implements IGetStoreInterface {
+export class GetStoreImplimentation implements GetStoreInterface {
   constructor(private readonly getstoreUsecase: GetStoreUsecase) {}
   /**
    * Executes the use case to fetch store details by store_id.

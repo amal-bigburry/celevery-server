@@ -10,7 +10,7 @@ import { Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { JwtStrategy } from 'src/middlewares/jwt.strategy';
 import { DocumentsController } from './infrastructureLayer/controllers/documents.controller';
-import { DocumentSchema } from './infrastructureLayer/models/documents.model';
+import { DocumentSchema } from '../../common/databaseModels/documents.model';
 import { DocumentRepositoryImpl } from './infrastructureLayer/implimentations/document.implimenation';
 import { DOCUMENT_REPOSITORY } from './tokens/documentRepository.token';
 import { GET_TC } from './tokens/gettermsandcondition.token';

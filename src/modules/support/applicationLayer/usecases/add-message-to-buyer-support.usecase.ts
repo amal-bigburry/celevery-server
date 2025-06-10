@@ -8,8 +8,8 @@
  */
 import { Inject, Injectable } from '@nestjs/common';
 import { CREATE_BUYER_TOKEN } from '../../tokens/CreateSupportIDforBuyerToken';
-import { ISellerRepository } from '../interfaces/iseller-repository.interface';
 import { MesssageSendDto } from '../../../../common/dtos/MesssageSend.dto';
+import { BuyerInterface } from '../interfaces/ibuyer-repository.interface';
 
 /** 
  * Company: Bigburry Hypersystems LLP
@@ -22,10 +22,10 @@ import { MesssageSendDto } from '../../../../common/dtos/MesssageSend.dto';
 export class AddMessageToBuyerSupportUsecase {
   constructor(
     @Inject(CREATE_BUYER_TOKEN)
-    private readonly SellerRepository: ISellerRepository,
+    private readonly BuyerInterface: BuyerInterface,
   ) {}
   async execute(MesssageSendDto: MesssageSendDto): Promise<Array<object>> {
-    let Messages = await this.SellerRepository.AddMessage(MesssageSendDto);
+    let Messages = await this.BuyerInterface.AddMessage(MesssageSendDto);
     return Messages;
   }
 }

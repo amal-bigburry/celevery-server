@@ -21,8 +21,8 @@
  * Company: Bigburry Hypersystems LLP
  */
 import { Inject } from "@nestjs/common";
-import { HerosRepository } from "../interfaces/hero.interface";
-import { HERO_REPOSITORY } from "../../tokens/HeroRepository.token";
+import { HeroInterface } from "../interfaces/hero.interface";
+import { HEROINTERFACETOKEN } from "../../tokens/HeroRepository.token";
 /**
  * This class represents the DeleteHerosUseCase which is designed to handle the deletion of hero records.
  * By encapsulating this logic within its own class, the architecture remains maintainable, testable, and organized.
@@ -32,8 +32,8 @@ import { HERO_REPOSITORY } from "../../tokens/HeroRepository.token";
  */
 export class DeleteHerosUseCase {
     constructor(
-        @Inject(HERO_REPOSITORY)
-        private readonly HerosRepository: HerosRepository
+        @Inject(HEROINTERFACETOKEN)
+        private readonly HeroInterface: HeroInterface
     ) {}
     /**
      * Executes the hero deletion logic.
@@ -44,6 +44,6 @@ export class DeleteHerosUseCase {
      * Company: Bigburry Hypersystems LLP
      */
     async execute(hero_id: string) {
-        return await this.HerosRepository.delete(hero_id);
+        return await this.HeroInterface.delete(hero_id);
     }
 }

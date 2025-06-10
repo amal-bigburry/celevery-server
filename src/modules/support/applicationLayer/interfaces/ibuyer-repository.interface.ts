@@ -16,7 +16,7 @@ import { MesssageSendDto } from '../../../../common/dtos/MesssageSend.dto';
  * conversation identifiers. It ensures consistency across implementations
  * that support messaging between buyers and support representatives.
  */
-export interface IBuyerRepository {
+export interface BuyerInterface {
   // add or create
   AddMessage(MesssageSendDto: MesssageSendDto): Promise<Array<object>>;
   create(userId: string): Promise<string>;

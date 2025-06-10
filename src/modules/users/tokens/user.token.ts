@@ -10,4 +10,4 @@
  * repository implementation details from dependent components.
  * ******************************************************************************************************
  */
-export const USER_REPOSITORY = Symbol('UserRepository');
+export const USERINTERFACETOKEN = Symbol('USERINTERFACETOKEN');

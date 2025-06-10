@@ -6,18 +6,15 @@
  * Importing required packages for updating cake details
  */
 import { Inject, Injectable } from '@nestjs/common';
-import { CakeRepository } from '../interfaces/cake.interface';
-import { CAKE_REPOSITORY } from '../../tokens/cake.token';
+import { CakeInterface } from '../interfaces/cake.interface';
+import { CAKEINTERFACETOKEN } from '../../tokens/cake.token';
 /**
  * Injectable service class to update the "known for" attribute of a cake
  */
 @Injectable()
 export class UpdateKnownFor {
   constructor(
-    /**
-     * Injecting CakeRepository to access cake update functionality
-     */
-    @Inject(CAKE_REPOSITORY) private readonly CakeRepository: CakeRepository,
+    @Inject(CAKEINTERFACETOKEN) private readonly CakeInterface: CakeInterface,
   ) {}
   /**
    * Executes the update of the known_for property for a given cake
@@ -26,7 +23,7 @@ export class UpdateKnownFor {
    * @returns Promise resolving to a string confirmation message
    */
   async execute(cake_id: string, known_for: string): Promise<string> {
-    await this.CakeRepository.updateKnownfor(cake_id, known_for);
+    await this.CakeInterface.updateKnownfor(cake_id, known_for);
     return 'updated';
   }
 }

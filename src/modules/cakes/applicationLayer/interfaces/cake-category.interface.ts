@@ -9,7 +9,7 @@ import { CakeCategoryDto } from 'src/common/dtos/cakecategory.dto';
 /**
  * Interface defining the Cake Category Repository contract
  */
-export interface CakeCategoryRepository {
+export interface CakeCategoryInterface {
   /**
    * Finds a cake category by its unique identifier
    * @param cakeCategoryId - The ID of the cake category to find
