@@ -112,8 +112,9 @@ export class PaymentController {
    * Company: BigBurry Hypersystems LLP
    */
   @HttpCode(HttpStatus.CREATED)
-  @Post('/status_webhook')
+  @Post('status_webhook')
   async status_webhook(@Body() body: any) {
+    // console.log('working')
     let webhook_request_data = body?.data;
     // find what this request is about
     let _id: string;
@@ -124,9 +125,11 @@ export class PaymentController {
     } else if (webhook_request_data?.refund != undefined) {
       _id = webhook_request_data?.refund?._id;
     }
+    // console.log(webhook_request_data)
     let validOrder = allOrders.find((order) => order.id === _id);
     if (!validOrder) {
-      throw new BadGatewayException('This Order is Is a valid order');
+      console.log(validOrder)
+      throw new BadGatewayException('This Order is Not a valid order');
     }
     let updatedstatus: ChangeOrderStatusDto = {
       _id: '',

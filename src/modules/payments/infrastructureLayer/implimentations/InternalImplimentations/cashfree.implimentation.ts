@@ -70,7 +70,7 @@ export class CashFreePaymentGatewayImp implements PaymentGateway {
       throw new BadRequestException('The order is already paid.');
     }
     const orderData = {
-      _id: DtoToGetPaymentSessionId._id,
+      order_id: DtoToGetPaymentSessionId._id,
       order_amount: 200,
       order_currency: 'INR',
       customer_details: {
