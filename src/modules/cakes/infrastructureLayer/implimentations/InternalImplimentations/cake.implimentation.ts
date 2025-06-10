@@ -60,7 +60,7 @@ export class CakeRepositoryImp implements CakeInterface {
    * Applies pagination logic on the results
    * Returns paginated cake data with store info and distance
    */
-  async findCakesFromOpenStore(): Promise<CakeEntity[]> {
+  async findAvailableCakes(user_id:string): Promise<CakeEntity[]> {
     const cakes = await this.cakeModel.find().exec();
     const cakeResults = await Promise.all(
       cakes.map(async (cake) => {
@@ -70,8 +70,14 @@ export class CakeRepositoryImp implements CakeInterface {
         const openAt = store[`${currentDay}_open_at`];
         const closeAt = store[`${currentDay}_close_at`];
         const isOpen = isStoreOpen(openAt, closeAt);
+        // console.log(isOpen,cake)
+        const isActive = store.is_active
+        if(store.store_owner_id == user_id){
+          return null
+        }
         const isApproved = store.store_status === STORE_STATUS.APPROVED;
-        return isOpen || isApproved ? cake : null;
+        // console.log(isOpen, isApproved, isActive)
+        return isOpen && isApproved && isActive ? cake : null;
       }),
     );
     return cakeResults.filter((cake) => cake !== null);
@@ -103,6 +109,7 @@ export class CakeRepositoryImp implements CakeInterface {
     category_id: string,
     log: number,
     lat: number,
+    user_id:string,
   ): Promise<any[]> {
     let filter: any = {};
     if (category_id) {
@@ -110,7 +117,7 @@ export class CakeRepositoryImp implements CakeInterface {
     } else if (keyword) {
       filter.cake_name = { $regex: keyword, $options: 'i' };
     }
-    let openStoreCakes = await this.findCakesFromOpenStore();
+    let openStoreCakes = await this.findAvailableCakes(user_id);
     openStoreCakes = openStoreCakes?.filter(
       (cake) =>
         cake?.cake_name?.toLowerCase()?.includes(keyword?.toLowerCase()) ||

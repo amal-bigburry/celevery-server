@@ -65,6 +65,8 @@ export class Store extends Document {
   store_contact_email: string;
   @Prop({ required: true, default: STORE_STATUS.REQUESTED })
   store_status: string;
+  @Prop({ required: true, default: false })
+  is_active: boolean;
   @Prop({ default: STORE_WARNINGS.REQUESTED, required: true })
   store_warnings: string;
   @Prop({ required: true, type: licenseDetails })

@@ -24,13 +24,9 @@ export class GetAllOrdersPlacedUseCase {
    */
   async execute(
     user_id: string,
-    page: number,
-    limit: number,
-  ): Promise<PaginationDto> {
+  ): Promise<object[]> {
     const orders = await this.OrderRepository.findPlacedOrders(
-      user_id,
-      page,
-      limit,
+      user_id
     );
     return orders;
   }

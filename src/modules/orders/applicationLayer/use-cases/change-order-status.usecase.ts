@@ -17,6 +17,7 @@ import { ORDER_STATUS } from 'src/common/utils/contants';
 import { ORDERINTERFACETOKEN } from '../../tokens/orderRepository.token';
 import { OrderDto } from '../../../../common/dtos/Order.dto';
 import { OrderInterface } from '../interfaces/order.interface';
+import { orderQueue } from 'src/common/utils/order.queque';
 /**
  * Injectable service file that handles the order status change
  */
@@ -51,6 +52,18 @@ export class ChangeOrderStatusUseCase {
       throw new UnauthorizedException(
         'buyers are not allowed to confirm the order.',
       );
+    }
+    const jobId = `cancel-order-${order.id}`; // Match the jobId used when adding
+    try {
+      const job = await orderQueue.getJob(jobId);
+      if (job) {
+        await job.remove(); // Remove the job from the queue
+        console.log(`Cancelled job for order ${order.id}`);
+      } else {
+        console.log(`No job found for order ${order.id}`);
+      }
+    } catch (error) {
+      console.error(`Error cancelling job for order ${order.id}:`, error);
     }
     let updated_order: OrderDto;
     if (changeOrderStatusDto.new_status === ORDER_STATUS.CANCELLED) {

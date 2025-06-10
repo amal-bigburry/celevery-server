@@ -13,6 +13,7 @@ import {
   HttpStatus,
   Param,
   Post,
+  Query,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -94,10 +95,23 @@ export class SellerSupportController {
   async get_messages(
     @Req() request: AuthRequest,
     @Param('support_id') support_id: string,
+    @Query('page') page = 1,
+    @Query('limit') limit = 10,
   ) {
-    let res =
+    let data =
       await this.FetchMessageFromSellerSupportUsecase.execute(support_id);
-    return res;
+    const total = data.length;
+    const totalPages = Math.ceil(total / limit);
+    const start = (page - 1) * limit;
+    const end = start + limit;
+    const paginatedData = data.slice(start, end);
+    return {
+      data: paginatedData,
+      total,
+      page,
+      limit,
+      totalPages,
+    };
   }
 
   /**

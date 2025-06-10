@@ -29,10 +29,7 @@ export class AnalyticsController {
    * @param getTrendingProducts - Use case to get trending products
    * @param getPopularProducts - Use case to get popular products
    */
-  constructor(
-    private readonly getStoreLocations: GetStoreLocationsUsecase,
-  ) {}
-
+  constructor(private readonly getStoreLocations: GetStoreLocationsUsecase) {}
   @HttpCode(HttpStatus.OK)
   @Get('/storelocations')
   @UseGuards(JwtAuthGuard)
@@ -40,7 +37,18 @@ export class AnalyticsController {
     @Query('page') page = 1,
     @Query('limit') limit = 10,
   ) {
-    let res = await this.getStoreLocations.execute(page, limit);
-    return res;
+    let data = await this.getStoreLocations.execute();
+    const total = data.length;
+    const totalPages = Math.ceil(total / limit);
+    const start = (page - 1) * limit;
+    const end = start + limit;
+    const paginatedData = data.slice(start, end);
+    return {
+      data: paginatedData,
+      total,
+      page,
+      limit,
+      totalPages,
+    };
   }
 }

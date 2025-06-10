@@ -12,6 +12,8 @@ export function isStoreOpen(openTime: string, closeTime: string): boolean {
   const openMinutes = parseMilitaryTimeToMinutes(openTime);
   const closeMinutes = parseMilitaryTimeToMinutes(closeTime);
 
+  // console.log(closeTime)
+
   if (closeMinutes > openMinutes) {
     return nowMinutes >= openMinutes && nowMinutes < closeMinutes;
   } else {

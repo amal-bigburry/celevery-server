@@ -69,6 +69,8 @@ export class Order extends Document {
   cancellation_reason: string;
   @Prop()
   quantity: number;
+  @Prop()
+  store_id: string;
 }
 
 /**

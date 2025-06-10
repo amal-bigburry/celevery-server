@@ -99,8 +99,12 @@ export class OrderRepositoryImp implements OrderInterface {
     let cake = await this.getCakeDetailsUseCase.getcakedetail(order.cake_id);
     // Validate if the cake exists
     if (!cake) throw new UnauthorizedException('Cake not found');
-    const buyer = await this.IGetUserDetailUseCase.getuserdetail(order.buyer_id);
-    const seller = await this.IGetUserDetailUseCase.getuserdetail(order.seller_id);
+    const buyer = await this.IGetUserDetailUseCase.getuserdetail(
+      order.buyer_id,
+    );
+    const seller = await this.IGetUserDetailUseCase.getuserdetail(
+      order.seller_id,
+    );
     let mqttdata: PopDto = {
       topic: seller._id,
       message: `{"type": "cancel_order", "data": "${_id}"}`,
@@ -202,15 +206,10 @@ export class OrderRepositoryImp implements OrderInterface {
    */
   async findPlacedOrders(
     user_id: string,
-    page: number = 1,
-    limit: number = 10,
-  ): Promise<PaginationDto> {
-    const skip = (page - 1) * limit;
+  ): Promise<object[]> {
     const [orders, total] = await Promise.all([
       this.orderModel
         .find({ buyer_id: user_id })
-        .skip(skip)
-        .limit(limit)
         .sort({ createdAt: -1 })
         .exec(),
       this.orderModel.countDocuments({ buyer_id: user_id }).exec(),
@@ -218,7 +217,59 @@ export class OrderRepositoryImp implements OrderInterface {
     let finalPlacedOrders = (
       await Promise.all(
         orders.map(async (order) => {
-          const cake = await this.getCakeDetailsUseCase.getcakedetail(order.cake_id);
+          const cake = await this.getCakeDetailsUseCase.getcakedetail(
+            order.cake_id,
+          );
+          if (!cake) return null;
+          const store = await this.getStoreUsecase.getstore(cake.store_id);
+          if (!store) return null;
+          const user = await this.IGetUserDetailUseCase.getuserdetail(user_id);
+          if (!user) return null;
+          return {
+            cake_id: cake._id,
+            cake_image_url: cake.cake_image_urls[0],
+            cake_name: cake.cake_name,
+            _id: order.id, // Probably meant cake.name instead?
+            order_date: new Date(order.createdAt),
+            cake_price: cake.cake_variants[0].cake_price,
+            cake_mrp: cake.cake_variants[0].cake_mrp,
+            cake_description: cake.cake_description,
+            order_status: order.order_status,
+            total_amount: cake.cake_variants[0].cake_price,
+            store_id:cake.store_id,
+            store_name:store.store_name,
+            createdAt: new Date(),
+          };
+        }),
+      )
+    ).filter((item) => item !== null);
+    // console.log(finalPlacedOrders);
+    return finalPlacedOrders
+    
+  }
+  /**
+   * Retrieves the orders received by a specific seller.
+   *
+   * @param user_id The ID of the seller.
+   * @param page The page number for pagination.
+   * @param limit The number of orders to return per page.
+   * @returns A promise that resolves to a PaginationDto containing the received orders.
+   */
+  async findReceivedOrders(
+    user_id: string,
+    store_id: string,
+  ): Promise<object[]> {
+    const filter = { seller_id: user_id, store_id: store_id };
+    const [orders, total] = await Promise.all([
+      this.orderModel.find(filter).sort({ createdAt: -1 }).exec(),
+      this.orderModel.countDocuments(filter).exec(),
+    ]);
+    let finalReceivedOrders = (
+      await Promise.all(
+        orders.map(async (order) => {
+          const cake = await this.getCakeDetailsUseCase.getcakedetail(
+            order.cake_id,
+          );
           if (!cake) return null;
           const store = await this.getStoreUsecase.getstore(cake.store_id);
           if (!store) return null;
@@ -240,74 +291,7 @@ export class OrderRepositoryImp implements OrderInterface {
         }),
       )
     ).filter((item) => item !== null);
-    // console.log(finalPlacedOrders);
-    return {
-      data: finalPlacedOrders,
-      total,
-      page,
-      limit,
-      totalPages: Math.ceil(total / limit),
-    };
-  }
-  /**
-   * Retrieves the orders received by a specific seller.
-   *
-   * @param user_id The ID of the seller.
-   * @param page The page number for pagination.
-   * @param limit The number of orders to return per page.
-   * @returns A promise that resolves to a PaginationDto containing the received orders.
-   */
-  async findReceivedOrders(
-    user_id: string,
-    store_id:string,
-    page: number = 1,
-    limit: number = 10,
-  ): Promise<PaginationDto> {
-    // console.log(user_id)
-    const skip = (page - 1) * limit;
-    const filter = { seller_id: user_id , store_id:store_id};
-    const [orders, total] = await Promise.all([
-      this.orderModel
-        .find(filter)
-        .skip(skip)
-        .limit(limit)
-        .sort({ createdAt: -1 })
-        .exec(),
-      this.orderModel.countDocuments(filter).exec(),
-    ]);
-    let finalReceivedOrders = (
-      await Promise.all(
-        orders.map(async (order) => {
-          const cake = await this.getCakeDetailsUseCase.getcakedetail(order.cake_id);
-          if (!cake) return null;
-          const store = await this.getStoreUsecase.getstore(cake.store_id);
-          if (!store) return null;
-          const user = await this.IGetUserDetailUseCase.getuserdetail(user_id);
-          if (!user) return null;
-          return {
-            cake_id: cake._id,
-            cake_image_url: cake.cake_image_urls[0],
-            cake_name: cake.cake_name,
-            _id: order.id, // Probably meant cake.name instead?
-            order_date: new Date(order.createdAt),
-            cake_price: cake.cake_variants[0].cake_price,
-            cake_mrp: cake.cake_variants[0].cake_mrp,
-            cake_description: cake.cake_description,
-            order_status: order.order_status,
-            total_amount: cake.cake_variants[0].cake_price,
-            createdAt: new Date(),
-          };
-        }),
-      )
-     ).filter((item) => item !== null);
-    // console.log(finalPlacedOrders);
-    return {
-      data: finalReceivedOrders,
-      total,
-      page,
-      limit,
-      totalPages: Math.ceil(total / limit),
-    };
+    return finalReceivedOrders;
   }
   /**
    * Retrieves an order using the order ID.

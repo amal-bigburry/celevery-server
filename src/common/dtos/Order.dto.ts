@@ -42,4 +42,5 @@ export class OrderDto {
   @IsOptional()
   @IsString()
   cancellation_reason: string;
+  store_id: string;
 }

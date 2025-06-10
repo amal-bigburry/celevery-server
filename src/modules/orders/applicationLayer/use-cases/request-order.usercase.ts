@@ -94,15 +94,20 @@ export class RequestOrderUseCase {
     ) {
       throw new BadRequestException('Cake variant not found');
     }
-    let buyer = await this.getuserDetailsUseCase.getuserdetail(orderDto.buyer_id);
+    let buyer = await this.getuserDetailsUseCase.getuserdetail(
+      orderDto.buyer_id,
+    );
     if (!buyer) throw new UnauthorizedException('buyer not found');
-    let seller = await this.getuserDetailsUseCase.getuserdetail(orderDto.seller_id);
+    let seller = await this.getuserDetailsUseCase.getuserdetail(
+      orderDto.seller_id,
+    );
     if (!seller) throw new UnauthorizedException('seller not found');
     if (buyer._id === seller._id)
       throw new UnauthorizedException(
         'Buyer and Seller cannot be the same person',
       );
     orderDto.payment_tracking_id = '';
+    orderDto.store_id = cake.store_id;
     let order = await this.OrderRepository.create(orderDto);
     let AllordersWithTheCurrentCake = await this.getOrdersWithCakeId.execute(
       orderDto.cake_id,
@@ -126,12 +131,22 @@ export class RequestOrderUseCase {
       message: `{type:"order_request",data:"New order received from ${buyer.email} for ${cake.cake_name} of variant with weight of ${variant?.weight} kg, price of ${variant?.cake_price} and quantity of ${orderDto.quantity}. Customer Needs it before ${orderDto.need_before}"`,
     };
     await this.mqttService.publish(data);
+    const jobId = `cancel-order-${order.id}`;
     await orderQueue.add(
       'cancel-if-unprocessed',
       { orderId: order.id },
       {
-        delay: 60 * (parseInt(this.configService.get<string>('AUTOCANCEL_ORDER_AFTER')||'') * 1000), // 1 minute
+        jobId,
+        delay:
+          60 *
+          (parseInt(
+            this.configService.get<string>('AUTOCANCEL_ORDER_AFTER') || '',
+          ) *
+            1000), // 1 minute
       },
+    );
+    console.log(
+      `Scheduled cancellation for order ${order.id} with jobId ${jobId}`,
     );
     this.knownfor_occurences = [];
     AllordersWithTheCurrentCake.forEach((order) => {

@@ -18,15 +18,11 @@ export interface OrderInterface {
   findAll(): Promise<OrderDto[]>;
   findPlacedOrders(
     user_id: string,
-    page: number,
-    limit: number,
-  ): Promise<PaginationDto>;
+  ): Promise<object[]>;
   findReceivedOrders(
     user_id: string,
     store_id:string,
-    page: number,
-    limit: number,
-  ): Promise<PaginationDto>;
+  ): Promise<object[]>;
   findById(_id: string): Promise<OrderDto>;
   findAllPaymentWaitingOrders(): Promise<OrderDto[]>;
   getOrderToAnalyse(level: number): Promise<OrderDto[]>;

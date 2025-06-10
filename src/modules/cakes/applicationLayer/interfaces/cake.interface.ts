@@ -13,7 +13,7 @@ import { CakeDto } from '../../../../common/dtos/cake.dto';
  */
 export interface CakeInterface {
   //find or get
-  findCakesFromOpenStore(): Promise<CakeEntity[]>;
+  findAvailableCakes(user_id:string): Promise<CakeEntity[]>;
   findById(cake_id: string): Promise<CakeEntity | null>;
   findCakeByStoreId(store_id: string): Promise<CakeEntity[]>;
   find(
@@ -21,6 +21,7 @@ export interface CakeInterface {
     category_id: string,
     log: number,
     lat: number,
+    user_id:string,
   ): Promise<CakeEntity[]>;
   // create or upload
   createcake(cakeDto: CakeDto): Promise<Object>;

@@ -31,40 +31,22 @@ export class GetStoreLocationsUsecase {
     @Inject(GETALLSTOREINPLATFORM)
     private readonly GetAllStoreInPlatformUsecase: IGetAllStoreInPlatformUsecase,
   ) {}
-  async execute(page: number, limit: number) {
+  async execute() {
     let stores = await this.GetAllStoreInPlatformUsecase.execute();
     let finalstores: {
       lat: number;
       log: number;
       store_name: string;
-      store_id:string;
+      store_id: string;
     }[] = [];
     stores.map((store) => {
-      finalstores.push({ lat: store.lat, log: store.log , store_name:store.store_name, store_id: store._id});
+      finalstores.push({
+        lat: store.lat,
+        log: store.log,
+        store_name: store.store_name,
+        store_id: store._id,
+      });
     });
-    const total = finalstores.length;
-    /**
-     * Compute total number of pages for pagination based on limit.
-     */
-    const totalPages = Math.ceil(total / limit);
-    /**
-     * Calculate start and end indices for slicing paginated results.
-     */
-    const start = (page - 1) * limit;
-    const end = start + limit;
-    /**
-     * Slice detailed cake data for the requested pagination page.
-     */
-    const paginatedData = finalstores.slice(start, end);
-    /**
-     * Return a PaginationDto containing paginated trending cake data and pagination metadata.
-     */
-    return {
-      data: paginatedData,
-      total,
-      page,
-      limit,
-      totalPages,
-    };
+    return stores;
   }
 }

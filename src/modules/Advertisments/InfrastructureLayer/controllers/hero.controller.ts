@@ -67,9 +67,20 @@ export class HeroController {
   @HttpCode(HttpStatus.OK)
   @Get()
   @UseGuards(JwtAuthGuard)
-  async get_heros() {
-    let res = await this.GetHerosUsecase.execute();
-    return res;
+  async get_heros(@Query('page') page = 1, @Query('limit') limit = 10) {
+    let data = await this.GetHerosUsecase.execute();
+    const total = data.length;
+    const totalPages = Math.ceil(total / limit);
+    const start = (page - 1) * limit;
+    const end = start + limit;
+    const paginatedData = data.slice(start, end);
+    return {
+      data: paginatedData,
+      total,
+      page,
+      limit,
+      totalPages,
+    };
   }
   /**
    * POST endpoint for creating a new hero entry in the system.

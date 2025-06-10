@@ -38,16 +38,15 @@ export class FindCakeUseCase {
    * @returns Promise resolving to a PaginationDto containing cake results
    */
   async execute(
-    page: number,
-    limit: number,
     log: number,
     lat: number,
     knownfor: string[],
     sortby: string,
     orderby: string,
     category_id: string,
-  ): Promise<PaginationDto> {
-    let openStoreCakes = await this.CakeInterface.findCakesFromOpenStore();
+    user_id:string,
+  ): Promise<object[]> {
+    let openStoreCakes = await this.CakeInterface.findAvailableCakes(user_id);
     // console.log('open store cakes', openStoreCakes.length);
     let allorders = await this.GetAllOrdersInterface.getallorders();
     // known for filtering layer
@@ -88,18 +87,7 @@ export class FindCakeUseCase {
     // let finalcakedata = await cakeMinimalViewModel.toJson(openStoreCakes, lat, log);
     // ordering
     cakeMinimalViewModel.sort((a, b) => a.distance - b.distance);
-    // pagination logic
-    const total = cakeMinimalViewModel.length;
-    const totalPages = Math.ceil(total / limit);
-    const start = (page - 1) * limit;
-    const end = start + limit;
-    const paginatedData = cakeMinimalViewModel.slice(start, end);
-    return {
-      data: paginatedData,
-      total,
-      page,
-      limit,
-      totalPages,
-    };
+   
+    return cakeMinimalViewModel
   }
 }

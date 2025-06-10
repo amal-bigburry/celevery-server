@@ -32,12 +32,14 @@ export class SearchForCakesUseCase {
     category_id: string,
     log: number,
     lat: number,
+    user_id:string,
   ): Promise<Array<any>> {
     const cakes = await this.CakeInterface.find(
       keyword,
       category_id,
       log,
       lat,
+      user_id,
     );
     let cakeMinimalViewModel = await this.CakeMinimalModel.toJson(
       cakes,

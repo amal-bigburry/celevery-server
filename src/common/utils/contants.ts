@@ -7,7 +7,7 @@ export const ORDER_STATUS = {
   CANCELLED: 'CANCELLED', // Order has been cancelled by user or system
   WAITING_TO_PAY: 'WAITING_TO_PAY', // Order is waiting for payment confirmation
   ORDERED: 'ORDERED', // Payment has been successfully received
-  PREPARING: 'PREPAIRING', // Order is being prepared
+  PREPARING: 'PREPARING', // Order is being prepared
   PACKED: 'PACKED', // Order has been packed and is ready for shipping
   WAITING_FOR_PICKUP: 'WAITING_FOR_PICKUP', // Order is awaiting pickup by delivery personnel
   UNDELIVERED: 'UNDELIVERED', // Delivery attempt failed or not completed
@@ -19,8 +19,6 @@ export const ORDER_STATUS = {
 export const STORE_STATUS = {
   REQUESTED: 'REQUESTED',
   APPROVED: 'APPROVED',
-  OPEN: 'OPEN',
-  CLOSE: 'CLOSE',
   SUSPENDED: 'SUSPENDED',
   PAYMENTPENDING: 'PAYMENTPENDING',
   REREQUEST: 'REREQUEST',

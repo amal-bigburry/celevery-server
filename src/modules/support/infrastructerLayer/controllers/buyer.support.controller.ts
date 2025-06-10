@@ -13,6 +13,7 @@ import {
   HttpStatus,
   Param,
   Post,
+  Query,
   Req,
   UseGuards,
 } from '@nestjs/common';
@@ -89,10 +90,23 @@ export class BuyerSupportController {
   async get_messages(
     @Req() request: AuthRequest,
     @Param('support_id') support_id: string,
+    @Query('page') page = 1,
+    @Query('limit') limit = 10,
   ) {
-    let res =
+    let data =
       await this.FetchMessageFromBuyerSupportUsecase.execute(support_id);
-    return res;
+    const total = data.length;
+    const totalPages = Math.ceil(total / limit);
+    const start = (page - 1) * limit;
+    const end = start + limit;
+    const paginatedData = data.slice(start, end);
+    return {
+      data: paginatedData,
+      total,
+      page,
+      limit,
+      totalPages,
+    };
   }
   /**
    * Company: Bigburry Hypersystems LLP
@@ -104,10 +118,25 @@ export class BuyerSupportController {
   @HttpCode(HttpStatus.OK)
   @Get('my_supports')
   @UseGuards(JwtAuthGuard)
-  async get_all_support_ids(@Req() request: AuthRequest) {
-    let res = await this.FetchAllSupportIdsForBuyerUseCase.execute(
+  async get_all_support_ids(
+    @Req() request: AuthRequest,
+    @Query('page') page = 1,
+    @Query('limit') limit = 10,
+  ) {
+    let data = await this.FetchAllSupportIdsForBuyerUseCase.execute(
       request.user['userId'],
     );
-    return res;
+    const total = data.length;
+    const totalPages = Math.ceil(total / limit);
+    const start = (page - 1) * limit;
+    const end = start + limit;
+    const paginatedData = data.slice(start, end);
+    return {
+      data: paginatedData,
+      total,
+      page,
+      limit,
+      totalPages,
+    };
   }
 }

@@ -57,8 +57,22 @@ export class CakeController {
     @Query('sortby') sortby:string,
     @Query('orderby') orderby:string,
     @Query('category_id') category_id:string,
+    @Req() req:AuthRequest
   ) {
-    return this.findCakeUseCase.execute(page, limit, log, lat, knownfor, sortby, orderby,category_id);
+    let data = await this.findCakeUseCase.execute(log, lat, knownfor, sortby, orderby,category_id,req.user['userId']);
+     // pagination logic
+    const total = data.length;
+    const totalPages = Math.ceil(total / limit);
+    const start = (page - 1) * limit;
+    const end = start + limit;
+    const paginatedData = data.slice(start, end);
+    return {
+      data: paginatedData,
+      total,
+      page,
+      limit,
+      totalPages,
+    };
   }
   /**
    * Handles POST requests to create a new cake with image uploads
@@ -98,16 +112,48 @@ export class CakeController {
     @Query('limit') limit = 10,
     @Query('log') log = 0,
     @Query('lat') lat = 0,
+    @Req() req:AuthRequest
   ) {
-    return this.searchForCakesUseCase.execute(keyword, category_id, log, lat);
+    let user_id = req.user['userId']
+    let data = await this.searchForCakesUseCase.execute(keyword, category_id, log, lat,user_id);
+     // pagination logic
+    const total = data.length;
+    const totalPages = Math.ceil(total / limit);
+    const start = (page - 1) * limit;
+    const end = start + limit;
+    const paginatedData = data.slice(start, end);
+    return {
+      data: paginatedData,
+      total,
+      page,
+      limit,
+      totalPages,
+    };
   }
+
+
   @HttpCode(HttpStatus.OK)
   @Get('cakesinstore')
   @UseGuards(JwtAuthGuard)
   async storecakes(
     @Query('store_id') store_id: string,
+    @Query('page') page = 1,
+    @Query('limit') limit = 10,
   ) {
-    return this.getCakesInStoreUsecase.execute(store_id);
+    let data = await this.getCakesInStoreUsecase.execute(store_id);
+     // pagination logic
+    const total = data.length;
+    const totalPages = Math.ceil(total / limit);
+    const start = (page - 1) * limit;
+    const end = start + limit;
+    const paginatedData = data.slice(start, end);
+    return {
+      data: paginatedData,
+      total,
+      page,
+      limit,
+      totalPages,
+    };
   }
   /**
    * Handles GET requests to fetch similar cakes by cake and variant IDs
@@ -119,9 +165,21 @@ export class CakeController {
     @Query('variant_id') variant_id: string,
     @Query('page') page = 1,
     @Query('limit') limit = 10,
-    @Query('log') log = 0,
   ) {
-    return this.getSimilarCakesUseCase.execute(cake_id, variant_id);
+    let data = await this.getSimilarCakesUseCase.execute(cake_id, variant_id);
+     // pagination logic
+    const total = data.length;
+    const totalPages = Math.ceil(total / limit);
+    const start = (page - 1) * limit;
+    const end = start + limit;
+    const paginatedData = data.slice(start, end);
+    return {
+      data: paginatedData,
+      total,
+      page,
+      limit,
+      totalPages,
+    };
   }
   /**
    * Handles GET request to fetch details of a specific cake by ID

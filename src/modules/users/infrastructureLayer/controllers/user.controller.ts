@@ -20,6 +20,7 @@ import {
   HttpStatus,
   Post,
   Put,
+  Query,
   Req,
   UploadedFile,
   UseGuards,
@@ -235,11 +236,26 @@ export class UserController {
   @HttpCode(HttpStatus.OK)
   @Get('favourites')
   @UseGuards(JwtAuthGuard)
-  async get_favourites(@Req() request: AuthRequest) {
-    const res = await this.GetMyFavouritesUsecase.execute(
+  async get_favourites(
+    @Req() request: AuthRequest,
+    @Query('page') page = 1,
+    @Query('limit') limit = 10,
+  ) {
+    let data = await this.GetMyFavouritesUsecase.execute(
       request.user['userId'],
     );
-    return res;
+    const total = data.length;
+    const totalPages = Math.ceil(total / limit);
+    const start = (page - 1) * limit;
+    const end = start + limit;
+    const paginatedData = data.slice(start, end);
+    return {
+      data: paginatedData,
+      total,
+      page,
+      limit,
+      totalPages,
+    };
   }
   /**
    * Deletes a cake from the authenticated user's favourites.

@@ -91,6 +91,11 @@ export class UpdateStoreDto {
   @IsOptional()
   bank_ifsc_code?: string;
   @IsOptional()
+  @Transform(({ value }) => value === 'true')
+  @IsBoolean()
+  @IsNotEmpty()
+  is_active: boolean;
+  @IsOptional()
   @ValidateIf((o) => o.account_type === 'Business')
   @IsNotEmpty()
   gst?: string;

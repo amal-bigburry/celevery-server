@@ -5,6 +5,7 @@
  * import the required packages
  */
 import {
+  BadRequestException,
   Body,
   Controller,
   Get,
@@ -49,11 +50,21 @@ export class OrderController {
     /**
      * returning the placed orders
      */
-    return this.getAllOrdersPlacedUseCase.execute(
+    let data = await this.getAllOrdersPlacedUseCase.execute(
       request.user['userId'],
+    );
+    const total = data.length;
+    const totalPages = Math.ceil(total / limit);
+    const start = (page - 1) * limit;
+    const end = start + limit;
+    const paginatedData = data.slice(start, end);
+    return {
+      data: paginatedData,
+      total,
       page,
       limit,
-    );
+      totalPages,
+    };
   }
   /**
    * get all orders that are received by the seller
@@ -63,20 +74,35 @@ export class OrderController {
   @UseGuards(JwtAuthGuard)
   async get_all_orders(
     @Req() request: AuthRequest,
-    @Query('page') page: number,
-    @Query('limit') limit: number,
-    @Param('store_id') store_id:string,
+    @Query('page') page: number=1,
+    @Query('limit') limit: number=10, 
+    @Param('store_id') store_id: string,
   ) {
     /**
      * returning the received orders
      */
-    return this.getAllOrdersReceivedUseCase.execute(
+    if(!store_id){
+      throw new BadRequestException('store_id is required')
+    }
+    let data = await this.getAllOrdersReceivedUseCase.execute(
       request.user['userId'],
       store_id,
+    );
+    const total = data.length;
+    const totalPages = Math.ceil(total / limit);
+    const start = (page - 1) * limit;
+    const end = start + limit;
+    const paginatedData = data.slice(start, end);
+    return {
+      data: paginatedData,
+      total,
       page,
       limit,
-    );
+      totalPages,
+    };
   }
+
+
   @HttpCode(HttpStatus.OK)
   @Get(':_id')
   @UseGuards(JwtAuthGuard)
@@ -86,6 +112,7 @@ export class OrderController {
   ) {
     return this.getOrderDetails.execute(_id);
   }
+  
   @HttpCode(HttpStatus.CREATED)
   @Post('request')
   @UseGuards(JwtAuthGuard)

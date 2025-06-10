@@ -25,14 +25,10 @@ export class GetAllOrdersReceivedUseCase {
   async execute(
     userId: string,
     store_id:string,
-    page: number,
-    limit: number,
-  ): Promise<PaginationDto> {
+  ): Promise<object[]> {
     const orders = await this.OrderRepository.findReceivedOrders(
       userId,
       store_id,
-      page,
-      limit,
     );
     return orders;
   }

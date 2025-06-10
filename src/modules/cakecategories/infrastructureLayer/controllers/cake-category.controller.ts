@@ -9,6 +9,7 @@ import {
   HttpCode,
   HttpStatus,
   Post,
+  Query,
   UploadedFile,
   UseGuards,
   UseInterceptors,
@@ -33,8 +34,20 @@ export class CakeCategoryController {
   @HttpCode(HttpStatus.OK)
   @Get()
   @UseGuards(JwtAuthGuard)
-  getAllCakes() {
-    return this.findCakeCategoryUseCase.execute();
+  async getAllCakes(@Query('page') page = 1, @Query('limit') limit = 10) {
+    let data = await this.findCakeCategoryUseCase.execute();
+    const total = data.length;
+    const totalPages = Math.ceil(total / limit);
+    const start = (page - 1) * limit;
+    const end = start + limit;
+    const paginatedData = data.slice(start, end);
+    return {
+      data: paginatedData,
+      total,
+      page,
+      limit,
+      totalPages,
+    };
   }
   /**
    * route post request to /cakecategories

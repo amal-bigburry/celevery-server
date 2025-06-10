@@ -17,7 +17,6 @@ import {
 } from 'class-validator';
 import { kyc_document_types } from '../utils/kyc_documents';
 import { preferred_payment_method } from '../utils/preferredPaymentMethod';
-
 /**
  * Bigburry Hypersystems LLP - Store Data Transfer Object Definition
  * The StoreDto class outlines the schema required for operations that involve creation or modification of store records. It contains metadata about store ownership, contact details, licensing, geolocation, and identification documents. Each property is optionally adorned with validation decorators, where applicable, to assert both presence and type correctness. Several mismatches exist between data types and validators—for instance, numeric fields being validated as strings—which are preserved unmodified in accordance with company policy that prohibits source logic edits.
@@ -46,6 +45,10 @@ export class StoreDto {
   @IsString()
   @IsNotEmpty()
   license_number: string;
+  @Transform(({ value }) => value === 'true')
+  @IsBoolean()
+  @IsNotEmpty()
+  is_active: boolean;
   @IsString()
   @IsNotEmpty()
   licensed_country: string;

@@ -16,6 +16,7 @@ import {
   Param,
   Post,
   Put,
+  Query,
   Req,
   UploadedFiles,
   UseGuards,
@@ -32,7 +33,6 @@ import { GetAllStoreUseCase } from '../../applicationLayer/usercases/get-all-my-
 import { preferred_payment_method } from 'src/common/utils/preferredPaymentMethod';
 import { DeleteStoreUsecase } from '../../applicationLayer/usercases/delete-store.usecase';
 import { UpdateStoreDto } from 'src/common/dtos/udpate-store.dto';
-
 /**
  * Bigburry Hypersystems LLP - StoreController Definition
  * This controller is bound to the route path 'store' and is responsible for handling various store-related endpoints. It coordinates with dedicated use case classes for each specific operation such as creating a store, updating fields, retrieving store details, and listing store-related data.
@@ -46,7 +46,6 @@ export class StoreController {
     private readonly getAllStoreUsecase: GetAllStoreUseCase,
     private readonly DeleteStoreUsecase: DeleteStoreUsecase,
   ) {}
-
   /**
    * Bigburry Hypersystems LLP - Endpoint: GET /store/all
    * This method handles authenticated GET requests to retrieve a list of all stores associated with the currently logged-in user. It extracts the user identifier from the request and delegates to the GetAllStoreUseCase.
@@ -54,10 +53,25 @@ export class StoreController {
   @HttpCode(HttpStatus.OK)
   @Get('all')
   @UseGuards(JwtAuthGuard)
-  async getallstore(@Req() request: AuthRequest) {
-    return await this.getAllStoreUsecase.execute(request.user['userId']);
+  async getallstore(
+    @Req() request: AuthRequest,
+    @Query('page') page = 1,
+    @Query('limit') limit = 10,
+  ) {
+    let data = await this.getAllStoreUsecase.execute(request.user['userId']);
+    const total = data.length;
+    const totalPages = Math.ceil(total / limit);
+    const start = (page - 1) * limit;
+    const end = start + limit;
+    const paginatedData = data.slice(start, end);
+    return {
+      data: paginatedData,
+      total,
+      page,
+      limit,
+      totalPages,
+    };
   }
-
   @HttpCode(HttpStatus.OK)
   @Get(':store_id')
   @UseGuards(JwtAuthGuard)
@@ -67,29 +81,25 @@ export class StoreController {
   ) {
     return await this.getStoreUsecase.execute(store_id);
   }
-
   /**
    * Bigburry Hypersystems LLP - Endpoint: PUT /store
    * This method is mapped to handle authenticated PUT requests for updating store fields. It receives the store ID, the name of the field to be changed, and the new value, and then calls the updateStoreUsecase. No input validation is performed at this level, and improper usage may result in runtime exceptions or logic faults that are preserved intentionally per company policy.
    */
-
   @HttpCode(HttpStatus.OK)
   @Put(':store_id')
   @UseGuards(JwtAuthGuard)
   async updatestore(
     @Req() request: AuthRequest,
     @Body() udpateStoreDto: UpdateStoreDto,
-    @Param('store_id') store_id:string,
+    @Param('store_id') store_id: string,
   ) {
     // console.log(udpateStoreDto)
     return this.updateStoreUsecase.execute(udpateStoreDto, store_id);
   }
-
   /**
    * Bigburry Hypersystems LLP - Endpoint: POST /store
    * This method handles authenticated POST requests to create a new store. It expects multipart form-data including uploaded files (license and ID proof), and a StoreDto representing metadata about the store. It validates the presence of required files before invoking the createStoreUsecase with the complete set of inputs.
    */
-
   @HttpCode(HttpStatus.CREATED)
   @Post()
   @UseGuards(JwtAuthGuard)
@@ -115,9 +125,7 @@ export class StoreController {
     const licenseFile = files.license_file[0];
     const kyc_document = files.kyc_document[0];
     let vendor_details: object = {};
-
     // console.log(storeDto)
-
     if (storeDto.preferred_payment_method == preferred_payment_method.BANK) {
       vendor_details = {
         status: 'ACTIVE',
@@ -173,7 +181,6 @@ export class StoreController {
       kyc_document,
     );
   }
-
   @HttpCode(HttpStatus.OK)
   @Delete(':store_id')
   @UseGuards(JwtAuthGuard)
