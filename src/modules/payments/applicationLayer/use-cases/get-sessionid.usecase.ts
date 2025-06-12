@@ -10,18 +10,18 @@
  * 
  * Company: BigBurry Hypersystems LLP
  */
-import { forwardRef, Inject, Injectable } from '@nestjs/common';
-import { PaymentGateway } from '../interfaces/payment.interface';
+import { Inject, Injectable } from '@nestjs/common';
+import { PaymentInterface } from '../interfaces/payment.interface';
 import { DtoToGetPaymentSessionId } from 'src/common/dtos/DtoToGetPaymentSessionId.dto';
 import { PAYMENTTOKEN } from '../../tokens/payment.token';
-import { IGetOrderDetailsUseCaese } from '../interfaces/get-order-details.interface';
+import { GetOrderDetailsInterface } from '../../../../common/interfaces/get-order-details.interface';
 import { GETORDERDETAILS } from '../../tokens/getOrderDetails.token';
 @Injectable()
 export class GetSessionIdUseCase {
   constructor(
-    @Inject(PAYMENTTOKEN) private readonly paymentGateway: PaymentGateway, // Injecting the payment gateway service to handle payment session creation
+    @Inject(PAYMENTTOKEN) private readonly PaymentInterface: PaymentInterface, // Injecting the payment gateway service to handle payment session creation
     @Inject(GETORDERDETAILS)
-    private readonly GetOrderDetailsUseCaese: IGetOrderDetailsUseCaese, // Injecting the service to retrieve order details based on order ID
+    private readonly GetOrderDetailsInterface: GetOrderDetailsInterface, // Injecting the service to retrieve order details based on order ID
   ) {}
   /**
    * Executes the task of creating a payment session ID for a specific order.
@@ -36,13 +36,13 @@ export class GetSessionIdUseCase {
   async execute(
     DtoToGetPaymentSessionId: DtoToGetPaymentSessionId, // Data transfer object for payment session creation
   ): Promise<Object> {
-    let order = await this.GetOrderDetailsUseCaese.execute(
-      DtoToGetPaymentSessionId._id, // Fetching order details using the provided order ID
+    let order = await this.GetOrderDetailsInterface.execute(
+      DtoToGetPaymentSessionId.order_id, // Fetching order details using the provided order ID
     );
     DtoToGetPaymentSessionId.user_id = order.buyer_id; // Assigning the user ID from the order to the DTO
     DtoToGetPaymentSessionId.cake_id = order.cake_id; // Assigning the cake ID from the order to the DTO
     DtoToGetPaymentSessionId.variant_id = order.cake_variant_id; // Assigning the variant ID from the order to the DTO
-    let sessionData = await this.paymentGateway.getsessionid(
+    let sessionData = await this.PaymentInterface.getsessionid(
       DtoToGetPaymentSessionId, // Calling the payment gateway to get the session ID
     );
     return sessionData; // Returning the session data

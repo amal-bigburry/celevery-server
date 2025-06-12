@@ -9,7 +9,7 @@ import { CAKEINTERFACETOKEN } from '../../tokens/cake.token';
 import { CAKE_CATEGORY_REPOSITORY } from '../../tokens/cake-category.token';
 import { IGetStoreUseCase } from './get-store.usecase';
 import { GETSTORE } from '../../tokens/get-store.token';
-import { CakecategoryRepositoryImp } from '../../infrastructureLayer/implimentations/ExternalImplimentations/cake-category.implimentation';
+import { CakeCategoryUsecaseInterface } from 'src/common/interfaces/cake-category.interface';
 /**
  * Injectable use case class responsible for creating a cake entity
  */
@@ -24,7 +24,7 @@ export class CreateCakeUseCase {
      * Injecting CakeCategoryRepository for category validation
      */
     @Inject(CAKE_CATEGORY_REPOSITORY)
-    private readonly cakeCategoryRepository: CakecategoryRepositoryImp,
+    private readonly CakeCategoryInterface: CakeCategoryUsecaseInterface,
     /**
      * Injecting GetStoreUseCase to validate store existence
      */
@@ -45,7 +45,7 @@ export class CreateCakeUseCase {
     await Promise.all(
       cakeCategoryIdsInThisCake.map(async (cakeCategoryId) => {
         const categoryExists =
-          await this.cakeCategoryRepository.findCategoryById(cakeCategoryId);
+          await this.CakeCategoryInterface.execute(cakeCategoryId);
         if (!categoryExists) {
           throw new UnauthorizedException(
             `Category with ID ${cakeCategoryId} does not exist`,

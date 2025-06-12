@@ -43,4 +43,8 @@ export class OrderDto {
   @IsString()
   cancellation_reason: string;
   store_id: string;
+  @IsString()
+  buyer_contact_number:string;
+  seller_contact_number:string;
+  session_id:string;
 }

@@ -14,20 +14,19 @@ import { JwtModule } from '@nestjs/jwt';
 import {  UserController } from './infrastructureLayer/controllers/user.controller';
 import { FcmController } from './infrastructureLayer/controllers/fcm-token.controller';
 import { MongooseModule } from '@nestjs/mongoose';
-import { UserSchema } from '../../common/databaseModels/user.model';
+import { User, UserSchema } from '../../common/databaseModels/user.model';
 import { JwtStrategy } from 'src/middlewares/jwt.strategy';
 import { LoginUseCase } from './applicationLayer/usecases/login.usecase';
 import { RegisterUseCase } from './applicationLayer/usecases/register.usecase';
 import { UpdatefcmUseCase } from './applicationLayer/usecases/update-fcm.usecase';
 import { GetUserDetailUseCase } from './applicationLayer/usecases/get-user-details.usecase';
-import { UserRepositoryImpl } from './infrastructureLayer/implimentations/InternalImplimenatations/user.implimentation';
+import { UserRepositoryImpl } from './infrastructureLayer/implimentations/user.implimentation';
 import { USERINTERFACETOKEN } from './tokens/user.token';
 import { UpdateProfileImageUseCase } from './applicationLayer/usecases/update-profile-image.usecase';
 import { GetMyFavouritesUsecase } from './applicationLayer/usecases/get-my-favourites.usecase';
 import { RemoveMyFavouritesUsecase } from './applicationLayer/usecases/remove-from-favourites.usecase';
 import { UpdateContactNumberUsecase } from './applicationLayer/usecases/update-contact-number.usecase';
 import { OTP_VERIFICATION_SERVICE } from './tokens/otp-verifying-service.token';
-import { IOTPVerifyingServiceImp } from './infrastructureLayer/implimentations/ExternalImplimentations/otp-verification.implimentation';
 import { RegisterUsingGoogleUseCase } from './applicationLayer/usecases/register-using-google.usecase';
 import { LoginUsingGoogleUseCase } from './applicationLayer/usecases/login-using-google.usecase';
 import { GoogleLoginStrategy, GoogleRegisterStrategy } from 'src/middlewares/google.strategy';
@@ -38,6 +37,7 @@ import { UpdatePasswordUsecase } from './applicationLayer/usecases/update-passwo
 import { OTPModule } from '../OTP/otp.module';
 import { CakeModule } from '../cakes/cakes.modules';
 import { UpdateDisplayNameUseCase } from './applicationLayer/usecases/update-displayname.usecase';
+import { OTPVerifyingService } from '../OTP/applicationLayer/usecases/verify.usecase';
 /**
  * ******************************************************************************************************
  * UserModule Class
@@ -52,7 +52,7 @@ import { UpdateDisplayNameUseCase } from './applicationLayer/usecases/update-dis
  */
 @Module({
   imports: [
-    MongooseModule.forFeature([{ name: 'Users', schema: UserSchema }]),
+    MongooseModule.forFeature([{  name: 'Users', schema: UserSchema }]),
     JwtModule.registerAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -92,7 +92,7 @@ import { UpdateDisplayNameUseCase } from './applicationLayer/usecases/update-dis
     },
     {
       provide: OTP_VERIFICATION_SERVICE,
-      useClass: IOTPVerifyingServiceImp,
+      useClass: OTPVerifyingService,
     },
   ],
   exports: [
@@ -100,6 +100,7 @@ import { UpdateDisplayNameUseCase } from './applicationLayer/usecases/update-dis
     GetMyFavouritesUsecase,
     AddToFavouritesUsecase,
     RemoveMyFavouritesUsecase,
+    USERINTERFACETOKEN,
   ],
 })
 export class UserModule {}

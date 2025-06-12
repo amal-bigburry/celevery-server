@@ -18,17 +18,18 @@ import { ORDERINTERFACETOKEN } from '../../tokens/orderRepository.token';
 import { OrderDto } from '../../../../common/dtos/Order.dto';
 import { OrderInterface } from '../interfaces/order.interface';
 import { orderQueue } from 'src/common/utils/order.queque';
+import { ChangeOrderStatusInterface } from 'src/common/interfaces/change-order-status.interface';
 /**
  * Injectable service file that handles the order status change
  */
 @Injectable()
-export class ChangeOrderStatusUseCase {
+export class ChangeOrderStatusUseCase implements ChangeOrderStatusInterface{
   constructor(
     @Inject(ORDERINTERFACETOKEN)
     private readonly OrderRepository: OrderInterface,
   ) {}
   async execute(changeOrderStatusDto: ChangeOrderStatusDto): Promise<OrderDto> {
-    const order = await this.OrderRepository.findById(changeOrderStatusDto._id);
+    const order = await this.OrderRepository.findById(changeOrderStatusDto.order_id);
     if (!order) {
       throw new UnauthorizedException('Order not found');
     }
@@ -71,7 +72,7 @@ export class ChangeOrderStatusUseCase {
         await this.OrderRepository.changeStatusToCancel(changeOrderStatusDto);
     } else {
       updated_order = await this.OrderRepository.changeStatus(
-        changeOrderStatusDto._id,
+        changeOrderStatusDto.order_id,
         changeOrderStatusDto.new_status,
       );
     }

@@ -8,13 +8,14 @@
 import {
   ArrayNotEmpty,
   IsArray,
+  IsBoolean,
   IsMongoId,
   IsNotEmpty,
   IsString,
   ValidateNested,
 } from 'class-validator';
 import { CakeVariantDto } from './cakevarient.dto';
-import { Type } from 'class-transformer';
+import { Transform, Type } from 'class-transformer';
 /**
  * Data Transfer Object (DTO) class representing a Cake
  */
@@ -62,4 +63,12 @@ export class CakeDto {
    */
   @IsString()
   known_for:string;
+
+  @Transform(({ value }) => value === 'true')
+  @IsBoolean()
+  is_eggless:boolean;
+
+  @Transform(({ value }) => value === 'true')
+  @IsBoolean()
+  is_active:boolean;
 }

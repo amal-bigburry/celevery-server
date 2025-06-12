@@ -1,18 +1,18 @@
 import { Inject, Injectable } from "@nestjs/common";
 import { CakeEntity } from "../../domainLayer/entities/cake.entity";
 import getDistanceFromLatLonInKm from "src/common/utils/getDistanceFromLatLonInKm";
-import { GetStoreInterface } from "../interfaces/get-store.interface";
 import { GETSTORE } from "../../tokens/get-store.token";
+import { GetstoreInterface } from "src/common/interfaces/get-store.interface";
 @Injectable()
 export class CakeMinimalModel {
   constructor(
     @Inject(GETSTORE)
-    private readonly getstoreUsecase: GetStoreInterface) {}
+    private readonly getstoreUsecase: GetstoreInterface) {}
   async toJson(cakes: CakeEntity[], lat: number, log: number) {
     return await Promise.all(
       cakes.map(async (cake) => {
         // console.log(cake)
-        const store = await this.getstoreUsecase.getstore(cake.store_id);
+        const store = await this.getstoreUsecase.execute(cake.store_id);
         const distance = getDistanceFromLatLonInKm(store?.lat, store?.log, lat, log);
         return {
           _id: cake._id,

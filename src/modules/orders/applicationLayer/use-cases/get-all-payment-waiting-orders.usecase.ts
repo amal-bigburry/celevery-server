@@ -10,11 +10,12 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ORDERINTERFACETOKEN } from '../../tokens/orderRepository.token';
 import { OrderDto } from '../../../../common/dtos/Order.dto';
 import { OrderInterface } from '../interfaces/order.interface';
+import { GetAllPaymentWaitingOrdersInterface } from 'src/common/interfaces/get-orders-waiting-to-pay.interface';
 /**
  * Injectable service file to get the orders that are waiting for the payment to be done
  */
 @Injectable()
-export class GetAllPaymentWaitingOrdersUseCase {
+export class GetAllPaymentWaitingOrdersUseCase implements GetAllPaymentWaitingOrdersInterface {
   constructor(
     @Inject(ORDERINTERFACETOKEN)
     private readonly OrderRepository: OrderInterface,

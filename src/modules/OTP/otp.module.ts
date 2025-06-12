@@ -13,7 +13,7 @@ import { SESClient } from '@aws-sdk/client-ses';
 import { OTPSendingService } from './applicationLayer/usecases/send.usecase';
 import { OTPVerifyingService } from './applicationLayer/usecases/verify.usecase';
 import { REGISTER_OTP_TOKEN } from './tokens/ResiterOTP.token';
-import { OTPStorageRepositoryImp } from './infrastructureLayer/implimentations/internalImplimentations/otp-storage.implimentation';
+import { OTPStorageRepositoryImp } from './infrastructureLayer/implimentations/otp-storage.implimentation';
 import { MongooseModule } from '@nestjs/mongoose';
 import { OTPStorageSchema } from '../../common/databaseModels/otp-storage.model';
 // import { EmailService } from './infrastructureLayer/usecases/emailService.usecase';
@@ -47,6 +47,6 @@ import { OTPStorageSchema } from '../../common/databaseModels/otp-storage.model'
     },
   ],
   controllers: [OtpController],
-  exports: [OTPSendingService, OTPVerifyingService],
+  exports: [OTPSendingService, OTPVerifyingService,REGISTER_OTP_TOKEN],
 })
 export class OTPModule {}

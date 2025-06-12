@@ -15,8 +15,9 @@ import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { UserInterface } from '../interfaces/user.interface';
 import { USERINTERFACETOKEN } from '../../tokens/user.token';
 import { UserEntity } from '../../domainLayer/entities.ts/user.entity';
+import { GetUserDetailInterface } from 'src/common/interfaces/get-user-details.interface';
 @Injectable()
-export class GetUserDetailUseCase {
+export class GetUserDetailUseCase implements GetUserDetailInterface {
   constructor(
     @Inject(USERINTERFACETOKEN) private readonly userRepo: UserInterface,
   ) {}

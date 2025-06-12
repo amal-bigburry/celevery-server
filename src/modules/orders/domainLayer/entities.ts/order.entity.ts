@@ -16,5 +16,6 @@ export class Order {
     public need_before: string,
     public buyer_id: string,
     public quantity: number,
+    public buyer_contact_number: string,
   ) {}
 }

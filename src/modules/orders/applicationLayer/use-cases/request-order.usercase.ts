@@ -29,13 +29,13 @@ import { orderQueue } from 'src/common/utils/order.queque';
 import { AutoCancelWorker } from './auto-cancel.usecase';
 import { ConfigService } from '@nestjs/config';
 import { OrderInterface } from '../interfaces/order.interface';
-import { NotificationInterface } from '../interfaces/notification.interface';
-import { GetstoreInterface } from '../interfaces/get-store.interface';
-import { GetUserDetailInterface } from '../interfaces/get-user-details.interface';
-import { CakeDetailsInterface } from '../interfaces/get-cake-details.interface';
-import { UpdateKnownForInterface } from '../interfaces/update-knownfor.interface';
-import { MqttServiceInterface } from '../interfaces/mqtt-service.interface';
-import { GetOrdersWithCakeIdInterface } from '../interfaces/get-orders-with-cakeid.interface';
+import { NotificationInterface } from '../../../../common/interfaces/notification.interface';
+import { GetstoreInterface } from '../../../../common/interfaces/get-store.interface';
+import { UpdateKnownForInterface } from '../../../../common/interfaces/update-knownfor.interface';
+import { MqttServiceInterface } from '../../../../common/interfaces/mqtt-service.interface';
+import { GetOrdersWithCakeIdInterface } from '../../../../common/interfaces/get-orders-with-cakeid.interface';
+import { GetUserDetailInterface } from 'src/common/interfaces/get-user-details.interface';
+import { GetCakeDetailInterface } from 'src/common/interfaces/get-cake-details.interface';
 /**
  * injectable service file that makes an order request
  */
@@ -54,7 +54,7 @@ export class RequestOrderUseCase {
     @Inject(GETUSERDETAILINTERFACETOKEN)
     private readonly getuserDetailsUseCase: GetUserDetailInterface,
     @Inject(CAKEDETAILINTERFACETOKEN)
-    private readonly getCakeDetailsUseCase: CakeDetailsInterface,
+    private readonly getCakeDetailsUseCase: GetCakeDetailInterface,
     @Inject(GETORDERWITHCAKEIDTOKEN)
     private readonly getOrdersWithCakeId: GetOrdersWithCakeIdInterface,
     @Inject(UPDATE_KNOWN_FOR_IN_CAKE)
@@ -69,11 +69,11 @@ export class RequestOrderUseCase {
    */
   async execute(orderDto: OrderDto): Promise<{ order: Object }> {
     // get the cake details from the cakeid
-    let cake = await this.getCakeDetailsUseCase.getcakedetail(orderDto.cake_id);
+    let cake = await this.getCakeDetailsUseCase.execute(orderDto.cake_id);
     // Validate if the cake exists
     if (!cake) throw new UnauthorizedException('Cake not found');
     // get the store details from the order
-    let store = await this.getstoreUsecase.getstore(cake.store_id);
+    let store = await this.getstoreUsecase.execute(cake.store_id);
     orderDto.seller_id = store.store_owner_id;
     // confirms that the store is open
     if (store.store_status != STORE_STATUS.APPROVED) {
@@ -94,11 +94,11 @@ export class RequestOrderUseCase {
     ) {
       throw new BadRequestException('Cake variant not found');
     }
-    let buyer = await this.getuserDetailsUseCase.getuserdetail(
+    let buyer = await this.getuserDetailsUseCase.execute(
       orderDto.buyer_id,
     );
     if (!buyer) throw new UnauthorizedException('buyer not found');
-    let seller = await this.getuserDetailsUseCase.getuserdetail(
+    let seller = await this.getuserDetailsUseCase.execute(
       orderDto.seller_id,
     );
     if (!seller) throw new UnauthorizedException('seller not found');

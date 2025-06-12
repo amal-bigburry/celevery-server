@@ -13,8 +13,9 @@
 import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { REGISTER_OTP_TOKEN } from '../../tokens/ResiterOTP.token';
 import { OTPStorageRepository } from '../interfaces/otp-storage.interface';
+import { OtpVerificationInterface } from 'src/common/interfaces/otp-verifying-service.interface';
 @Injectable()
-export class OTPVerifyingService {
+export class OTPVerifyingService implements OtpVerificationInterface{
   constructor(
     @Inject(REGISTER_OTP_TOKEN)
     private readonly OTPStorageRepository: OTPStorageRepository,

@@ -14,11 +14,12 @@ import {
 } from '@nestjs/microservices';
 import { PopDto } from '../../../../common/dtos/pop.dto';
 import { ConfigService } from '@nestjs/config';
+import { MqttServiceInterface } from 'src/common/interfaces/mqtt-service.interface';
 /**
  * Injectable service file to implement mqttservice
  */
 @Injectable()
-export class MqttService implements OnModuleInit {
+export class MqttService implements OnModuleInit,MqttServiceInterface {
   constructor(private readonly configService: ConfigService) {}
   private client: ClientProxy;
   /**
@@ -40,5 +41,7 @@ export class MqttService implements OnModuleInit {
       next: () => console.log('✅ Message published'),
       error: (err) => console.error('❌ Publish error', err),
     });
+    
+    return 'published'
   }
 }

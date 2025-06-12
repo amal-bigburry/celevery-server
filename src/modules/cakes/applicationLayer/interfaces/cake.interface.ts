@@ -8,6 +8,7 @@
 import { PaginationDto } from 'src/common/dtos/pagination.dto';
 import { CakeEntity } from '../../domainLayer/entities/cake.entity';
 import { CakeDto } from '../../../../common/dtos/cake.dto';
+import { UpdateCakeDto } from 'src/common/dtos/updateCake.dto';
 /**
  * Interface defining the Cake Repository contract
  */
@@ -27,4 +28,5 @@ export interface CakeInterface {
   createcake(cakeDto: CakeDto): Promise<Object>;
   uploadImage(files: Express.Multer.File[]): Promise<Array<string> | null>;
   updateKnownfor(cake_id: string, known_for: string): Promise<string>;
+  updateCake(cake_id:string, updatecakedto: UpdateCakeDto):Promise<string>
 }

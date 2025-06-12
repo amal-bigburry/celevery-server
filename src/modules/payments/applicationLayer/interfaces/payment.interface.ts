@@ -32,7 +32,7 @@ import { VendorDto } from '../../../../common/dtos/vendor.dto';
  * 
  * Company: BigBurry Hypersystems LLP
  */
-export interface PaymentGateway {
+export interface PaymentInterface {
   getsessionid(
     DtoToGetPaymentSessionId: DtoToGetPaymentSessionId, // Method to retrieve a payment session ID based on the provided DTO
   ): Promise<Object>;

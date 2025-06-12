@@ -71,6 +71,10 @@ export class Order extends Document {
   quantity: number;
   @Prop()
   store_id: string;
+  @Prop()
+  buyer_contact_number:string;
+  @Prop()
+  session_id:string;
 }
 
 /**

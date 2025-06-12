@@ -12,7 +12,7 @@ import { IsNotEmpty, IsOptional, IsString } from 'class-validator';
 export class ChangeOrderStatusDto {
   @IsNotEmpty()
   @IsString()
-  _id: string;
+  order_id: string;
   user_id: string;
   new_status: string;
   @IsString()

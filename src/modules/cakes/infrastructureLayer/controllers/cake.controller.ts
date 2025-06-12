@@ -14,6 +14,7 @@ import {
   HttpStatus,
   Param,
   Post,
+  Put,
   Query,
   Req,
   UploadedFiles,
@@ -30,6 +31,8 @@ import { GetCakeDetailsUseCase } from '../../applicationLayer/use-cases/get-cake
 import { GetSimilarCakesUseCase } from '../../applicationLayer/use-cases/get-similar-cakes.usecase';
 import { AuthRequest } from 'src/middlewares/AuthRequest';
 import { GetCakesInStoreUsecase } from '../../applicationLayer/use-cases/get-cakes-in-store.usecase';
+import { UpdateCakeDetailsUseCase } from '../../applicationLayer/use-cases/update-cake-detail.usecase';
+import { UpdateCakeDto } from 'src/common/dtos/updateCake.dto';
 /**
  * Controller handling HTTP requests related to cakes
  */
@@ -42,6 +45,7 @@ export class CakeController {
     private readonly getCakeDetailsUseCase: GetCakeDetailsUseCase,
     private readonly getSimilarCakesUseCase: GetSimilarCakesUseCase,
     private readonly getCakesInStoreUsecase: GetCakesInStoreUsecase,
+    private readonly updateCakeDetailsUseCase: UpdateCakeDetailsUseCase,
   ) {}
   /**
    * Handles GET requests to fetch cakes with pagination and location filters
@@ -190,5 +194,15 @@ export class CakeController {
   async getCakeDetails(@Param('cake_id') cake_id: string) {
     // console.log('here ', cake_id);
     return this.getCakeDetailsUseCase.execute(cake_id);
+  } /**
+   * Handles GET request to fetch details of a specific cake by ID
+   */
+  @HttpCode(HttpStatus.OK)
+  @Put(':cake_id')
+  @UseGuards(JwtAuthGuard)
+  async updateCakeDetails(@Param('cake_id') cake_id: string, @Body() updatecakedto: UpdateCakeDto) {
+    // console.log(updatecakedto)
+    // console.log('here ', cake_id);
+    return this.updateCakeDetailsUseCase.execute(cake_id,updatecakedto);
   }
 }

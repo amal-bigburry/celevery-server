@@ -8,13 +8,13 @@
  * Company: BigBurry Hypersystems LLP
  */
 import { Inject, Injectable } from '@nestjs/common';
-import { PaymentGateway } from '../interfaces/payment.interface';
+import { PaymentInterface } from '../interfaces/payment.interface';
 import { DtoToRefund } from '../../../../common/dtos/dtoToRefund.dto';
 import { PAYMENTTOKEN } from '../../tokens/payment.token';
 @Injectable()
 export class RefundUsecase {
   constructor(
-    @Inject(PAYMENTTOKEN) private readonly paymentGateway: PaymentGateway,  // Injecting the payment gateway service for handling refunds
+    @Inject(PAYMENTTOKEN) private readonly paymentGateway: PaymentInterface,  // Injecting the payment gateway service for handling refunds
   ) {}
   /**
    * Executes the task of processing a payment refund.

@@ -16,22 +16,25 @@
 import { forwardRef, Module } from '@nestjs/common';
 import { PaymentController } from './infrastructureLayer/controllers/payment.controller';
 import { RefundUsecase } from './applicationLayer/use-cases/refund.usecase';
-import { CashFreePaymentGatewayImp } from './infrastructureLayer/implimentations/InternalImplimentations/cashfree.implimentation';
+import { CashFreePaymentGatewayImp } from './infrastructureLayer/implimentations/cashfree.implimentation';
 import { GetSessionIdUseCase } from './applicationLayer/use-cases/get-sessionid.usecase';
 import { PAYMENTTOKEN } from './tokens/payment.token';
 import { GETPAYMENTWAITINGORDERS } from './tokens/getallpaymentwaiting.token';
 import { CHANGEORDERSTATUS } from './tokens/changeorderstatus.token';
-import { IGetAllPaymentWaitingOrdersUsecaseImp } from './infrastructureLayer/implimentations/ExternalImplimentations/get-orders-waiting-to-pay.implimentation';
 import { GETUSERDETAILS } from './tokens/getuserdetails.token';
 import { GETCAKEDETAILS } from './tokens/getcakedetails.token';
-import { IGetCakeDetailsUseCaseImp } from './infrastructureLayer/implimentations/ExternalImplimentations/get-cake-details.implimentation';
-import { IGetUserDetailsUsecaseImp } from './infrastructureLayer/implimentations/ExternalImplimentations/get-user-details.implimentation';
 import { OrderModule } from '../orders/orders.module';
-import { IGetOrderDetailsUseCaeseImp } from './infrastructureLayer/implimentations/ExternalImplimentations/get-order-details.implimentation';
 import { GETORDERDETAILS } from './tokens/getOrderDetails.token';
 import { CakeModule } from '../cakes/cakes.modules';
 import { UserModule } from '../users/users.module';
-import { IChangeOrderStatusUseCaseImp } from './infrastructureLayer/implimentations/ExternalImplimentations/change-order-status.implimentation';
+import { GetCakeDetailsUseCase } from '../cakes/applicationLayer/use-cases/get-cake-details.usecase';
+import { GetOrderDetailsUseCase } from '../orders/applicationLayer/use-cases/get_order_details.usecase';
+import { ChangeOrderStatusUseCase } from '../orders/applicationLayer/use-cases/change-order-status.usecase';
+import { GetAllPaymentWaitingOrdersUseCase } from '../orders/applicationLayer/use-cases/get-all-payment-waiting-orders.usecase';
+import { GetUserDetailUseCase } from '../users/applicationLayer/usecases/get-user-details.usecase';
+import { HandleWebhookUsecase } from './applicationLayer/use-cases/handle-webhook.usecase';
+import { UPDATESESSIONIDTOKEN } from './tokens/updatesessionid.token';
+import { UpdateSessionidUseCase } from '../orders/applicationLayer/use-cases/update-session-id.usecase';
 /**
  * The `PaymentModule` defines the core business logic and services related to payments, including processing
  * payments, refunds, and interacting with external payment gateways like CashFree. It serves as a central module
@@ -61,38 +64,44 @@ import { IChangeOrderStatusUseCaseImp } from './infrastructureLayer/implimentati
 @Module({
   imports: [
     // Other Dependent Modules
-    forwardRef(() => OrderModule),
-    forwardRef(() => CakeModule),
-    forwardRef(() => UserModule),
-  ],
+    OrderModule,
+    UserModule,
+    CakeModule,
+  ]
+  ,
   controllers: [PaymentController],
   providers: [
     GetSessionIdUseCase,
     RefundUsecase,
+    HandleWebhookUsecase,
     {
       provide: PAYMENTTOKEN,
       useClass: CashFreePaymentGatewayImp,
     },
     {
       provide: GETPAYMENTWAITINGORDERS,
-      useClass: IGetAllPaymentWaitingOrdersUsecaseImp,
+      useClass: GetAllPaymentWaitingOrdersUseCase,
     },
     {
       provide: CHANGEORDERSTATUS,
-      useClass: IChangeOrderStatusUseCaseImp,
+      useClass: ChangeOrderStatusUseCase,
     },
     {
       provide: GETUSERDETAILS,
-      useClass: IGetUserDetailsUsecaseImp,
+      useClass: GetUserDetailUseCase,
     },
     {
       provide: GETCAKEDETAILS,
-      useClass: IGetCakeDetailsUseCaseImp,
+      useClass: GetCakeDetailsUseCase,
     },
     {
       provide: GETORDERDETAILS,
-      useClass: IGetOrderDetailsUseCaeseImp,
+      useClass: GetOrderDetailsUseCase,
     },
+    {
+      provide: UPDATESESSIONIDTOKEN,
+      useClass: UpdateSessionidUseCase,
+    }
   ],
   exports: [
     GetSessionIdUseCase,

@@ -9,11 +9,12 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { NotificationDto } from '../../../../common/dtos/notification.dto';
 import * as admin from 'firebase-admin';
+import { NotificationInterface } from 'src/common/interfaces/notification.interface';
 /**
  * Service to handle sending notifications
  */
 @Injectable()
-export class NotificationUseCase {
+export class NotificationUseCase implements NotificationInterface{
   constructor() {}
   /**
    * Method to send a notification

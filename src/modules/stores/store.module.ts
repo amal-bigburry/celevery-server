@@ -10,7 +10,7 @@ import { forwardRef, Module } from '@nestjs/common';
 import { MongooseModule } from '@nestjs/mongoose';
 import { StoreModel } from '../../common/databaseModels/store.model';
 import { StoreController } from './InfrastructureLayer/controllers/store.controller';
-import { StoreRepositoryImplimentation } from './InfrastructureLayer/implimentations/InternalImplimentations/store.implimentation';
+import { StoreRepositoryImplimentation } from './InfrastructureLayer/implimentations/store.implimentation';
 import { CreateStoreUsecase } from './applicationLayer/usercases/create-store.usecase';
 import { updateStoreUsecase } from './applicationLayer/usercases/updateStore.usecase';
 import { GetStoreUsecase } from './applicationLayer/usercases/get-store-details.usecase';
@@ -48,6 +48,6 @@ import { DeleteStoreUsecase } from './applicationLayer/usercases/delete-store.us
     },
   ],
   exports: [
-    GetStoreUsecase, GetAllStoreInPlatformUsecase],
+    GetStoreUsecase, GetAllStoreInPlatformUsecase,STORE_REPOSITORY],
 })
 export class StoreModule {}

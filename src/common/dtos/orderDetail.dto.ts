@@ -17,12 +17,13 @@ export class OrderDetailDto {
   seller_id: string;
   seller_name: string;
   buyer_name: string;
-  seller_phone: string;
-  buyer_phone: string;
+  seller_contact_number: string;
+  buyer_contact_number: string;
   cake_name: string;
   cake_image: string;
   cake_price: number;
   cake_description: string;
   cancelled_by: string;
   cancellation_reason: string;
+  session_id:string;
 }

@@ -28,5 +28,7 @@ export class CakeEntity {
     public store_id: string,
     public cake_category_ids: Array<string>,
     public cake_rating: number,
+    public is_eggless: boolean,
+    public is_active:boolean,
   ) {}
 }

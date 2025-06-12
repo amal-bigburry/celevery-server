@@ -14,7 +14,7 @@ import { UnauthorizedException, Inject, Injectable } from '@nestjs/common';
 import { UserInterface } from '../interfaces/user.interface';
 import { RegisterDto } from '../../../../common/dtos/Register.dto';
 import { USERINTERFACETOKEN } from '../../tokens/user.token';
-import { OtpVerificationInterface } from '../interfaces/otp-verifying-service.interface';
+import { OtpVerificationInterface } from '../../../../common/interfaces/otp-verifying-service.interface';
 import { OTP_VERIFICATION_SERVICE } from '../../tokens/otp-verifying-service.token';
 import { JwtService } from '@nestjs/jwt';
 @Injectable()

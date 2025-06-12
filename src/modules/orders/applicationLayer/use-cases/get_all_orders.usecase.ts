@@ -10,11 +10,12 @@ import { Inject, Injectable } from '@nestjs/common';
 import { ORDERINTERFACETOKEN } from '../../tokens/orderRepository.token';
 import { OrderDto } from '../../../../common/dtos/Order.dto';
 import { OrderInterface } from '../interfaces/order.interface';
+import { GetAllOrdersInterface } from 'src/common/interfaces/get-all-orders.interface';
 /**
  * Injectable service file that gets all the received orders of a seller
  */
 @Injectable()
-export class GetAllOrdersUseCase {
+export class GetAllOrdersUseCase implements GetAllOrdersInterface{
   constructor(
     @Inject(ORDERINTERFACETOKEN)
     private readonly OrderRepository: OrderInterface,

@@ -23,7 +23,7 @@ export class AutoCancelWorker {
         let order = await this.OrderRepository.getOrderDetails(orderId) // This should be set based on your application logic    
         let data:ChangeOrderStatusDto = {
             user_id: order.buyer_id, // This should be set based on your application logic
-            _id: orderId,
+            order_id: orderId,
             new_status: 'CANCELLED',
         }
         try {

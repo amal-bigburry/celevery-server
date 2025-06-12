@@ -13,7 +13,7 @@ import { GetPopularCakes } from 'src/common/utils/getPopularCakes';
 import { GetTrendingCakes } from 'src/common/utils/getTrendingCakes';
 import { CakeMinimalModel } from './cake-minimal-data.model';
 import { GETALLORDERSTOKEN } from '../../tokens/get-all-orders.token';
-import { GetAllOrdersInterface } from '../interfaces/get-all-orders.interface';
+import { GetAllOrdersInterface } from '../../../../common/interfaces/get-all-orders.interface';
 /**
  * Injectable service class responsible for finding cakes with pagination and location filters
  */
@@ -48,7 +48,7 @@ export class FindCakeUseCase {
   ): Promise<object[]> {
     let openStoreCakes = await this.CakeInterface.findAvailableCakes(user_id);
     // console.log('open store cakes', openStoreCakes.length);
-    let allorders = await this.GetAllOrdersInterface.getallorders();
+    let allorders = await this.GetAllOrdersInterface.execute();
     // known for filtering layer
     if (knownfor.length > 0) {
       openStoreCakes = openStoreCakes.filter((cake) =>

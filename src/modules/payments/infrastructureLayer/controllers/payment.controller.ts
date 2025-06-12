@@ -12,25 +12,18 @@ import {
   Controller,
   Post,
   Body,
-  Inject,
   UseGuards,
   Req,
-  BadGatewayException,
   HttpCode,
   HttpStatus,
 } from '@nestjs/common';
 import { GetSessionIdUseCase } from '../../applicationLayer/use-cases/get-sessionid.usecase';
 import { RefundUsecase } from '../../applicationLayer/use-cases/refund.usecase';
-import { ORDER_STATUS } from 'src/common/utils/contants';
-import { ChangeOrderStatusDto } from 'src/common/dtos/changeOrderStatus.dto';
 import { DtoToGetPaymentSessionId } from 'src/common/dtos/DtoToGetPaymentSessionId.dto';
 import { DtoToRefund } from '../../../../common/dtos/dtoToRefund.dto';
-import { IChangeOrderStatusUseCase } from '../../applicationLayer/interfaces/change-order-status.interface';
-import { IGetAllPaymentWaitingOrdersUseCase } from '../../applicationLayer/interfaces/get-orders-waiting-to-pay.interface';
-import { CHANGEORDERSTATUS } from '../../tokens/changeorderstatus.token';
-import { GETPAYMENTWAITINGORDERS } from '../../tokens/getallpaymentwaiting.token';
 import { AuthRequest } from 'src/middlewares/AuthRequest';
 import { JwtAuthGuard } from 'src/middlewares/jwtauth.middleware';
+import { HandleWebhookUsecase } from '../../applicationLayer/use-cases/handle-webhook.usecase';
 /**
  * PaymentController is responsible for handling payment-related operations in the system.
  * It exposes routes for obtaining a payment session ID, processing refunds, transferring amounts,
@@ -43,11 +36,8 @@ import { JwtAuthGuard } from 'src/middlewares/jwtauth.middleware';
 export class PaymentController {
   constructor(
     private readonly refundPaymentUseCase: RefundUsecase,
-    @Inject(CHANGEORDERSTATUS)
-    private readonly changeOrderStatusUseCase: IChangeOrderStatusUseCase,
     private readonly getSessionIdUseCase: GetSessionIdUseCase,
-    @Inject(GETPAYMENTWAITINGORDERS)
-    private readonly getAllPaymentWaitingOrdersUseCase: IGetAllPaymentWaitingOrdersUseCase,
+    private readonly handleWebhookUsecase: HandleWebhookUsecase,
   ) {}
   /**
    * This POST route `/payments/getsessionid` allows the user to retrieve a payment session ID for their order.
@@ -72,10 +62,10 @@ export class PaymentController {
     @Req() request: AuthRequest,
   ) {
     DtoToGetPaymentSessionId.user_id = request.user['userId'];
-    const order = await this.getSessionIdUseCase.execute(
+    const session_id = await this.getSessionIdUseCase.execute(
       DtoToGetPaymentSessionId,
     );
-    return order;
+    return {session_id:session_id};
   }
   /**
    * This POST route `/payments/refund` allows the user to initiate a refund for a given order.
@@ -114,58 +104,8 @@ export class PaymentController {
   @HttpCode(HttpStatus.CREATED)
   @Post('status_webhook')
   async status_webhook(@Body() body: any) {
-    // console.log('working')
-    let webhook_request_data = body?.data;
-    // find what this request is about
-    let _id: string;
-    let allOrders = await this.getAllPaymentWaitingOrdersUseCase.execute();
-    // console.log(webhook_request_data?.refund);
-    if (webhook_request_data?.order !== undefined) {
-      _id = webhook_request_data?.order?._id;
-    } else if (webhook_request_data?.refund != undefined) {
-      _id = webhook_request_data?.refund?._id;
-    }
-    // console.log(webhook_request_data)
-    let validOrder = allOrders.find((order) => order.id === _id);
-    if (!validOrder) {
-      console.log(validOrder)
-      throw new BadGatewayException('This Order is Not a valid order');
-    }
-    let updatedstatus: ChangeOrderStatusDto = {
-      _id: '',
-      new_status: '',
-      user_id: '',
-    };
-    if (validOrder) {
-      if (webhook_request_data?.payment?.payment_status == 'SUCCESS') {
-        updatedstatus = {
-          _id: validOrder.id,
-          new_status: ORDER_STATUS.ORDERED,
-          user_id: validOrder.buyer_id,
-        };
-      } else if (webhook_request_data?.payment?.payment_status == 'FAILED') {
-        updatedstatus = {
-          _id: validOrder.id,
-          new_status: ORDER_STATUS.WAITING_TO_PAY,
-          user_id: validOrder.buyer_id,
-        };
-      } else if (
-        webhook_request_data?.payment?.payment_status == 'USER_DROPPED'
-      ) {
-        updatedstatus = {
-          _id: validOrder.id,
-          new_status: ORDER_STATUS.WAITING_TO_PAY,
-          user_id: validOrder.buyer_id,
-        };
-      } else if (webhook_request_data?.refund?.refund_status == 'SUCCESS') {
-        updatedstatus = {
-          _id: validOrder.id,
-          new_status: ORDER_STATUS.REFUNDED,
-          user_id: validOrder.buyer_id,
-        };
-      }
-      await this.changeOrderStatusUseCase.execute(updatedstatus);
-    }
-    return { status: 'success' };
+    console.log(body.data)
+    let res = await this.handleWebhookUsecase.execute(body)
+    return "listening"
   }
 }

@@ -15,7 +15,7 @@ import { UserInterface } from '../interfaces/user.interface';
 import { ResetPasswordDto } from '../../../../common/dtos/ResetPassword.dto';
 import { USERINTERFACETOKEN } from '../../tokens/user.token';
 import { OTP_VERIFICATION_SERVICE } from '../../tokens/otp-verifying-service.token';
-import { OtpVerificationInterface } from '../interfaces/otp-verifying-service.interface';
+import { OtpVerificationInterface } from '../../../../common/interfaces/otp-verifying-service.interface';
 @Injectable()
 export class UpdatePasswordUsecase {
   constructor(

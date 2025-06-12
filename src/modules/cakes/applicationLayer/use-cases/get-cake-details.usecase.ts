@@ -10,11 +10,12 @@ import { CakeInterface } from '../interfaces/cake.interface';
 // import { CAKE_REPOSITORY } from '../../tokens/cakeRepository.token';
 import { CakeEntity } from '../../domainLayer/entities/cake.entity';
 import { CAKEINTERFACETOKEN } from '../../tokens/cake.token';
+import { GetCakeDetailInterface } from 'src/common/interfaces/get-cake-details.interface';
 /**
  * Injectable use case class to get details of a cake by its ID
  */
 @Injectable()
-export class GetCakeDetailsUseCase {
+export class GetCakeDetailsUseCase implements GetCakeDetailInterface {
   constructor(
     /**
      * Injecting CakeRepository to access cake data

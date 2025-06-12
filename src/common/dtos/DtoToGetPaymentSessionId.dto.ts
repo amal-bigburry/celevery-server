@@ -5,7 +5,7 @@
  */
 import { IsMongoId, IsNotEmpty, IsString } from 'class-validator';
 export class DtoToGetPaymentSessionId {
-  @IsMongoId() @IsNotEmpty() _id: string;
+  @IsMongoId() @IsNotEmpty() order_id: string;
   payment_tracking_id: string;
   user_id: string;
   cake_id: string;

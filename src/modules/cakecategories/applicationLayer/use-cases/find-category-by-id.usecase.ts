@@ -9,11 +9,12 @@ import { Inject, Injectable } from '@nestjs/common';
 import { CakeCategoryInterface } from '../interfaces/cake-category.interface';
 import { CAKECATEGORYINTERFACETOKEN } from '../../tokens/cakeCategoryRepository.token';
 import { CakeCategoryDto } from '../../../../common/dtos/cakecategory.dto';
+import { CakeCategoryUsecaseInterface } from 'src/common/interfaces/cake-category.interface';
 /**
  * Injectable service class for finding cake categories by ID
  */
 @Injectable()
-export class FindCakeCategoryByIDUseCase {
+export class FindCakeCategoryByIDUseCase implements CakeCategoryUsecaseInterface{
   /**
    * Injects the cake category repository dependency
    */

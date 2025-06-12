@@ -16,6 +16,7 @@ import {
 import { StoreRepository } from '../interfaces/store.interfaces';
 import { StoreDto } from '../../../../common/dtos/store.dto';
 import { STORE_REPOSITORY } from '../../tokens/storeRepository.token';
+import { GetstoreInterface } from 'src/common/interfaces/get-store.interface';
 
 /**
  * Bigburry Hypersystems LLP
@@ -26,7 +27,7 @@ import { STORE_REPOSITORY } from '../../tokens/storeRepository.token';
  * injects the StoreRepository instance to provide access to the store-related methods.
  */
 @Injectable()
-export class GetStoreUsecase {
+export class GetStoreUsecase implements GetstoreInterface {
   constructor(
     @Inject(STORE_REPOSITORY) private readonly Store: StoreRepository,
   ) {}
